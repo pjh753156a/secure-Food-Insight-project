@@ -9,6 +9,7 @@ export interface PatchUserInfoRequestDto
 {
     nickname: string;
     userAddress: string;
+    password: string;
 }
 
 // description: 회원 탈퇴 Request Body DTO

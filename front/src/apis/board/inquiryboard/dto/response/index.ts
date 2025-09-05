@@ -25,6 +25,8 @@ export interface GetInquiryBoardResponseDto extends ResponseDto
   inquiryWriteDatetime: string;
   inquiryContents: string;
   inquiryComment: string | null;
+  inquiryFile: string;
+  inquiryFileName: string;
 }
 /* /분석 완료/ */
 

@@ -26,4 +26,4 @@ public class FindEmailResponseDto extends ResponseDto
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */

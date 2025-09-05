@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>uploads 디렉터리 인덱스</title>
+</head>
+<body>
+    <ul>
+        <li th:each="filename : ${files}">
+            <a th:href="@{|/inquiry-uploads/${filename}|}" th:text="${filename}"></a>
+        </li>
+    </ul>
+</body>
+</html>

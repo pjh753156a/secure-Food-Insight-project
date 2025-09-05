@@ -14,6 +14,7 @@ export const requestErrorHandler = (error: any) =>
     if (!responseBody) return null;
     return responseBody as ResponseDto;
 };
+{/* 3차 프로젝트 분석완료 */}
 
 // function: Authorization Bearer 헤더 
 export const bearerAuthorization = (accessToken: string) => ({ headers: { 'Authorization': `Bearer ${accessToken}` } });

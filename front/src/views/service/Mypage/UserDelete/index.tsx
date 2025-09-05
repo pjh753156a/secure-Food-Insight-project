@@ -60,7 +60,7 @@ export default function UserDelete()
 
     const passwordMessage = 
       isPasswordPattern ? '' :
-      password ? '영문, 숫자를 혼용하여 8~13자 입력해주세요.' : '';
+      password ? '4글자 이상 입력해주세요.' : '';
     setPasswordMessage(passwordMessage);
   };
 

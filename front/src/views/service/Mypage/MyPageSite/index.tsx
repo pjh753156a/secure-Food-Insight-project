@@ -16,6 +16,7 @@ export default function MyPageSite()
 {
   // state //
   const [cookies] = useCookies();
+  const [password, setPassword] = useState<string>('');
   const [userRole, setUserRole] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
@@ -40,12 +41,13 @@ export default function MyPageSite()
 
     if (!cookies.accessToken) return;
 
-    const {userEmailId, nickname, userName, userTelNumber} = result as GetMyInfoResponseDto;
+    const {userEmailId, nickname, userName, userTelNumber, password} = result as GetMyInfoResponseDto;
     setNickname(nickname);
     setEmailId(userEmailId);
     setUserName(userName);
     setUserTelNumber(userTelNumber);
     setUserRole(userRole);
+    setPassword(password);
   };
 
   // event handler //
@@ -102,6 +104,10 @@ export default function MyPageSite()
             <div className='my-page-info-second'>
               <div className='my-page-info'>전화번호</div>
               <div className='my-page-info'>{userTelNumber}</div>
+            </div>
+            <div className='my-page-info-three'>
+              <div className='my-page-info'>비밀번호</div>
+              <div className='my-page-info'>{password}</div>
             </div>
           </div>
         </div>

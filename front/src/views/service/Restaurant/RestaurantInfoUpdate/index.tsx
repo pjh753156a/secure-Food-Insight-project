@@ -101,7 +101,7 @@ export default function RestaurantInfoUpdate()
     // event handler //
     const onUpdateClickHandler = () => 
     {
-        if (!restaurantImage || !restaurantName || !restaurantFoodCategory || !restaurantPosition || !restaurantLocation || !restaurantId || !restaurantTelNumber) 
+        if (!cookies.accessToken || !restaurantImage || !restaurantName || !restaurantFoodCategory || !restaurantPosition || !restaurantLocation || !restaurantId || !restaurantTelNumber) 
         {
             return;
         }

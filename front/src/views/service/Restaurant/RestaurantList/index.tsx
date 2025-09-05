@@ -24,6 +24,7 @@ export default function RestaurantList()
     const {loginUserRole } = useUserStore();
     const [searchWord, setSearchWord] = useState<string>('');
     const [displayCount, setDisplayCount] = useState<number>(8);
+    const [resultword, setResultWord] = useState<string>('');
     const [restaurantList, SetRestaurantList] = useState<RestaurantListItem[]>([]);
     
     // function //
@@ -38,6 +39,7 @@ export default function RestaurantList()
     
         const { restaurantList } = result as GetRestaurantListResponseDto;
         SetRestaurantList(restaurantList);
+        setResultWord(searchWord);
     };
 
     // event handler //
@@ -51,8 +53,6 @@ export default function RestaurantList()
     {
         if (!searchWord) return;
         GetRestaurantListRequest(searchWord, cookies.accessToken).then(GetRestaurantListResponse);
-
-        navigation(RESTAURANT_LIST_ABSOLUTE_PATH);
     };
 
     const onRegistrationClickHandler = () => 
@@ -93,7 +93,9 @@ export default function RestaurantList()
             </div>
             <div className='restaurant-list-box'>
                 {!restaurantList || restaurantList.length === 0 ?
-                    (<div className='restaurant-list-no-item'>해당하는 식당이 없습니다.</div>) :
+                    <iframe className='restaurant-list-no-item' srcDoc={resultword + " 에해당하는 식당이 없습니다."}></iframe>
+                    // (<div className='restaurant-list-no-item'>해당하는 식당이 없습니다.</div>)
+                    :
                     (restaurantList.slice(0, displayCount).map((item) => (
                     <div className='restaurant-list-item-box' onClick={() => onItemClickHandler(item.restaurantId)}>
                         <img src={item.restaurantImage ? item.restaurantImage : restaurantDefault} className='restaurant-list-item' />

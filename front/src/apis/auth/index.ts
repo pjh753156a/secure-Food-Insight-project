@@ -1,20 +1,32 @@
 import ResponseDto from "src/apis/response.dto";
-import { FindEmailResponseDto, PasswordResetResponseDto, SignInResponseDto } from "src/apis/auth/dto/response";
-import { CheckEmailRequestDto, CheckNicknameDto, FindEmailRequestDto, NewPasswordRequestDto, PasswordResetRequestDto, SignInRequestDto, SignUpRequestDto, CheckTelNumberAuthRequestDto, TelNumberAuthRequestDto, businessRegistrationNumberRequestDto } from "src/apis/auth/dto/request";
+import { AdminSignInResponseDto, FindEmailResponseDto, PasswordResetResponseDto, SignInResponseDto } from "src/apis/auth/dto/response";
+import { CheckEmailRequestDto, CheckNicknameDto, FindEmailRequestDto, NewPasswordRequestDto, PasswordResetRequestDto, SignInRequestDto, SignUpRequestDto, CheckTelNumberAuthRequestDto, TelNumberAuthRequestDto, businessRegistrationNumberRequestDto, AdminSignInRequestDto } from "src/apis/auth/dto/request";
 
 import axios from "axios";
 import { requestErrorHandler, requestHandler } from "src/apis/index";
 
-import { BUSINESS_REGISTRATION_REQUEST_PATH, EMAIL_CHECK_REQUEST_URL, FIND_EMAIL_REQUEST_URL, NICKNAME_CHECK_REQUEST_URL, PASSWORD_RESET_REQUEST_URL, PASSWORD_UPDATE_REQUEST_URL, SIGN_IN_REQUEST_URL, SIGN_UP_REQUEST_URL, TEL_NUMBER_AUTH_CHECK_REQUEST_URL, TEL_NUMBER_AUTH_REQUEST_URL } from "src/constant";
+import { ADMIN_SIGN_IN_REQUEST_URL, BUSINESS_REGISTRATION_REQUEST_PATH, EMAIL_CHECK_REQUEST_URL, FIND_EMAIL_REQUEST_URL, NICKNAME_CHECK_REQUEST_URL, PASSWORD_RESET_REQUEST_URL, PASSWORD_UPDATE_REQUEST_URL, SIGN_IN_REQUEST_URL, SIGN_UP_REQUEST_URL, TEL_NUMBER_AUTH_CHECK_REQUEST_URL, TEL_NUMBER_AUTH_REQUEST_URL } from "src/constant";
 
 // function : 로그인 API 함수
-export const signInRequest = async (requestBody: SignInRequestDto) => {
+export const signInRequest = async (requestBody: SignInRequestDto) => 
+{
     const result = await axios
         .post(SIGN_IN_REQUEST_URL, requestBody)
         .then(requestHandler<SignInResponseDto>)
         .catch(requestErrorHandler);
     return result;
 };
+
+// function : 관리자 로그인 API 함수
+export const AdminSignInRequest = async (requestBody: AdminSignInRequestDto) => 
+{
+    const result = await axios
+        .post(ADMIN_SIGN_IN_REQUEST_URL, requestBody)
+        .then(requestHandler<AdminSignInResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};
+{/* 3차 프로젝트 분석완료 */}
 
 // function : 전화번호 인증 번호 전송 API 함수
 export const telNumberAuthRequest = async (requestBody: TelNumberAuthRequestDto) => 
@@ -36,6 +48,7 @@ export const telNumberAuthCheckRequest = async (requestBody: CheckTelNumberAuthR
     return result;
 };
 
+{/* 3차 프로젝트 분석시작 */}
 // function : 이메일 찾기 API 함수
 export const findEmailRequest = async (requestBody: FindEmailRequestDto) => 
 {
@@ -65,6 +78,7 @@ export const checkNicknameRequest = async (requestBody: CheckNicknameDto) =>
         .catch(requestErrorHandler);
     return result;
 };
+{/* 3차 프로젝트 분석완료 */}
 
 // function : 비밀번호 재설정 링크 전송 API 함수
 export const passwordResetRequest = async (requestBody: PasswordResetRequestDto) => 

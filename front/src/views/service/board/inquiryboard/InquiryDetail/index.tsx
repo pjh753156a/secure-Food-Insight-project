@@ -13,6 +13,7 @@ import { deleteInquiryBoardRequest, getInquiryBoardRequest, postCommentRequest }
 import { INQUIRY_BOARD_LIST_ABSOLUTE_PATH, INQUIRY_BOARD_LIST_PATH, INQUIRY_BOARD_UPDATE_ABSOLUTE_PATH, SIGN_IN_ABSOLUTE_PATH } from 'src/constant';
 
 import './style.css';
+import { fileURLToPath } from 'url';
 
 // component //
 export default function InquiryDetail() 
@@ -24,6 +25,8 @@ export default function InquiryDetail()
     const [commentRows, setCommentRows] = useState<number>(1);
     const { loginUserEmailId, loginUserRole }  = useUserStore();
     const [inquiryTitle, setInquiryTitle] = useState<string>('');
+    const [inquiryFile, setInquiryFile] = useState<string>('');
+    const [inquiryFileName, setInquiryFileName] = useState<string>('');
     const [inquiryWriterId, setInquiryWriterId] = useState<string>('');
     const [inquiryContents, setInquiryContents] = useState<string>('');
     const [inquiryComment, setInquiryComment] = useState<string | null>(null);
@@ -54,7 +57,7 @@ export default function InquiryDetail()
             return;
         }
 
-        const { inquiryTitle, inquiryWriterId, inquiryWriteDatetime, inquiryContents, inquiryComment, inquiryWriterNickname, status  } = result as GetInquiryBoardResponseDto;
+        const { inquiryTitle, inquiryWriterId, inquiryWriteDatetime, inquiryContents, inquiryComment, inquiryWriterNickname, status, inquiryFile, inquiryFileName  } = result as GetInquiryBoardResponseDto;
         setInquiryTitle(inquiryTitle);
         setInquiryWriterId(inquiryWriterId);
         setInquiryWriterNickname(inquiryWriterNickname);
@@ -62,6 +65,8 @@ export default function InquiryDetail()
         setInquiryContents(inquiryContents);
         setInquiryComment(inquiryComment);
         setStatus(status);
+        setInquiryFile(inquiryFile);
+        setInquiryFileName(inquiryFileName);
     };
 
     const postInquiryCommentResponse = (result: ResponseDto | null) => 
@@ -136,7 +141,7 @@ export default function InquiryDetail()
 
     const onDeleteClickHandler = () => 
     {
-        if (!inquiryNumber || loginUserEmailId !== inquiryWriterId || !cookies.accessToken) return;
+        if (!inquiryNumber || (loginUserEmailId !== inquiryWriterId && loginUserRole !== 'ROLE_ADMIN') || !cookies.accessToken) return;
         
         const isConfirm = window.confirm('정말로 삭제하시겠습니까?');
         if (!isConfirm) return;
@@ -148,9 +153,9 @@ export default function InquiryDetail()
     useEffect(() => 
     {
         if (!inquiryNumber) return;
-        getInquiryBoardRequest(inquiryNumber, cookies.accessToken).then(getInquiryBoardResponse)
+        getInquiryBoardRequest(inquiryNumber, cookies.accessToken).then(getInquiryBoardResponse);
     }, []);
-    
+
     //                    render                    //
     return (
         <div id='inquiry-detail-wrapper'>
@@ -163,7 +168,13 @@ export default function InquiryDetail()
                         <div className='inquiry-detail-info'>작성일 {inquiryWriteDatetime}</div>
                     </div>
                 </div>
-                <div className='inquiry-detail-contents-box'>{inquiryContents}</div>
+                {inquiryFileName && (
+                <a href={`http://localhost:9999/download/board/inquiry?file=${encodeURIComponent(inquiryFileName)}`} download>
+                    {inquiryFileName}
+                </a>
+                )}
+                {/* <div className='inquiry-detail-contents-box'>{inquiryContents}</div> */}
+                <iframe className='inquiry-detail-contents-box' srcDoc={inquiryContents}></iframe>
             </div>
             { loginUserRole === 'ROLE_ADMIN' && !status &&
                 <div className='inquiry-detail-comment-write-box'>
@@ -181,9 +192,9 @@ export default function InquiryDetail()
             }
             <div className='inquiry-detail-button-box'>
                 <div className='primary-button' onClick={onListClickHandler}>목록보기</div>
-                { loginUserEmailId === inquiryWriterId && (loginUserRole === 'ROLE_USER' || loginUserRole === 'ROLE_CEO') &&
+                { (loginUserEmailId === inquiryWriterId || loginUserRole === 'ROLE_ADMIN') &&
                     <div className='inquiry-detail-owner-button-box'>
-                        { !status && <div className='second-button' onClick={onUpdateClickHandler}>수정</div> }
+                        { !status && loginUserRole !== 'ROLE_ADMIN' &&<div className='second-button' onClick={onUpdateClickHandler}>수정</div> }
                         <div className='error-button' onClick={onDeleteClickHandler}>삭제</div>
                     </div>
                 }

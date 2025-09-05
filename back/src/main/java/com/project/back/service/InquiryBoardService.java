@@ -1,6 +1,7 @@
 package com.project.back.service;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.back.dto.request.board.inquiryboard.PostCommentRequestDto;
 import com.project.back.dto.request.board.inquiryboard.PostInquiryBoardRequestDto;

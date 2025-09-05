@@ -5,6 +5,14 @@ export interface SignInRequestDto
     password: string;
 }
 
+// description: 관리자 로그인 Request Body DTO
+export interface AdminSignInRequestDto 
+{
+    userEmailId: string;
+    password: string;
+}
+{/* 3차 프로젝트 분석완료 */}
+
 // description: 전화번호 인증 번호 전송 Request Body DTO
 export interface TelNumberAuthRequestDto 
 {
@@ -18,6 +26,7 @@ export interface CheckTelNumberAuthRequestDto
     authNumber: string;
 }
 
+{/* 3차 프로젝트 분석시작 */}
 // description: 이메일 찾기 Request Body DTO
 export interface FindEmailRequestDto 
 {
@@ -36,6 +45,7 @@ export interface CheckNicknameDto
 {
     nickname: string;
 }
+{/* 3차 프로젝트 분석완료 */}
 
 // description: 비밀번호 재설정 링크 전송 Request Body DTO
 export interface PasswordResetRequestDto 

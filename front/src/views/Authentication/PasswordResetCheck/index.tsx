@@ -60,7 +60,7 @@ export default function PasswordResetCheck()
 
     const passwordMessage = 
       isPasswordPattern ? '' :
-      value ? '영문, 숫자를 혼용하여 8~13자 입력해주세요.' : '';
+      value ? '4글자 이상 입력해주세요.' : '';
     setPasswordMessage(passwordMessage);
 
     const isEqualPassword = passwordCheck === value;
@@ -94,7 +94,7 @@ export default function PasswordResetCheck()
       alert('모든 내용을 입력해주세요.');
       return;
     }
-    alert('비밀번호가 성공적으로 변경되었습니다.');
+    alert('비밀번호가 성공적으로 변경되었습니다. \n새로운 비밀번호는 ' + password + ' 입니다.');
 
     const requestBody: NewPasswordRequestDto = 
     {
@@ -110,8 +110,8 @@ export default function PasswordResetCheck()
         <div className='reset-password-title'>비밀번호 재설정</div>
         <div className='reset-password-box'>
           <div className='reset-password-input-container'>
-            <InputBox type="password" value={password} placeholder="새 비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} message={passwordMessage} error />
-            <InputBox type="password" value={passwordCheck} placeholder="새 비밀번호를 입력해주세요" onChangeHandler={onPasswordCheckChangeHandler} message={passwordCheckMessage} error />
+            <InputBox type="text" value={password} placeholder="새 비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} message={passwordMessage} error />
+            <InputBox type="text" value={passwordCheck} placeholder="새 비밀번호를 입력해주세요" onChangeHandler={onPasswordCheckChangeHandler} message={passwordCheckMessage} error />
           </div>
           <div className={passwordResetCheckButtonClass} onClick={onPasswordResetCheckButtonClickHandler}>재설정</div>
         </div>

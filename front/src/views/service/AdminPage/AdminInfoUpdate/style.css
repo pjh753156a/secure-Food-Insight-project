@@ -1,0 +1,153 @@
+#admin-page-update-wrapper 
+{
+  height: 700px;
+  margin-top: 70px;
+}
+
+.admin-page-update-container 
+{
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-page-update-top-title 
+{
+  text-align: center;
+
+  font-family: 'KCC-Hanbit';
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 150%;
+}
+
+.admin-page-title-box 
+{
+  display: flex;
+  flex-direction: row;
+}
+
+.admin-page-title 
+{
+  padding: 10px;
+
+  border: 1px solid rgba(245, 245, 245, 1);
+
+  font-family: 'NanumSquareRound';
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.admin-page-update-container 
+{
+  height: 500px;
+  max-width: 800px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 20px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.admin-page-update-contents-title 
+{
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  font-family: 'KCC-Hanbit';
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 150%;
+  color: rgba(50, 50, 50, 1);
+}
+
+.admin-page-update-contents-box 
+{
+  width:350px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  font-family: 'NanumSquareRound';
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 150%;
+  color: rgba(50, 50, 50, 1);
+}
+
+.admin-page-update-info-first 
+{
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+
+  border-top: 1px solid rgba(238, 238, 238, 1);
+  
+  word-break: break-word;
+}
+
+.admin-page-update-title-info 
+{
+  width: 100%;
+  min-width: 100px;
+
+  text-align: left;
+
+  padding: 10px;
+
+  background-color: rgba(255, 255, 255, 1);
+
+  font-family: 'NanumSquareRound';
+
+  word-break: break-word;
+}
+
+.admin-page-update-info 
+{
+  width: 100%;
+  min-width: 100px;
+
+  text-align: left;
+
+  padding: 10px;
+
+  background-color: rgba(255, 255, 255, 1);
+
+  font-family: 'NanumSquareRound';
+
+  word-break: break-word;
+}
+
+.admin-page-update 
+{
+  width: 150px;
+
+  padding: 10px;
+
+  background-color: rgba(255, 148, 45, 0.7);
+  border-radius: 8px;
+
+  text-align: center;
+  font-family: 'NanumSquareRound';
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 150%;
+  color: rgba(255, 255, 255, 1);
+}
+
+.admin-page-update:hover 
+{
+  cursor: pointer;
+  opacity: 0.85;
+}
+/*분석 완료*/

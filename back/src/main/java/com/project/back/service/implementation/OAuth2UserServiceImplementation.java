@@ -33,7 +33,7 @@ public class OAuth2UserServiceImplementation extends DefaultOAuth2UserService
         {
             return new CustomOAuth2User(snsId, oAuth2User.getAttributes(), false, oauthClientName);
         } 
-        else 
+        else
         {
             return new CustomOAuth2User(userEntity.getUserEmailId(), oAuth2User.getAttributes(), true, oauthClientName);
         }

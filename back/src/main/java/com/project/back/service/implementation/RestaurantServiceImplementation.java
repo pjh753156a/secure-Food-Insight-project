@@ -58,7 +58,7 @@ public class RestaurantServiceImplementation implements RestaurantService
 
             return GetRestaurantListResponseDto.success(restaurantEntities);
         } 
-        catch(Exception exception) 
+        catch(Exception exception)
         {
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -108,8 +108,8 @@ public class RestaurantServiceImplementation implements RestaurantService
             boolean isExistUser = userRepository.existsByUserEmailId(userEmailId);
             if (!isExistUser) return ResponseDto.authenticationFailed();
 
-            //isExistUser = restaurantRepository.existsByRestaurantWriterId(userEmailId);
-            //if(isExistUser) return ResponseDto.duplicatedEmailId();
+            isExistUser = restaurantRepository.existsByRestaurantWriterId(userEmailId);
+            if(isExistUser) return ResponseDto.duplicatedEmailId();
 
             UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
 
@@ -302,8 +302,8 @@ public class RestaurantServiceImplementation implements RestaurantService
             boolean isExistUser = userRepository.existsByUserEmailId(userEmailId);
             if (!isExistUser) return ResponseDto.authorizationFailed();
 
-            isExistUser = reviewRepository.existsByReviewWriterIdAndReviewRestaurantId(userEmailId,restaurantId);
-            if(isExistUser) return ResponseDto.duplicatedEmailId();
+            //isExistUser = reviewRepository.existsByReviewWriterIdAndReviewRestaurantId(userEmailId,restaurantId);
+            //if(isExistUser) return ResponseDto.duplicatedEmailId();
 
             UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
 
@@ -352,11 +352,14 @@ public class RestaurantServiceImplementation implements RestaurantService
         try 
         {
             ReviewEntity reviewEntity = reviewRepository.findByReviewNumber(reviewNumber);
+            UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
+            String userRole = userEntity.getUserRole();
             if (reviewEntity == null) return ResponseDto.noExistReview();
 
             String writerId = reviewEntity.getReviewWriterId();
             boolean isWriter = userEmailId.equals(writerId);
-            if (!isWriter) return ResponseDto.authorizationFailed();
+            boolean isAdmin = userRole.equals("ROLE_ADMIN");
+            if (!isWriter && !isAdmin) return ResponseDto.authorizationFailed();
 
             reviewRepository.delete(reviewEntity);
         } 

@@ -21,6 +21,7 @@ public class GetMyInfoResponseDto extends ResponseDto
     private String businessRegistrationNumber;
     private String userRole;
     private String joinPath;
+    private String password;
 
     private GetMyInfoResponseDto(UserEntity userEntity) 
     {
@@ -33,6 +34,7 @@ public class GetMyInfoResponseDto extends ResponseDto
         this.userAddress=userEntity.getUserAddress();
         this.userTelNumber=userEntity.getUserTelNumber();
         this.businessRegistrationNumber=userEntity.getBusinessRegistrationNumber();
+        this.password=userEntity.getPassword();
     }
     
     public static ResponseEntity<GetMyInfoResponseDto> success(UserEntity userEntity) 

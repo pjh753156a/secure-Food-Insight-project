@@ -68,6 +68,8 @@ function SnsContainer({ title }: SnsContainerProps)
     );
 }
 
+
+{/* 3차 프로젝트 분석시작 */}
 //   component: 로그인   //
 export default function SignIn() 
 {
@@ -88,7 +90,7 @@ export default function SignIn()
             result.code === 'VF' ? '아이디와 비밀번호를 모두 입력하세요.' :
             result.code === 'SF' ? '로그인 정보가 일치하지 않습니다.' :
             result.code === 'TF' ? '서버에 문제가 있습니다.' :
-            result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+            result.code === 'DBE' ? result.message : '';
         setMessage(message);
 
         const isSuccess = result && result.code === 'SU';
@@ -100,6 +102,7 @@ export default function SignIn()
 
         navigation(MAIN_PATH);
     };
+    {/* 3차 프로젝트 분석완료 */}
 
     // event handler //
     const onEmailIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -120,6 +123,7 @@ export default function SignIn()
         onSignInButtonClickHandler();
     };
     
+    {/* 3차 프로젝트 분석시작 */}
     const onSignInButtonClickHandler = () => 
     {
         if (!emailId || !password) 
@@ -135,6 +139,7 @@ export default function SignIn()
         }
         signInRequest(requestBody).then(signInResponse);
     };
+    {/* 3차 프로젝트 분석완료 */}
 
     const onFindEmailInputClickHandler = () => navigation(FIND_EMAIL_INPUT_ABSOLUTE_PATH)
     const onPasswordResetInputClickHandler = () => navigation(PASSWORD_RESET_INPUT_ABSOLUTE_PATH)
@@ -150,9 +155,11 @@ export default function SignIn()
                             <InputBox type="text" value={emailId} placeholder="이메일을 입력해주세요" onChangeHandler={onEmailIdChangeHandler} />
                             <InputBox type="password" value={password} placeholder="비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} onKeydownHandler={onPasswordKeydownHandler} message={message} error />
                         </div>
+                        {/* 3차 프로젝트 분석시작 */}
                         <div className="authentication-button-container">
                             <div className="primary-button full-width" onClick={onSignInButtonClickHandler}>로그인</div>
                         </div>
+                        {/* 3차 프로젝트 분석완료 */}
                     </div>
                     <div className="find-container">
                         <div className="find-email">

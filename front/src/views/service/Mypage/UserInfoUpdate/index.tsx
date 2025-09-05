@@ -21,6 +21,7 @@ export default function UserInfoUpdate()
   // state // 
   const [cookies] = useCookies();
   const { loginUserRole } = useUserStore();
+  const [password, setPassword] = useState<string>('');
   const [userRole, setUserRole] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
@@ -52,13 +53,14 @@ export default function UserInfoUpdate()
 
     if (!cookies.accessToken) return;
 
-    const {userEmailId, nickname, userName, userTelNumber, userAddress} = result as GetMyInfoResponseDto;
+    const {userEmailId, nickname, userName, userTelNumber, userAddress, password} = result as GetMyInfoResponseDto;
     setNickname(nickname);
     setEmailId(userEmailId);
     setUserName(userName);
     setUserTelNumber(userTelNumber);
     setUserAddress(userAddress);
     setUserRole(userRole);
+    setPassword(password);
   };
 
   const PatchUpdateUserInfoResponse = (result: ResponseDto | null) => 
@@ -93,12 +95,18 @@ export default function UserInfoUpdate()
     setUserAddress(userAddress);
   };
 
+  const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
+  {
+    const password = event.target.value;
+    setPassword(password);
+  };
+
   const onUpdateButtonClickHandler = () => 
   {
     if (!cookies.accessToken || !userEmailId) return;
-    if (!nickname.trim() || !userAddress.trim()) return;
+    if (!nickname.trim() || !userAddress.trim() || !password.trim()) return;
 
-    const requestBody: PatchUserInfoRequestDto = { nickname, userAddress };
+    const requestBody: PatchUserInfoRequestDto = { nickname, userAddress, password };
     patchUserInfoRequest(userEmailId, requestBody, cookies.accessToken).then(PatchUpdateUserInfoResponse);
   };
   
@@ -168,6 +176,12 @@ export default function UserInfoUpdate()
               <div className='my-page-update-info-left'>주소</div>
               <div className='my-page-input-box'>
                 <InputBox type='text' value={userAddress}  placeholder='주소를 입력해주세요.' onChangeHandler={onUserAddressChangeHandler} />
+              </div>
+            </div>
+            <div className='my-page-update-info-box'>
+              <div className='my-page-update-info-left'>비밀번호</div>
+              <div className='my-page-input-box'>
+                <InputBox type='text' value={password}  placeholder='비밀번호를 입력해주세요.' onChangeHandler={onPasswordChangeHandler} />
               </div>
             </div>
           </div>

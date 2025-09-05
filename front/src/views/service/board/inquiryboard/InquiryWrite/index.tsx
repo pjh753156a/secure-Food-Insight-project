@@ -23,6 +23,8 @@ export default function InquiryWrite()
   const contentsRef = useRef<HTMLTextAreaElement | null>(null);
   const [inquiryContents, setInquiryContents] = useState<string>('');
   const [inquiryPublic, setInquiryPublic] = useState<boolean>(false);
+  const [inquiryFile, setInquiryFile] = useState<string>("");
+  const [inquiryFileName, setInquiryFileName] = useState<string>("");
   
   // function //
   const navigation = useNavigate();
@@ -35,7 +37,8 @@ export default function InquiryWrite()
       result.code === 'AF' ? '권한이 없습니다.' :
       result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
-    if (!result || result.code !== 'SU') {
+    if (!result || result.code !== 'SU') 
+    {
       alert(message);
       return;
     }
@@ -61,11 +64,31 @@ export default function InquiryWrite()
     contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
   };
 
+  const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
+  {
+      const file = event.target.files?.[0];
+      if (file) 
+      {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => 
+          {
+              const base64String = reader.result?.toString();
+              if (base64String) 
+              {
+                  setInquiryFile(base64String);
+                  setInquiryFileName(file.name);
+              }
+          };
+      }
+  }
+
   const onPostButtonClickHandler = () => 
   {
     if (!inquiryContents.trim() || !inquiryTitle.trim()) return;
     if (!cookies.accessToken) return;
-    const requestBody: PostInquiryBoardRequestDto = { inquiryTitle, inquiryContents, inquiryPublic };
+
+    const requestBody: PostInquiryBoardRequestDto = {inquiryTitle, inquiryContents, inquiryPublic, inquiryFile, inquiryFileName };
     postInquiryBoardRequest(requestBody, cookies.accessToken).then(postBoardResponse);
   };
   
@@ -95,6 +118,7 @@ export default function InquiryWrite()
         <div className='inquiry-write-title-box'>
           <input className='inquiry-write-title-input' placeholder='제목을 입력해주세요.' value={inquiryTitle} onChange={onInquiryTitleChangeHandler} />
         </div>
+        <input type="file" onChange={onFileChangeHandler} className="inquiry-file-input"/>
         <div className='inquiry-write-contents-box'>
           <textarea ref={contentsRef} className='inquiry-write-contents-textarea' placeholder='내용을 입력해주세요. / 500자' maxLength={500} value={inquiryContents} onChange={onInquiryContentsChangeHandler} />
           <div className='inquiry-bottom-button-box'>

@@ -84,7 +84,7 @@ export default function ReviewWrite()
         contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
     }
     
-    const UploadClickHandler = () => 
+    const UploadClickHandler = () =>
     {
         if (!rating) { return; }
 

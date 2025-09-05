@@ -88,6 +88,25 @@
     gap: 15px;
 }
 
+.inquiry-file-input 
+{
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    font-family: 'KCC-Hanbit';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    cursor: pointer;
+    border: 1px solid rgba(200, 200, 200, 1);
+    color: rgba(138, 146, 166, 1);
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+
 .public-button 
 {
     width: 50px;

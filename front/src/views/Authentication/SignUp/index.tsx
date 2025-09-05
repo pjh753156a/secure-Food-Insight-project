@@ -63,6 +63,7 @@ export default function SignUp()
   const isSignUpActive = isEmailIdCheck && isEmailIdPattern && isEqualPassword && isPasswordPattern && isNicknameCheck && isUserTelNumberCheck && isUserTelNumberPattern && isAuthNumberCheck;
   const signUpButtonClass = `${isSignUpActive ? 'primary' : 'disable'}-button full-width`;
 
+  /* 3차 프로젝트 분석시작 */
   // function //
   const navigation = useNavigate();
   
@@ -88,7 +89,7 @@ export default function SignUp()
       !result ? '서버에 문제가 있습니다.' :
       result.code === 'VF' ? '닉네임은 빈 값 혹은 공백으로만 이루어질 수 없습니다.' :
       result.code === 'DN' ?  '이미 사용중인 닉네임입니다.' :
-      result.code === 'DBE' ? '서버에 문제가 있습니다.' :
+      result.code === 'DBE' ? result.message :
       result.code === 'SU' ? '사용 가능한 닉네임입니다.' : '';
 
     const nicknameError = !(result && result.code === 'SU');
@@ -97,6 +98,7 @@ export default function SignUp()
     setNicknameError(nicknameError);
     setNicknameCheck(nicknameCheck);
   };
+  /* 3차 프로젝트 분석완료 */
 
   const userTelNumberResponse = (result: ResponseDto | null) => 
   {
@@ -165,6 +167,7 @@ export default function SignUp()
     navigation(SIGN_IN_ABSOLUTE_PATH);
   };
   
+  {/* 3차 프로젝트 분석시작 */}
   // event handler // 
   const onEmailIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
   {
@@ -174,6 +177,7 @@ export default function SignUp()
     setEmailIdCheck(false);
     setEmailIdMessage('');
   };
+  {/* 3차 프로젝트 분석완료 */}
   
   const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
   {
@@ -186,7 +190,7 @@ export default function SignUp()
 
     const passwordMessage = 
       isPasswordPattern ? '' : 
-      value ? '영문, 숫자를 혼용하여 8 ~ 13자 입력해주세요.' : '';
+      value ? '4글자 이상 입력해주세요.' : '';
     setPasswordMessage(passwordMessage);
 
     const isEqualPassword = passwordCheck === value;
@@ -212,6 +216,7 @@ export default function SignUp()
     setPasswordCheckMessage(passwordCheckMessage);
   };
 
+  {/* 3차 프로젝트 분석시작 */}
   const onNicknameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
   {
     const { value } = event.target;
@@ -220,6 +225,7 @@ export default function SignUp()
     setNicknameCheck(false);
     setNicknameMessage('');
   };
+  {/* 3차 프로젝트 분석완료 */}
 
   const onUserNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
   {
@@ -262,6 +268,7 @@ export default function SignUp()
     setBusinessRegistrationNumberMessage('');
   };
   
+  {/* 3차 프로젝트 분석시작 */}
   const onEmailIdButtonClickHandler = () => 
   {
     if(!emailIdButtonStatus) return;
@@ -290,6 +297,7 @@ export default function SignUp()
     const requestBody: CheckNicknameDto = { nickname: nickname };
     checkNicknameRequest(requestBody).then(nicknameCheckResponse);
   };
+  {/* 3차 프로젝트 분석완료 */}
 
   const onUserTelNumberButtonClickHandler = () => 
   {
@@ -367,10 +375,14 @@ export default function SignUp()
         <div className="sign-up-title">회원가입</div>
         <div className="sign-up-container">
           <div className="sign-up-input-container">
+              {/* 3차 프로젝트 분석시작 */}
               <InputBox type="text" value={emailId} placeholder="이메일을 입력해주세요" onChangeHandler={onEmailIdChangeHandler} buttonTitle="중복 확인" buttonStatus={emailIdButtonStatus} onButtonClickHandler={onEmailIdButtonClickHandler} message={emailIdMessage} error={isEmailIdError} />
+              {/* 3차 프로젝트 분석완료 */}
               <InputBox type="password" value={password} placeholder="비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} message={passwordMessage} error />
               <InputBox type="password" value={passwordCheck} placeholder="비밀번호를 입력해주세요" onChangeHandler={onPasswordCheckChangeHandler} message={passwordCheckMessage} error />
+              {/* 3차 프로젝트 분석시작 */}
               <InputBox type="text" value={nickname} placeholder="닉네임을 입력해주세요" onChangeHandler={onNicknameChangeHandler} buttonTitle="중복 확인" buttonStatus={nicknameButtonStatus} onButtonClickHandler={onNicknameButtonClickHandler} message={nicknameMessage} error={isNicknameError} />
+              {/* 3차 프로젝트 분석완료 */}
               <InputBox type="text" value={userName} placeholder="이름을 입력해주세요" onChangeHandler={onUserNameChangeHandler} message={UserNameMessage} error />
               <InputBox type="text" value={userTelNumber} placeholder="전화번호를 입력해주세요" onChangeHandler={onUserTelNumberChangeHandler} buttonTitle="인증번호 전송" buttonStatus={userTelNumberButtonStatus} onButtonClickHandler={onUserTelNumberButtonClickHandler} message={userTelNumberMessage} error={isUserTelNumberError} />
               {isUserTelNumberCheck && 

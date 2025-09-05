@@ -29,17 +29,20 @@ public class JwtProvider
             jwt = Jwts.builder()
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setSubject(userEmailId)
-                .setIssuedAt(new Date())
-                .setExpiration(expiredDate)
                 .compact();
-        } 
-        catch(Exception exception) 
+        }
+        catch(Exception exception)
         {
             exception.printStackTrace();
             return null;
         }
         return jwt;
     }
+    /* 3차 프로젝트 분석완료 */
+
+    //Date expiredDate = Date.from(Instant.now().plus(10, ChronoUnit.SECONDS));
+    //.setIssuedAt(new Date())
+    //.setExpiration(expiredDate)
 
     public String validate(String jwt) 
     {

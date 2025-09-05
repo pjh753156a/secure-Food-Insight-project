@@ -14,5 +14,7 @@ public class PatchUserInfoRequestDto
     private String nickname;
     @NotBlank
     private String userAddress;
+    @NotBlank
+    private String password;
 }
 /* /분석 완료/ */

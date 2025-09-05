@@ -22,6 +22,8 @@ export default function NoticeWrite()
   const [noticeTitle, setNoticeTitle] = useState<string>('');
   const contentsRef = useRef<HTMLTextAreaElement | null>(null);
   const [noticeContents, setNoticeContents] = useState<string>('');
+  const [noticeFile, setNoticeFile] = useState<string>("");
+  const [noticeFileName, setNoticeFileName] = useState<string>("");
 
   //  function  //
   const navigation = useNavigate();
@@ -61,13 +63,32 @@ export default function NoticeWrite()
     contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
   };
 
+  const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
+  {
+      const file = event.target.files?.[0];
+      if (file) 
+      {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => 
+          {
+              const base64String = reader.result?.toString();
+              if (base64String) 
+              {
+                  setNoticeFile(base64String);
+                  setNoticeFileName(file.name);
+              }
+          };
+      }
+  }
+
   const onPostButtonClickHandler = async () => 
   {
     if (!noticeTitle.trim() || !noticeContents.trim()) return;
 
     if (!cookies.accessToken) return;
 
-    const requestBody: PostNoticeBoardRequestDto = { noticeTitle, noticeContents };
+    const requestBody: PostNoticeBoardRequestDto = { noticeTitle, noticeContents, noticeFile, noticeFileName };
     postNoticeBoardRequest(requestBody, cookies.accessToken).then(postNoticeBoardResponse);
   };
   
@@ -88,6 +109,7 @@ export default function NoticeWrite()
         <div className='notice-write-title-box'>
           <input className='notice-write-title-input' placeholder='제목을 입력해주세요.' value={noticeTitle} onChange={onNoticeTitleChangeHandler} />
         </div>
+        <input type="file" onChange={onFileChangeHandler} className="notice-file-input"/>
         <div className='notice-write-contents-box'>
           <textarea ref={contentsRef} className='notice-write-contents-textarea' placeholder='내용을 입력해주세요.' maxLength={1000} value={noticeContents} onChange={onNoticeContentsChangeHandler} />
           <div className='primary-button' onClick={onPostButtonClickHandler}>작성</div>

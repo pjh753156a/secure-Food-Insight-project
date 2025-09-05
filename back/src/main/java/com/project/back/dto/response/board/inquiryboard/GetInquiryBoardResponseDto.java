@@ -23,6 +23,8 @@ public class GetInquiryBoardResponseDto extends ResponseDto
     private String inquiryComment;
     private Boolean status;
     private Boolean inquiryPublic;
+    private String inquiryFile;
+    private String inquiryFileName;
 
     private GetInquiryBoardResponseDto(InquiryBoardEntity inquiryBoardEntity, String inquiryWriterNickname) throws Exception 
     {
@@ -40,6 +42,8 @@ public class GetInquiryBoardResponseDto extends ResponseDto
 
         this.inquiryContents = inquiryBoardEntity.getInquiryContents();
         this.inquiryComment = inquiryBoardEntity.getInquiryComment();
+        this.inquiryFile = inquiryBoardEntity.getInquiryFile();
+        this.inquiryFileName = inquiryBoardEntity.getInquiryFileName();
     }
     
     public static ResponseEntity<GetInquiryBoardResponseDto> success(InquiryBoardEntity inquiryBoardEntity, String nickname) throws Exception 

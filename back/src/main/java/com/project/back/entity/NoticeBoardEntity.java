@@ -30,6 +30,8 @@ public class NoticeBoardEntity
     private String noticeWriterId;
     private String noticeContents;
     private String noticeWriteDatetime;
+    private String noticeFile;
+    private String noticeFileName;
 
     public NoticeBoardEntity(PostNoticeBoardRequestDto dto, String userEmailId ) 
     {
@@ -41,6 +43,8 @@ public class NoticeBoardEntity
 
         this.noticeTitle = dto.getNoticeTitle();
         this.noticeContents = dto.getNoticeContents();
+        this.noticeFile = dto.getNoticeFile();
+        this.noticeFileName = dto.getNoticeFileName();
     }
 
     public void increaseViewCount() 
@@ -52,6 +56,8 @@ public class NoticeBoardEntity
     {
         this.noticeTitle = dto.getNoticeTitle();
         this.noticeContents = dto.getNoticeContents();
+        this.noticeFile = dto.getNoticeFile();
+        this.noticeFileName = dto.getNoticeFileName();
     }    
 }
 /*분석 완료*/

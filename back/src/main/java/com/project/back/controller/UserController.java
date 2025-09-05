@@ -29,7 +29,8 @@ public class UserController
 
     @GetMapping("/")
     public ResponseEntity<? super GetUserInfoResponseDto> GetSignInUser(
-            @AuthenticationPrincipal String userEmailId) {
+            @AuthenticationPrincipal String userEmailId) 
+    {
         ResponseEntity<? super GetUserInfoResponseDto> response = userService.GetSignInUser(userEmailId);
         return response;
     }

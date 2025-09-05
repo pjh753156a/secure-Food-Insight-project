@@ -244,6 +244,16 @@ export default function RestaurantInfo()
             return;
         }
     };
+
+    const RestaurantChange = () =>
+    {
+        if (!restaurantId) 
+        {
+            return;
+        }
+
+        GetRestaurantInfoRequest(restaurantId, cookies.accessToken).then(GetRestaurantInfoResponse);
+    }
     
     const onFavoriteClickHandler = () => 
     {
@@ -372,7 +382,7 @@ export default function RestaurantInfo()
                         </Map>
                     }
                 </div>
-                <ReviewList value={restaurantReviewList}/>
+                <ReviewList value={restaurantReviewList} onChange={RestaurantChange}/>
             </div>
         </div>
     )

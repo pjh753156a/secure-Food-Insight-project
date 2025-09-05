@@ -7,11 +7,11 @@ import InputBox from 'src/components/InputBox';
 
 import ResponseDto from 'src/apis/response.dto';
 import { PatchUserInfoRequestDto } from 'src/apis/user/dto/request';
-import { GetMyInfoResponseDto, PatchUserInfoResponseDto } from 'src/apis/user/dto/response';
+import { GetMyInfoResponseDto } from 'src/apis/user/dto/response';
 
 import { getMyInfoRequest, patchUserInfoRequest } from 'src/apis/user';
 
-import { CEO_INFO_UPDATE_ABSOLUTE_PATH, CEO_PAGE_SITE_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, USER_DELETE_ABSOLUTE_PATH } from 'src/constant';
+import { CEO_DELETE_ABSOLUTE_PATH, CEO_INFO_UPDATE_ABSOLUTE_PATH, CEO_PAGE_SITE_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, USER_DELETE_ABSOLUTE_PATH } from 'src/constant';
 
 import "./style.css";
 
@@ -21,6 +21,7 @@ export default function CeoInfoUpdate()
   // state // 
   const [cookies] = useCookies();
   const { loginUserRole } = useUserStore();
+  const [password, setPassword] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [userRole, setUserRole] = useState<string>('');
@@ -53,7 +54,7 @@ export default function CeoInfoUpdate()
 
     if (!cookies.accessToken) return;
 
-    const {userEmailId, nickname, userName, userTelNumber, userAddress, businessRegistrationNumber} = result as GetMyInfoResponseDto;
+    const {userEmailId, nickname, userName, userTelNumber, userAddress, businessRegistrationNumber, password} = result as GetMyInfoResponseDto;
     setNickname(nickname);
     setEmailId(userEmailId);
     setUserName(userName);
@@ -61,6 +62,7 @@ export default function CeoInfoUpdate()
     setUserAddress(userAddress);
     setBusinessRegistrationNumber(businessRegistrationNumber);
     setUserRole(userRole);
+    setPassword(password);
   };
 
   const PatchUpdateUserInfoResponse = (result: ResponseDto | null) => 
@@ -95,19 +97,25 @@ export default function CeoInfoUpdate()
     setUserAddress(userAddress);
   };
 
+  const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
+  {
+    const password = event.target.value;
+    setPassword(password);
+  };
+
   const onUpdateButtonClickHandler = () => 
   {
     if (!cookies.accessToken || !userEmailId) return;
 
-    if (!nickname.trim() || !userAddress.trim()) return;
+    if (!nickname.trim() || !userAddress.trim() || !password.trim()) return;
 
-    const requestBody: PatchUserInfoRequestDto = { nickname, userAddress };
+    const requestBody: PatchUserInfoRequestDto = { nickname, userAddress, password };
     patchUserInfoRequest(userEmailId, requestBody, cookies.accessToken).then(PatchUpdateUserInfoResponse);
   };
   
   const onCeoPageSiteClickHandler = () => navigation(CEO_PAGE_SITE_ABSOLUTE_PATH);
   const onCeoInfoUpdateClickHandler = (userEmailId:string) => navigation(CEO_INFO_UPDATE_ABSOLUTE_PATH(userEmailId));
-  const onUserDeleteClickHandler = (userEmailId:string) => navigation(USER_DELETE_ABSOLUTE_PATH(userEmailId));
+  const onCeoDeleteClickHandler = (userEmailId:string) => navigation(CEO_DELETE_ABSOLUTE_PATH(userEmailId));
   
   // effect //
   let effectFlag = useRef(false);
@@ -143,7 +151,7 @@ export default function CeoInfoUpdate()
       <div className='ceo-page-navigation-box'>
         <div className='ceo-page-navigation' onClick={onCeoPageSiteClickHandler}>사장페이지</div>
         <div className='ceo-page-navigation' onClick={() => onCeoInfoUpdateClickHandler(userEmailId)}>사장정보 수정</div>
-        <div className='ceo-page-navigation' onClick={() => onUserDeleteClickHandler(userEmailId)}>회원탈퇴</div>
+        <div className='ceo-page-navigation' onClick={() => onCeoDeleteClickHandler(userEmailId)}>회원탈퇴</div>
       </div>
       <div className='short-divider-bottom-line'></div>
       <div className='ceo-page-update-container'>
@@ -172,6 +180,12 @@ export default function CeoInfoUpdate()
           <div className='ceo-page-update-info-first'>
             <div className='ceo-page-update-title-info'>사업자등록번호</div>
             <div className='ceo-page-update-info'>{businessRegistrationNumber}</div>
+          </div>
+          <div className='ceo-page-update-info-first'>
+            <div className='ceo-page-update-title-info'>비밀번호</div>
+            <div className='ceo-page-update-info'>
+              <InputBox type='text' value={password}  placeholder='비밀번호를 입력해주세요.' onChangeHandler={onPasswordChangeHandler} />
+            </div>
           </div>
         </div>
         <div className='ceo-page-update' onClick={onUpdateButtonClickHandler}>수정</div>

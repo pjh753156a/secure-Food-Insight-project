@@ -21,9 +21,11 @@ export default function InquiryUpdate()
   const [cookies] = useCookies();
   const { inquiryNumber } = useParams();
   const { loginUserRole } = useUserStore();
+  const [inquiryFile, setInquiryFile] = useState<string>("");
   const [inquiryTitle, setInquiryTitle] = useState<string>('');
   const contentsRef = useRef<HTMLTextAreaElement | null>(null);
   const [inquiryContents, setInquiryContents] = useState<string>('');
+  const [inquiryFileName, setInquiryFileName] = useState<string>("");
 
   // function //
   const navigation = useNavigate();
@@ -101,13 +103,32 @@ export default function InquiryUpdate()
     contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
   };
 
+  const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
+  {
+      const file = event.target.files?.[0];
+      if (file) 
+      {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => 
+          {
+              const base64String = reader.result?.toString();
+              if (base64String) 
+              {
+                  setInquiryFile(base64String);
+                  setInquiryFileName(file.name);
+              }
+          };
+      }
+  }
+
   const onInquiryUpdateButtonClickHandler = () => 
   {
     if (!cookies.accessToken || !inquiryNumber) return;
 
     if (!inquiryTitle.trim() || !inquiryContents.trim()) return;
 
-    const requestBody: PatchInquiryBoardRequestDto = { inquiryTitle, inquiryContents };
+    const requestBody: PatchInquiryBoardRequestDto = { inquiryTitle, inquiryContents, inquiryFile, inquiryFileName };
     patchInquiryBoardRequest(inquiryNumber, requestBody, cookies.accessToken).then(patchInquiryBoardResponse);
   };
   
@@ -116,7 +137,7 @@ export default function InquiryUpdate()
   
   useEffect(() => 
   {
-    if (!inquiryNumber || !cookies.accessToken) return;
+    if (!inquiryNumber) return;
     if(!loginUserRole) return;
     if(effectFlag) return;
     effectFlag = true;
@@ -135,6 +156,7 @@ export default function InquiryUpdate()
         <div className='inquiry-update-title-box'>
           <input className='inquiry-update-title-input' placeholder='제목을 입력해주세요.' value={inquiryTitle} onChange={onInquiryTitleChangeHandler} />
         </div>
+        <input type="file" onChange={onFileChangeHandler} className="inquiry-file-input"/>
         <div className='inquiry-update-contents-box'>
           <textarea ref={contentsRef} className='inquiry-update-contents-textarea' placeholder='내용을 입력해주세요. / 500자' maxLength={500} value={inquiryContents} onChange={onInquiryContentsChangeHandler} />
           <div className='primary-button inquiry-update' onClick={onInquiryUpdateButtonClickHandler}>수정</div>

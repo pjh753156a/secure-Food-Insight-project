@@ -8,11 +8,12 @@ import lombok.AllArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public class ResponseDto 
+public class ResponseDto
 {
     public static Object favoriteRestaurantEntity;
     private String code;
     private String message;
+    /* 3차 프로젝트 분석완료 */
 
     public static ResponseEntity<ResponseDto> success() 
     {
@@ -26,11 +27,13 @@ public class ResponseDto
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
+    /* 3차 프로젝트 분석시작 */
     public static ResponseEntity<ResponseDto> signInFailed() 
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.SIGN_IN_FAILED,ResponseMessage.SIGN_IN_FAILED);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
+    /* 3차 프로젝트 분석완료 */
     
     public static ResponseEntity<ResponseDto> databaseError() 
     {
@@ -56,6 +59,7 @@ public class ResponseDto
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
     
+    /* 3차 프로젝트 분석시작 */
     public static ResponseEntity<ResponseDto> duplicatedEmailId() 
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATED_EMAIL_ID,ResponseMessage.DUPLICATED_EMAIL_ID);
@@ -67,6 +71,7 @@ public class ResponseDto
         ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATED_NICKNAME,ResponseMessage.DUPLICATED_NICKNAME);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
+    /* 3차 프로젝트 분석완료 */
     
     public static ResponseEntity<ResponseDto> noExistRestaurant() 
     {

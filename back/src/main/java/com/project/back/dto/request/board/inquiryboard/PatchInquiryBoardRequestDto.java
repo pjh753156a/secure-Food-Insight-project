@@ -14,5 +14,7 @@ public class PatchInquiryBoardRequestDto
     private String inquiryTitle;
     @NotBlank
     private String inquiryContents;
+    private String inquiryFile;
+    private String inquiryFileName;
 }
 /* /분석 완료/ */

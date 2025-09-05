@@ -19,6 +19,7 @@ export interface GetMyInfoResponseDto extends ResponseDto
   businessRegistrationNumber: string;
   userRole: string;
   joinPath: String;
+  password: string;
 }
 
 // description: 내 정보 수정하기 Response Body DTO

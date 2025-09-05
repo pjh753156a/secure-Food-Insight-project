@@ -33,6 +33,8 @@ public class InquiryBoardEntity
     private String inquiryWriterId;
     private String inquiryContents;
     private String inquiryWriteDatetime;
+    private String inquiryFile;
+    private String inquiryFileName;
 
     public InquiryBoardEntity(PostInquiryBoardRequestDto dto, String userEmailId) 
     {
@@ -45,12 +47,16 @@ public class InquiryBoardEntity
         this.inquiryTitle = dto.getInquiryTitle();
         this.inquiryPublic = dto.getInquiryPublic();
         this.inquiryContents = dto.getInquiryContents();
+        this.inquiryFile = dto.getInquiryFile();
+        this.inquiryFileName = dto.getInquiryFileName();
     }
 
     public void update(PatchInquiryBoardRequestDto dto) 
     {
         this.inquiryTitle = dto.getInquiryTitle();
         this.inquiryContents = dto.getInquiryContents();
+        this.inquiryFile = dto.getInquiryFile();
+        this.inquiryFileName = dto.getInquiryFileName();
     }
 }
 /*분석 완료*/

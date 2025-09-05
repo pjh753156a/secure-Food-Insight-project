@@ -24,6 +24,8 @@ export default function NoticeUpdate()
   const { loginUserEmailId, loginUserRole } = useUserStore();
   const contentsRef = useRef<HTMLTextAreaElement | null>(null);
   const [noticeContents, setNoticeContents] = useState<string>('');
+  const [noticeFile, setNoticeFile] = useState<string>("");
+  const [noticeFileName, setNoticeFileName] = useState<string>("");
 
   // function //
   const navigation = useNavigate();
@@ -93,13 +95,32 @@ export default function NoticeUpdate()
     contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
   };
 
+  const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
+  {
+      const file = event.target.files?.[0];
+      if (file) 
+      {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => 
+          {
+              const base64String = reader.result?.toString();
+              if (base64String) 
+              {
+                  setNoticeFile(base64String);
+                  setNoticeFileName(file.name);
+              }
+          };
+      }
+  }
+
   const onNoticeUpdateButtonClickHandler = () => 
   {
     if (!cookies.accessToken || !noticeNumber) return;
     
     if (!noticeTitle.trim() || !noticeContents.trim()) return;
 
-    const requestBody: PatchNoticeBoardRequestDto = { noticeTitle, noticeContents };
+    const requestBody: PatchNoticeBoardRequestDto = { noticeTitle, noticeContents, noticeFile, noticeFileName };
     patchNoticeBoardRequest(noticeNumber, requestBody, cookies.accessToken).then(patchNoticeBoardResponse);
   };
   
@@ -128,6 +149,7 @@ export default function NoticeUpdate()
         <div className='notice-update-title-box'>
           <input className='notice-update-title-input' placeholder='제목을 입력해주세요.' value={noticeTitle} onChange={onNoticeTitleChangeHandler} />
         </div>
+        <input type="file" onChange={onFileChangeHandler} className="notice-file-input"/>
         <div className='notice-update-contents-box'>
           <textarea ref={contentsRef} className='notice-update-contents-textarea' placeholder='내용을 입력해주세요.' maxLength={1000} value={noticeContents} onChange={onNoticeContentsChangeHandler} />
           <div className='primary-button' onClick={onNoticeUpdateButtonClickHandler}>수정</div>

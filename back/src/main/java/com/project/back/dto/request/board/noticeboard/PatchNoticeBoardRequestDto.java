@@ -14,5 +14,7 @@ public class PatchNoticeBoardRequestDto
     private String noticeTitle;
     @NotBlank
     private String noticeContents;
+    private String noticeFile;
+    private String noticeFileName;
 }
 /*분석 완료*/

@@ -108,7 +108,6 @@ export default function InquiryMyList()
   // effect //
   useEffect(() => 
   {
-    if (!cookies.accessToken) return;
     getInquiryBoardListRequest(cookies.accessToken).then(getInquiryBoardListResponse);
   }, [isToggleOn ,cookies.accessToken, loginUserEmailId]);
   

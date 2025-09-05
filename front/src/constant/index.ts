@@ -5,6 +5,7 @@ export const SNS_PATH = '/sns/:accessToken/:expires';
 export const AUTH_PATH = '/authentication';
 export const SIGN_IN_PATH = 'sign-in';
 export const SIGN_UP_PATH = 'sign-up';
+export const ADMIN_SIGN_IN_PATH = 'admin-sign-in';
 export const FIND_EMAIL_INPUT_PATH = 'find-email-input';
 export const PASSWORD_RESET_INPUT_PATH = 'password-reset-input';
 export const PASSWORD_RESET_CHECK_PATH = 'password-reset-check/:userEmailId';
@@ -38,6 +39,11 @@ export const CEO_PAGE_SITE_PATH = 'site';
 export const CEO_INFO_UPDATE_PATH = 'ceo-info-update/:userEmailId';
 export const CEO_DELETE_PATH = 'ceo-delete/:userEmailId';
 
+export const ADMIN_PAGE_PATH = '/admin-page';
+export const ADMIN_PAGE_SITE_PATH = 'site';
+export const ADMIN_INFO_UPDATE_PATH = 'admin-info-update/:userEmailId';
+export const ADMIN_DELETE_PATH = 'admin-delete/:userEmailId';
+
 export const BOARD_PATH = '/board';
 export const NOTICE_PATH = 'notice';
 export const NOTICE_BOARD_LIST_PATH = 'list';
@@ -61,6 +67,7 @@ export const INTRODUCTION_POLICY_PATH = 'policy';
 export const MAIN_ABSOLUTE_PATH = MAIN_PATH;
 
 export const SIGN_IN_ABSOLUTE_PATH = `${AUTH_PATH}/${SIGN_IN_PATH}`;
+export const ADMIN_SIGN_IN_ABSOLUTE_PATH = `${AUTH_PATH}/${ADMIN_SIGN_IN_PATH}`;
 export const SIGN_UP_ABSOLUTE_PATH = `${AUTH_PATH}/${SIGN_UP_PATH}`;
 export const FIND_EMAIL_INPUT_ABSOLUTE_PATH = `${AUTH_PATH}/${FIND_EMAIL_INPUT_PATH}`;
 export const PASSWORD_RESET_INPUT_ABSOLUTE_PATH = `${AUTH_PATH}/${PASSWORD_RESET_INPUT_PATH}`;
@@ -91,6 +98,11 @@ export const CEO_PAGE_SITE_ABSOLUTE_PATH = `${CEO_PAGE_PATH}/${CEO_PAGE_SITE_PAT
 export const CEO_INFO_UPDATE_ABSOLUTE_PATH = (userEmailId: string) => `${CEO_PAGE_PATH}/ceo-info-update/${userEmailId}`;
 export const CEO_DELETE_ABSOLUTE_PATH = (userEmailId: string) => `${CEO_PAGE_PATH}/ceo-delete/${userEmailId}`;
 
+export const ADMIN_PAGE_ABSOLUTE_PATH = ADMIN_PAGE_PATH;
+export const ADMIN_PAGE_SITE_ABSOLUTE_PATH = `${ADMIN_PAGE_PATH}/${ADMIN_PAGE_SITE_PATH}`;
+export const ADMIN_INFO_UPDATE_ABSOLUTE_PATH = (userEmailId: string) => `${ADMIN_PAGE_PATH}/admin-info-update/${userEmailId}`;
+export const ADMIN_DELETE_ABSOLUTE_PATH = (userEmailId: string) => `${ADMIN_PAGE_PATH}/admin-delete/${userEmailId}`;
+
 export const BOARD_ABSOLUTE_PATH = BOARD_PATH;
 
 export const NOTICE_BOARD_LIST_ABSOLUTE_PATH = `${BOARD_PATH}/${NOTICE_PATH}/${NOTICE_BOARD_LIST_PATH}`;
@@ -117,6 +129,7 @@ export const SERVER_API_URL = `${SERVER_DOMAIN_URL}/api/v1`;
 // description: AUTH 모듈 내의 기능 URL
 export const SERVER_AUTH_MODULE_URL = `${SERVER_API_URL}/auth`;
 export const SIGN_IN_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/sign-in`;
+export const ADMIN_SIGN_IN_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/admin-sign-in`;
 export const SIGN_UP_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/sign-up`;
 export const TEL_NUMBER_AUTH_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/tel-number-auth`;
 export const TEL_NUMBER_AUTH_CHECK_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/tel-number-check`;
@@ -197,8 +210,10 @@ export const COUNT_PER_SECTION = 10;
 export const ITEM_PER_PAGE1 = 8;
 export const ITEM_PER_PAGE2 = 5;
 
-{/* 분석 시작 */}
+{/* 3차 프로젝트 분석시작 */}
 export const emailIdPatternType = /^[a-zA-Z0-9]*@([-.]?[a-zA-Z0-9])*\.[a-zA-Z]{2,4}$/;
-export const passwordPatternType = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$/;
+{/* 3차 프로젝트 분석완료 */}
+//export const passwordPatternType = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$/;
+export const passwordPatternType = /^.{4,}$/;
 export const userTelNumberPatternType = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
 {/* 분석 완료 */}

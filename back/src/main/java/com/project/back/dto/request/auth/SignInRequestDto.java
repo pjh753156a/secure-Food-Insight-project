@@ -16,10 +16,11 @@ import com.project.back.constant.PatternType;
 public class SignInRequestDto 
 {
     @NotBlank
-    @Pattern(regexp=PatternType.patternType1)
     private String password;
     @NotBlank
-    @Pattern(regexp=PatternType.patternType2)
     private String userEmailId;
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */
+
+//@Pattern(regexp=PatternType.patternType1)
+//@Pattern(regexp=PatternType.patternType2)

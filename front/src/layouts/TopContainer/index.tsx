@@ -9,7 +9,7 @@ import { GetMyInfoResponseDto, GetUserInfoResponseDto } from 'src/apis/user/dto/
 
 import { getMyInfoRequest, getSignInUserRequest } from 'src/apis/user';
 
-import { CEO_PAGE_SITE_ABSOLUTE_PATH, INQUIRY_BOARD_LIST_ABSOLUTE_PATH, INTRODUCTION_COMPANY_ABSOLUTE_PATH, INTRODUCTION_POLICY_ABSOLUTE_PATH, INTRODUCTION_PROVISION_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MY_PAGE_SITE_ABSOLUTE_PATH, NOTICE_BOARD_LIST_ABSOLUTE_PATH, RESTAURANT_LIST_ABSOLUTE_PATH, SIGN_IN_ABSOLUTE_PATH} from 'src/constant';
+import { ADMIN_PAGE_ABSOLUTE_PATH, ADMIN_PAGE_SITE_ABSOLUTE_PATH, ADMIN_SIGN_IN_ABSOLUTE_PATH, CEO_PAGE_SITE_ABSOLUTE_PATH, INQUIRY_BOARD_LIST_ABSOLUTE_PATH, INTRODUCTION_COMPANY_ABSOLUTE_PATH, INTRODUCTION_POLICY_ABSOLUTE_PATH, INTRODUCTION_PROVISION_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MY_PAGE_SITE_ABSOLUTE_PATH, NOTICE_BOARD_LIST_ABSOLUTE_PATH, RESTAURANT_LIST_ABSOLUTE_PATH, SIGN_IN_ABSOLUTE_PATH} from 'src/constant';
 
 import './style.css';
 
@@ -77,7 +77,7 @@ function TopBar()
     
     const onSignInClickHandler = () => navigation(SIGN_IN_ABSOLUTE_PATH);
     const onMyPageClickHandler = () => navigation(MY_PAGE_SITE_ABSOLUTE_PATH);
-    const onAdminPageClickHandler = () => navigation(NOTICE_BOARD_LIST_ABSOLUTE_PATH);
+    const onAdminPageClickHandler = () => navigation(ADMIN_PAGE_SITE_ABSOLUTE_PATH);
     const onCeoPageClickHandler = () => navigation(CEO_PAGE_SITE_ABSOLUTE_PATH);
     //  effect  //
     useEffect(() => 
@@ -144,6 +144,7 @@ function BottomBar()
     const onProvisionClickHandler = () => navigation(INTRODUCTION_PROVISION_ABSOLUTE_PATH);
     const onInquiryBoardlistClickHandler = () => navigation(INQUIRY_BOARD_LIST_ABSOLUTE_PATH);
     const onNoticeBoardlistClickHandler = () => navigation(NOTICE_BOARD_LIST_ABSOLUTE_PATH);
+    const onAdminSignInClickHandler = () => navigation(ADMIN_SIGN_IN_ABSOLUTE_PATH);
     
     // render // 
     return (
@@ -159,6 +160,8 @@ function BottomBar()
                 <div className='bottom-navigation' onClick={onInquiryBoardlistClickHandler}>도움말</div>
                 <div className="bottom-divider">{'\|'}</div>
                 <div className='bottom-navigation' onClick={onNoticeBoardlistClickHandler}>공지사항</div>
+                <div className="bottom-divider">{'\|'}</div>
+                <div className='bottom-navigation' onClick={onAdminSignInClickHandler}>RedZone</div>
             </div>
             <div className='bottom-detail-contents-box first'>
                 <div className='bottom-detail-content'>(주)FoodInsight</div>

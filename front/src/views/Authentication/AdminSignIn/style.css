@@ -1,0 +1,109 @@
+.authentication-contents 
+{
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 16px;
+}
+
+.authentication-sign-title 
+{
+    text-align: center;
+
+    margin-top: 80px;
+
+    font-family: 'KCC-Hanbit';
+    font-size: 25px;
+    font-weight: 400;
+    color: rgba(50, 50, 50, 1);
+}
+
+.authentication-sign-container 
+{
+    width: 100%;
+    max-width: 400px;
+    
+    padding: 20px;
+
+    border-top: 1px solid rgba(238, 238, 238, 1);
+}
+
+.authentication-contents-box 
+{
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.authentication-input-container 
+{
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.authentication-button-container 
+{
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.find-container 
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 15px; 
+
+    border: 1px solid rgba(238, 238, 238, 1);
+    border-radius: 10px;
+}
+
+.find-email 
+{
+    cursor: pointer;
+}
+
+.reset-password 
+{
+    cursor: pointer;
+}
+
+.user-sign-up 
+{
+    cursor: pointer;
+}
+
+.find-divider 
+{
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(238, 238, 238, 1);
+}
+
+.authentication-sns-container 
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 16px;
+    margin: 20px 0px;
+}
+/* 분석 완료 */

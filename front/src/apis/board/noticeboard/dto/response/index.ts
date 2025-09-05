@@ -23,6 +23,8 @@ export interface GetNoticeBoardResponseDto extends ResponseDto
   noticeWriteDatetime: string;
   noticeContents: string;
   viewCount: number;
+  noticeFile: string;
+  noticeFileName: string;
 }
 /*분석 완료*/
 

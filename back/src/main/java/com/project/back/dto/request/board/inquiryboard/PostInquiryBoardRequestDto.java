@@ -17,5 +17,7 @@ public class PostInquiryBoardRequestDto
     private Boolean inquiryPublic;
     @NotBlank
     private String inquiryContents;
+    private String inquiryFile;
+    private String inquiryFileName;
 }
 /*분석 완료*/

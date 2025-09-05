@@ -47,6 +47,7 @@ export default function FindEmailInput()
         const {userEmailId} = result as FindEmailResponseDto;
         setUserEmailId(userEmailId);
     };
+    {/* 3차 프로젝트 분석완료 */}
     
     // event handler // 
     const onUserNameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -62,6 +63,7 @@ export default function FindEmailInput()
         setUserTelNumberButtonStatus(value !== '');
     };
 
+    {/* 3차 프로젝트 분석시작 */}
     const onFindEmailButtonClickHandler = () => 
     {
         if (!userName || !userTelNumber) 
@@ -77,6 +79,7 @@ export default function FindEmailInput()
         }
         findEmailRequest(requestBody).then(findEmailResponse);
     };
+    {/* 3차 프로젝트 분석완료 */}
     
     const onSignInClickHandler = () => navigation(SIGN_IN_ABSOLUTE_PATH)
     const onPasswordResetInputClickHandler = () => navigation(PASSWORD_RESET_INPUT_ABSOLUTE_PATH)
@@ -90,9 +93,11 @@ export default function FindEmailInput()
                     <InputBox type="text" value={userName} placeholder="이름을 입력해주세요" onChangeHandler={onUserNameChangeHandler} />
                     <InputBox type="text" value={userTelNumber} placeholder="전화번호를 입력해주세요" onChangeHandler={onUserTelNumberChangeHandler} buttonStatus={userTelNumberButtonStatus} />
                 </div>
+                {/* 3차 프로젝트 분석시작 */}
                 <div className='find-email-button'>
                     <div className={findEmailButtonClass} onClick={onFindEmailButtonClickHandler}>이메일 찾기</div> 
                 </div>
+                {/* 3차 프로젝트 분석완료 */}
                 {userEmailId &&
                     <div>
                         <div className='return-email-id' >* {userEmailId}</div>

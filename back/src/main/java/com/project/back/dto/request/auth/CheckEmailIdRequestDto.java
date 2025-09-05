@@ -19,4 +19,4 @@ public class CheckEmailIdRequestDto
     @Pattern(regexp=PatternType.patternType2)
     private String userEmailId;
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */

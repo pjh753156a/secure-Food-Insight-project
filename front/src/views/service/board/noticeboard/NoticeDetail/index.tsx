@@ -22,6 +22,8 @@ export default function NoticeDetail()
     const [viewCount, setViewCount] = useState<number>(0);
     const { loginUserEmailId, loginUserRole } = useUserStore();
     const [noticeTitle, setNoticeTitle] = useState<string>('');
+    const [noticeFile, setNoticeFile] = useState<string>('');
+    const [noticeFileName, setNoticeFileName] = useState<string>('');
     const [noticeWriterId, setNoticeWriterId] = useState<string>('');
     const [noticeContents, setNoticeContents] = useState<string>('');
     const [noticeWriteDatetime, setNoticeWriteDatetime] = useState<string>('');
@@ -51,7 +53,7 @@ export default function NoticeDetail()
             return;
         }
 
-        if (!cookies.accessToken || !noticeNumber) return;
+        if (!noticeNumber) return;
         getNoticeBoardRequest(noticeNumber, cookies.accessToken).then(getNoticeBoardResponse);
     };
 
@@ -76,13 +78,15 @@ export default function NoticeDetail()
             return;
         }
 
-        const { noticeTitle, noticeWriterId, noticeWriterNickname, noticeWriteDatetime, noticeContents, viewCount } = result as GetNoticeBoardResponseDto;
+        const { noticeTitle, noticeWriterId, noticeWriterNickname, noticeWriteDatetime, noticeContents, viewCount, noticeFile, noticeFileName } = result as GetNoticeBoardResponseDto;
         setNoticeTitle(noticeTitle);
         setNoticeWriterId(noticeWriterId);
         setNoticeWriterNickname(noticeWriterNickname);
         setNoticeWriteDatetime(noticeWriteDatetime);
         setNoticeContents(noticeContents);
         setViewCount(viewCount);
+        setNoticeFile(noticeFile);
+        setNoticeFileName(noticeFileName);
     };
 
     const deleteNoticeBoardResponse = (result: ResponseDto | null) => 
@@ -141,6 +145,11 @@ export default function NoticeDetail()
                         <div className='notice-detail-info'>조회수 {viewCount}</div>
                     </div>
                 </div>
+                {noticeFileName && (
+                <a href={`http://localhost:9999/download/board/notice?file=${encodeURIComponent(noticeFileName)}`} download>
+                    {noticeFileName}
+                </a>
+                )}
                 <div className="notice-detail-contents-box">{noticeContents}</div>
             </div>
             <div className='notice-detail-bottom-box'>

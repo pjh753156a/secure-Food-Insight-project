@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.back.service.AuthService;
 import com.project.back.dto.response.ResponseDto;
 import com.project.back.dto.response.auth.SignInResponseDto;
+import com.project.back.dto.response.auth.AdminSignInResponseDto;
 import com.project.back.dto.response.auth.FindEmailResponseDto;
 import com.project.back.dto.request.auth.SignInRequestDto;
 import com.project.back.dto.request.auth.SignUpRequestDto;
@@ -21,6 +22,7 @@ import com.project.back.dto.request.auth.PasswordResetRequestDto;
 import com.project.back.dto.request.auth.CheckNicknameRequestDto;
 import com.project.back.dto.request.auth.TelNumberAuthRequestDto;
 import com.project.back.dto.request.auth.CheckTelNumberAuthRequestDto;
+import com.project.back.dto.request.auth.AdminSignInRequestDto;
 import com.project.back.dto.request.auth.CheckBusinessRegistrationRequestDto;
 
 import jakarta.validation.Valid;
@@ -41,6 +43,14 @@ public class AuthController
         return response;
     }
 
+    @PostMapping("/admin-sign-in")
+    public ResponseEntity<? super AdminSignInResponseDto> AdminSignIn(
+            @RequestBody @Valid AdminSignInRequestDto requestBody)
+    {
+        ResponseEntity<? super AdminSignInResponseDto> response = authService.AdminSignIn(requestBody);
+        return response;
+    }
+    
     @PostMapping("/email-check")
     public ResponseEntity<ResponseDto> emailIdCheck(
             @RequestBody @Valid CheckEmailIdRequestDto requestBody) 
@@ -56,6 +66,7 @@ public class AuthController
         ResponseEntity<ResponseDto> response = authService.nicknameCheck(requestBody);
         return response;
     }
+    /* 3차 프로젝트 분석완료 */
 
     @PostMapping("/tel-number-auth")
     public ResponseEntity<ResponseDto> telNumberAuth(
@@ -89,6 +100,7 @@ public class AuthController
         return response;
     }
 
+    /* 3차 프로젝트 분석시작 */
     @PostMapping("/find-email")
     public ResponseEntity<? super FindEmailResponseDto> findEmail(
             @RequestBody @Valid FindEmailRequestDto requestBody) 
@@ -96,6 +108,7 @@ public class AuthController
         ResponseEntity<? super FindEmailResponseDto> response = authService.findEmail(requestBody);
         return response;
     }
+    /* 3차 프로젝트 분석완료 */
 
     @PostMapping("/password-reset")
     public ResponseEntity<ResponseDto> passwordReset(

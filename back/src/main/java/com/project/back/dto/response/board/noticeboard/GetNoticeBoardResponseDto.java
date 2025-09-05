@@ -21,6 +21,8 @@ public class GetNoticeBoardResponseDto extends ResponseDto
     private String noticeContents;
     private String noticeWriteDatetime;
     private String noticeWriterNickname;
+    private String noticeFile;
+    private String noticeFileName;
     
     private GetNoticeBoardResponseDto(NoticeBoardEntity noticeBoardEntity, String noticeWriterNickname) throws Exception 
     {
@@ -36,6 +38,9 @@ public class GetNoticeBoardResponseDto extends ResponseDto
         this.noticeWriteDatetime = writeDate;
 
         this.noticeContents = noticeBoardEntity.getNoticeContents();
+
+        this.noticeFile = noticeBoardEntity.getNoticeFile();
+        this.noticeFileName = noticeBoardEntity.getNoticeFileName();
     }
     
     public static ResponseEntity<GetNoticeBoardResponseDto> success(NoticeBoardEntity noticeBoardEntity, String nickname) throws Exception 
