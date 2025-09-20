@@ -46,6 +46,7 @@ public class UserEntity
         this.userTelNumber = dto.getUserTelNumber();
         this.businessRegistrationNumber = dto.getBusinessRegistrationNumber();
     }
+    /* 3차 프로젝트 분석완료 */
 
     public void update(PatchUserInfoRequestDto dto) 
     {

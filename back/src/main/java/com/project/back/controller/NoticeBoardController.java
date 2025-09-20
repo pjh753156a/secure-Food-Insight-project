@@ -39,6 +39,7 @@ public class NoticeBoardController
         ResponseEntity<ResponseDto> response = noticeBoardService.postBoard(requestBody, userEmailId);
         return response;
     }
+    /* 3차 프로젝트 분석완료 */
 
     @GetMapping("/list")
     public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeBoardList() 
@@ -65,6 +66,7 @@ public class NoticeBoardController
         return response;
     }
 
+    /* 3차 프로젝트 분석시작 */
     @PatchMapping("/update/{noticeNumber}")
     public ResponseEntity<ResponseDto> patchNoticeBoard(
     @RequestBody @Valid PatchNoticeBoardRequestDto requestBody,
@@ -75,6 +77,7 @@ public class NoticeBoardController
         ResponseEntity<ResponseDto> response = noticeBoardService.patchNoticeBoard(requestBody, noticeNumber, userEmailId);
         return response;
     }
+    /* 3차 프로젝트 분석완료 */
     
     @PatchMapping("/{noticeNumber}/increase-view-count")
     public ResponseEntity<ResponseDto> increaseViewCount(
@@ -85,6 +88,7 @@ public class NoticeBoardController
         return response;
     }
 
+    /* 3차 프로젝트 분석시작 */
     @DeleteMapping("/{noticeNumber}")
     public ResponseEntity<ResponseDto> deleteNoticeBoard(
         @PathVariable("noticeNumber") int noticeNumber,
@@ -95,4 +99,5 @@ public class NoticeBoardController
         return response;
     }
 }
+/* 3차 프로젝트 분석완료 */
 /*분석 완료*/

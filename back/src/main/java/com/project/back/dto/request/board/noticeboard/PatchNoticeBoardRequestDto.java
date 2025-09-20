@@ -17,4 +17,4 @@ public class PatchNoticeBoardRequestDto
     private String noticeFile;
     private String noticeFileName;
 }
-/*분석 완료*/
+/* 3차 프로젝트 분석완료 */

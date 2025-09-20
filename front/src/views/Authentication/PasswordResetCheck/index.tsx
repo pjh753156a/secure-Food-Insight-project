@@ -11,6 +11,7 @@ import { newPasswordRequest } from 'src/apis/auth';
 import { SIGN_IN_ABSOLUTE_PATH, passwordPatternType } from 'src/constant';
 
 import './style.css';
+import { useAuthStore } from 'src/stores';
 
 // component: 비밀번호 재설정 // 
 export default function PasswordResetCheck() 
@@ -23,6 +24,7 @@ export default function PasswordResetCheck()
   const [isEqualPassword, setEqualPassword] = useState<boolean>(false);
   const [isPasswordPattern, setPasswordPattern] = useState<boolean>(false);
   const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>('');
+  const { tempAccessToken }  = useAuthStore();
 
   const isResetPasswordCheckActive = isPasswordPattern && isEqualPassword;
   const passwordResetCheckButtonClass = `${isResetPasswordCheckActive ? 'primary' : 'disable'}-button full-width`;
@@ -30,6 +32,7 @@ export default function PasswordResetCheck()
   // function //
   const navigation = useNavigate();
 
+  /* 3차 프로젝트 분석시작 */
   const passwordResetCheckResponse = (result: ResponseDto | null) => 
   {
 
@@ -45,8 +48,10 @@ export default function PasswordResetCheck()
       alert(message);
       return;
     }
+    alert("비밀번호가 성공적으로 변경되었습니다")
     navigation(SIGN_IN_ABSOLUTE_PATH);
   };
+  /* 3차 프로젝트 분석완료 */
 
   // event handler //
   const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -60,7 +65,7 @@ export default function PasswordResetCheck()
 
     const passwordMessage = 
       isPasswordPattern ? '' :
-      value ? '4글자 이상 입력해주세요.' : '';
+      value ? '8글자 이상 영문+숫자+특수문자로 입력해 주세요.' : '';
     setPasswordMessage(passwordMessage);
 
     const isEqualPassword = passwordCheck === value;
@@ -86,22 +91,24 @@ export default function PasswordResetCheck()
     setPasswordCheckMessage(passwordCheckMessage);
   };
   
+  /* 3차 프로젝트 분석시작 */
   const onPasswordResetCheckButtonClickHandler = () => 
   {
-    if(!isResetPasswordCheckActive || !userEmailId) return;
+    console.log(tempAccessToken);
+    if(!isResetPasswordCheckActive || !tempAccessToken) return;
     if(!password || !passwordCheck) 
     {
       alert('모든 내용을 입력해주세요.');
       return;
     }
-    alert('비밀번호가 성공적으로 변경되었습니다. \n새로운 비밀번호는 ' + password + ' 입니다.');
 
     const requestBody: NewPasswordRequestDto = 
     {
       password: password
     }
-    newPasswordRequest(userEmailId, requestBody).then(passwordResetCheckResponse);
+    newPasswordRequest(requestBody, tempAccessToken).then(passwordResetCheckResponse);
   };
+  /* 3차 프로젝트 분석완료 */
   
   // render //
   return (
@@ -110,8 +117,11 @@ export default function PasswordResetCheck()
         <div className='reset-password-title'>비밀번호 재설정</div>
         <div className='reset-password-box'>
           <div className='reset-password-input-container'>
-            <InputBox type="text" value={password} placeholder="새 비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} message={passwordMessage} error />
-            <InputBox type="text" value={passwordCheck} placeholder="새 비밀번호를 입력해주세요" onChangeHandler={onPasswordCheckChangeHandler} message={passwordCheckMessage} error />
+            {/* 3차 프로젝트 분석시작 */}
+            <InputBox type="password" value={password} placeholder="새 비밀번호를 입력해주세요"
+            onChangeHandler={onPasswordChangeHandler} message={passwordMessage} error />
+            <InputBox type="password" value={passwordCheck} placeholder="새 비밀번호를 입력해주세요" 
+            onChangeHandler={onPasswordCheckChangeHandler} message={passwordCheckMessage} error />
           </div>
           <div className={passwordResetCheckButtonClass} onClick={onPasswordResetCheckButtonClickHandler}>재설정</div>
         </div>
@@ -119,4 +129,5 @@ export default function PasswordResetCheck()
     </div>
   )
 }
+{/* 3차 프로젝트 분석완료 */}
 {/* 분석 완료 */}

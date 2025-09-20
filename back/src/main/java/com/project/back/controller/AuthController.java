@@ -1,6 +1,7 @@
 package com.project.back.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,9 @@ import com.project.back.dto.request.auth.CheckTelNumberAuthRequestDto;
 import com.project.back.dto.request.auth.AdminSignInRequestDto;
 import com.project.back.dto.request.auth.CheckBusinessRegistrationRequestDto;
 
+import com.project.back.dto.response.auth.PasswordResetResponseDto;
+
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -37,9 +41,10 @@ public class AuthController
 
     @PostMapping("/sign-in")
     public ResponseEntity<? super SignInResponseDto> signIn(
-            @RequestBody @Valid SignInRequestDto requestBody) 
+            @RequestBody @Valid SignInRequestDto requestBody,
+            HttpServletResponse res) 
     {
-        ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
+        ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody, res );
         return response;
     }
 
@@ -66,7 +71,6 @@ public class AuthController
         ResponseEntity<ResponseDto> response = authService.nicknameCheck(requestBody);
         return response;
     }
-    /* 3차 프로젝트 분석완료 */
 
     @PostMapping("/tel-number-auth")
     public ResponseEntity<ResponseDto> telNumberAuth(
@@ -83,6 +87,7 @@ public class AuthController
         ResponseEntity<ResponseDto> response = authService.telNumberAuthCheck(requestBody);
         return response;
     }
+    /* 3차 프로젝트 분석완료 */
 
     @PostMapping("/business-registration-check")
     public ResponseEntity<ResponseDto> businessRegistrationCheck(
@@ -92,6 +97,7 @@ public class AuthController
         return response;
     }
 
+    /* 3차 프로젝트 분석시작 */
     @PostMapping("/sign-up")
     public ResponseEntity<ResponseDto> signUp(
             @RequestBody @Valid SignUpRequestDto requestBody) 
@@ -99,8 +105,7 @@ public class AuthController
         ResponseEntity<ResponseDto> response = authService.signUp(requestBody);
         return response;
     }
-
-    /* 3차 프로젝트 분석시작 */
+    
     @PostMapping("/find-email")
     public ResponseEntity<? super FindEmailResponseDto> findEmail(
             @RequestBody @Valid FindEmailRequestDto requestBody) 
@@ -108,23 +113,22 @@ public class AuthController
         ResponseEntity<? super FindEmailResponseDto> response = authService.findEmail(requestBody);
         return response;
     }
-    /* 3차 프로젝트 분석완료 */
 
     @PostMapping("/password-reset")
-    public ResponseEntity<ResponseDto> passwordReset(
+    public ResponseEntity<? super PasswordResetResponseDto> passwordReset(
             @RequestBody @Valid PasswordResetRequestDto requestBody) 
     {
-        ResponseEntity<ResponseDto> response = authService.passwordReset(requestBody);
+        ResponseEntity<? super PasswordResetResponseDto> response = authService.passwordReset(requestBody);
         return response;
     }
 
-    @PutMapping("/password-update/{userEmailId}")
+    @PutMapping("/password-update")
     public ResponseEntity<ResponseDto> newPassword(
             @RequestBody @Valid NewPasswordRequestDto requestBody,
-            @PathVariable("userEmailId") String userEmailId) 
+            @AuthenticationPrincipal String userEmailId) 
     {
         ResponseEntity<ResponseDto> response = authService.newPassword(requestBody, userEmailId);
         return response;
     }
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */

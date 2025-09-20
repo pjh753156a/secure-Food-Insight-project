@@ -46,6 +46,7 @@ public class RestaurantController
         ResponseEntity<? super GetRestaurantListResponseDto> response = restaurantService.getRestaurantList(word);
         return response;
     }
+    /* 3차 프로젝트 분석 완료 */
 
     @GetMapping("/{restaurantId}")
     public ResponseEntity<? super GetRestaurantInfoResponseDto> getRestaurantInfo(
@@ -146,6 +147,7 @@ public class RestaurantController
         return response;
     }
     
+    /* 3차 프로젝트 분석 시작 */
     @PostMapping("/review/write/{restaurantId}")
     public ResponseEntity<ResponseDto> postReview(
         @RequestBody @Valid PostReviewRequestDto requestBody, 
@@ -156,6 +158,7 @@ public class RestaurantController
         ResponseEntity<ResponseDto> response = restaurantService.postReview(requestBody, restaurantId, userEmailId);
         return response;
     }
+    /* 3차 프로젝트 분석 완료 */
 
     @PatchMapping("/review/update/{reviewNumber}")
     public ResponseEntity<ResponseDto> patchReview(

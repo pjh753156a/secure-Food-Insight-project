@@ -7,6 +7,7 @@ export interface PostInquiryBoardRequestDto
   inquiryFile: string;
   inquiryFileName: string;
 }
+{/* 3차 프로젝트 분석완료 */}
 
 // description: 문의 게시물 답글 작성 Request Body DTO
 export interface PostCommentRequestDto 
@@ -14,6 +15,7 @@ export interface PostCommentRequestDto
   inquiryComment: string;
 }
 
+{/* 3차 프로젝트 분석시작 */}
 // description: 문의 게시물 수정 Request Body DTO
 export interface PatchInquiryBoardRequestDto 
 {
@@ -22,4 +24,4 @@ export interface PatchInquiryBoardRequestDto
   inquiryFile: string;
   inquiryFileName: string;
 }
-{/*분석 완료*/}
+{/* 3차 프로젝트 분석완료 */}

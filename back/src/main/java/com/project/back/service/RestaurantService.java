@@ -22,7 +22,9 @@ import com.project.back.dto.response.restaurant.favorite.GetFavoriteRestaurantLi
 public interface RestaurantService 
 {
     ResponseEntity<ResponseDto> postRestaurantInfo(PostRestaurantInfoRequestDto dto, String userEmailId);
+    /* 3차 프로젝트 분석 시작 */
     ResponseEntity<? super GetRestaurantListResponseDto> getRestaurantList(String searchWord);
+    /* 3차 프로젝트 분석 완료 */
     ResponseEntity<? super GetRestaurantInfoResponseDto> getRestaurantInfo(int restaurantId);
 
     ResponseEntity<ResponseDto> patchRestaurantInfo(PatchRestaurantInfoRequestDto dto, int restaurantId, String userEmailId);
@@ -37,7 +39,9 @@ public interface RestaurantService
 
     ResponseEntity<ResponseDto> deleteReservation(String userEmailId, int restaurantId);
 
+    /* 3차 프로젝트 분석 시작 */
     ResponseEntity<ResponseDto> postReview (PostReviewRequestDto dto, int restaurantId, String userEmailId);
+    /* 3차 프로젝트 분석 완료 */
 
     ResponseEntity<? super GetReviewListResponseDto> getMyReviewList (String userEmailId);
     ResponseEntity<? super GetReviewResponseDto> getReview (int reviewNumber);

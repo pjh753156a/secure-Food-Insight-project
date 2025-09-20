@@ -15,4 +15,4 @@ export interface PatchNoticeBoardRequestDto
   noticeFile: string;
   noticeFileName: string;
 }
-/*분석 완료*/
+{/* 3차 프로젝트 분석완료 */}

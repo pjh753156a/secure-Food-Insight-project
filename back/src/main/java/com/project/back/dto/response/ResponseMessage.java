@@ -8,7 +8,8 @@ public interface ResponseMessage
     String DATABASE_ERROR = "Database Error.";
     String NO_EXIST_REVIEW = "No Exist Review.";
     String WRITTEN_COMMENT = "Written Comment.";
-    String VALIDATION_FAILED = "Validation Failed."; 
+    String PASSWORD_DISCORD = "Password Discord.";
+    String VALIDATION_FAILED = "Validation Failed.";
     String DUPLICATED_EMAIL_ID = "Duplicated EmailId."; 
     String DUPLICATED_NICKNAME = "Duplicated Nickname."; 
     String NO_EXIST_RESTAURANT = "No Exist Restaurant."; 

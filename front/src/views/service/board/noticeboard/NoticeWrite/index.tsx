@@ -25,6 +25,7 @@ export default function NoticeWrite()
   const [noticeFile, setNoticeFile] = useState<string>("");
   const [noticeFileName, setNoticeFileName] = useState<string>("");
 
+  /* 3차 프로젝트 분석시작 */
   //  function  //
   const navigation = useNavigate();
 
@@ -43,6 +44,7 @@ export default function NoticeWrite()
     }
     navigation(NOTICE_BOARD_LIST_ABSOLUTE_PATH);
   };
+  /* 3차 프로젝트 분석완료 */
   
   // event handler //
   const onNoticeTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -82,6 +84,7 @@ export default function NoticeWrite()
       }
   }
 
+  {/* 3차 프로젝트 분석시작 */}
   const onPostButtonClickHandler = async () => 
   {
     if (!noticeTitle.trim() || !noticeContents.trim()) return;
@@ -91,6 +94,7 @@ export default function NoticeWrite()
     const requestBody: PostNoticeBoardRequestDto = { noticeTitle, noticeContents, noticeFile, noticeFileName };
     postNoticeBoardRequest(requestBody, cookies.accessToken).then(postNoticeBoardResponse);
   };
+  {/* 3차 프로젝트 분석완료 */}
   
   // effect //
   useEffect(() => 
@@ -110,10 +114,12 @@ export default function NoticeWrite()
           <input className='notice-write-title-input' placeholder='제목을 입력해주세요.' value={noticeTitle} onChange={onNoticeTitleChangeHandler} />
         </div>
         <input type="file" onChange={onFileChangeHandler} className="notice-file-input"/>
+        {/* 3차 프로젝트 분석시작 */}
         <div className='notice-write-contents-box'>
           <textarea ref={contentsRef} className='notice-write-contents-textarea' placeholder='내용을 입력해주세요.' maxLength={1000} value={noticeContents} onChange={onNoticeContentsChangeHandler} />
           <div className='primary-button' onClick={onPostButtonClickHandler}>작성</div>
         </div>
+        {/* 3차 프로젝트 분석완료 */}
       </div>
     </div>
   );

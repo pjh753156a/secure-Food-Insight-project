@@ -12,9 +12,16 @@ export interface PatchUserInfoRequestDto
     password: string;
 }
 
+{/*3차 프로젝트 분석 시작*/}
 // description: 회원 탈퇴 Request Body DTO
 export interface DeleteUserRequestDto 
 {
     password: string;
 }
-{/*분석 완료*/}
+{/*3차 프로젝트 분석 완료*/}
+
+// description: 2차인증 Request Body DTO
+export interface MFARequestDto
+{
+    password: string;
+}

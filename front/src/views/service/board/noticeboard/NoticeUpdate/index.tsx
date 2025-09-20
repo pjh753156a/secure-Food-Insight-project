@@ -57,6 +57,7 @@ export default function NoticeUpdate()
     setNoticeContents(noticeContents);
   };
 
+  {/* 3차 프로젝트 분석시작 */}
   const patchNoticeBoardResponse = (result: ResponseDto | null) => 
   {
     const message =
@@ -75,6 +76,7 @@ export default function NoticeUpdate()
     if (!noticeNumber) return;
     navigation(NOTICE_DETAILS_ABSOLUTE_PATH(noticeNumber));
   };
+  {/* 3차 프로젝트 분석완료 */}
 
   // event handler //
   const onNoticeTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -114,6 +116,7 @@ export default function NoticeUpdate()
       }
   }
 
+  {/* 3차 프로젝트 분석시작 */}
   const onNoticeUpdateButtonClickHandler = () => 
   {
     if (!cookies.accessToken || !noticeNumber) return;
@@ -123,6 +126,7 @@ export default function NoticeUpdate()
     const requestBody: PatchNoticeBoardRequestDto = { noticeTitle, noticeContents, noticeFile, noticeFileName };
     patchNoticeBoardRequest(noticeNumber, requestBody, cookies.accessToken).then(patchNoticeBoardResponse);
   };
+  {/* 3차 프로젝트 분석완료 */}
   
   // effect //
   let effectFlag = false;
@@ -152,10 +156,12 @@ export default function NoticeUpdate()
         <input type="file" onChange={onFileChangeHandler} className="notice-file-input"/>
         <div className='notice-update-contents-box'>
           <textarea ref={contentsRef} className='notice-update-contents-textarea' placeholder='내용을 입력해주세요.' maxLength={1000} value={noticeContents} onChange={onNoticeContentsChangeHandler} />
+          {/* 3차 프로젝트 분석시작 */}
           <div className='primary-button' onClick={onNoticeUpdateButtonClickHandler}>수정</div>
         </div>
       </div>
     </div>
   );
 };
+{/* 3차 프로젝트 분석완료 */}
 {/*분석 완료*/}

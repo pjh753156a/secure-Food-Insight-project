@@ -2,7 +2,8 @@ import { AxiosResponse } from 'axios';
 import ResponseDto from './response.dto';
 
 // function: Request 처리 함수 
-export const requestHandler = <T>(response: AxiosResponse<T, any>) => {
+export const requestHandler = <T>(response: AxiosResponse<T, any>) => 
+{
     const responseBody = response.data;
     return responseBody;
 };
@@ -14,8 +15,7 @@ export const requestErrorHandler = (error: any) =>
     if (!responseBody) return null;
     return responseBody as ResponseDto;
 };
-{/* 3차 프로젝트 분석완료 */}
 
 // function: Authorization Bearer 헤더 
 export const bearerAuthorization = (accessToken: string) => ({ headers: { 'Authorization': `Bearer ${accessToken}` } });
-/* /분석 완료/ */
+// 3차 프로젝트 분석 완료

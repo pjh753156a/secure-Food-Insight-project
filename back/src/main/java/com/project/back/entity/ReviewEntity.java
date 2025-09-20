@@ -34,7 +34,7 @@ public class ReviewEntity
     private String reviewWriterId;
     private String reviewWriterNickname;
     private String reviewRestaurantName;
-
+    
     public ReviewEntity(PostReviewRequestDto dto, String userEmailId, int restaurantId, UserEntity userEntity, RestaurantEntity restaurantEntity) 
     {
         String dateNow = ChangeDateFormatUtil.nowYYYYMMDD();
@@ -49,6 +49,7 @@ public class ReviewEntity
         this.reviewWriterNickname = userEntity.getNickname();
         this.reviewRestaurantName = restaurantEntity.getRestaurantName();
     }
+    /* 3차 프로젝트 분석 완료 */
 
     public void updateReview(PatchReviewRequestDto dto) 
     {

@@ -8,7 +8,7 @@ export const SIGN_UP_PATH = 'sign-up';
 export const ADMIN_SIGN_IN_PATH = 'admin-sign-in';
 export const FIND_EMAIL_INPUT_PATH = 'find-email-input';
 export const PASSWORD_RESET_INPUT_PATH = 'password-reset-input';
-export const PASSWORD_RESET_CHECK_PATH = 'password-reset-check/:userEmailId';
+export const PASSWORD_RESET_CHECK = 'password-reset-check';
 
 export const RESTAURANT_PATH = '/restaurant';
 export const RESTAURANT_INFO_PATH = 'info/:restaurantId';
@@ -71,7 +71,7 @@ export const ADMIN_SIGN_IN_ABSOLUTE_PATH = `${AUTH_PATH}/${ADMIN_SIGN_IN_PATH}`;
 export const SIGN_UP_ABSOLUTE_PATH = `${AUTH_PATH}/${SIGN_UP_PATH}`;
 export const FIND_EMAIL_INPUT_ABSOLUTE_PATH = `${AUTH_PATH}/${FIND_EMAIL_INPUT_PATH}`;
 export const PASSWORD_RESET_INPUT_ABSOLUTE_PATH = `${AUTH_PATH}/${PASSWORD_RESET_INPUT_PATH}`;
-export const PASSWORD_RESET_CHECK_ABSOLUTE_PATH = (userEmailId: string) => `${AUTH_PATH}/password-reset-check/${userEmailId}`;
+export const PASSWORD_RESET_CHECK_ABSOLUTE_PATH = `${AUTH_PATH}/${PASSWORD_RESET_CHECK}`;
 
 export const RESTAURANT_INFO_ABSOLUTE_PATH = (restaurantId: number | string) => `${RESTAURANT_PATH}/info/${restaurantId}`;
 export const RESTAURANT_INFO_WRITE_ABSOLUTE_PATH = `${RESTAURANT_PATH}/${RESTAURANT_INFO_WRITE_PATH}`;
@@ -137,7 +137,7 @@ export const EMAIL_CHECK_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/email-check`;
 export const NICKNAME_CHECK_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/nickname-check`;
 export const FIND_EMAIL_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/find-email`;
 export const PASSWORD_RESET_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/password-reset`;
-export const PASSWORD_UPDATE_REQUEST_URL = (userEmailId: string) => `${SERVER_AUTH_MODULE_URL}/password-update/${userEmailId}`;
+export const PASSWORD_UPDATE_REQUEST_URL =  `${SERVER_AUTH_MODULE_URL}/password-update`;
 export const PASSWORD_RECHECK_REQUEST_URL = `${SERVER_AUTH_MODULE_URL}/password-recheck`;
 export const BUSINESS_REGISTRATION_REQUEST_PATH = `${SERVER_AUTH_MODULE_URL}/business-registration-check`;
 
@@ -147,6 +147,7 @@ export const GET_SIGN_IN_USER_REQUEST_URL = `${SERVER_USER_MODULE_URL}/`;
 export const PATCH_INFO_UPDATE_REQUEST_URL = (userEmailId: string) => `${SERVER_USER_MODULE_URL}/info-update/${userEmailId}`;
 export const DELETE_INFO_DELETE_REQUEST_URL = (userEmailId: string) => `${SERVER_USER_MODULE_URL}/info-delete/${userEmailId}`;
 export const GET_MY_INFO_URL = `${SERVER_USER_MODULE_URL}/information`;
+export const GET_MFA_URL = `${SERVER_USER_MODULE_URL}/mfa`;
 
 // description: RESTAURANT 모듈 내의 기능 URL
 export const SERVER_RESTAURANT_MODULE_URL = `${SERVER_API_URL}/restaurant`;
@@ -202,8 +203,10 @@ export const GET_NOTICE_BOARD_LIST_URL = `${SERVER_NOTICE_BOARD_MODULE_URL}/list
 export const GET_NOTICE_BOARD_LIST_SEARCH_URL = `${GET_NOTICE_BOARD_LIST_URL}/search`;
 export const GET_NOTICE_BOARD_URL = (noticeNumber: number | string) => `${SERVER_NOTICE_BOARD_MODULE_URL}/${noticeNumber}`;
 export const NOTICE_BOARD_INCREASE_VIEW_COUNT_URL = (noticeNumber: number | string) => `${SERVER_NOTICE_BOARD_MODULE_URL}/${noticeNumber}/increase-view-count`;
+/* 3차 프로젝트 분석시작 */
 export const DELETE_NOTICE_BOARD_URL = (noticeNumber: number | string) => `${SERVER_NOTICE_BOARD_MODULE_URL}/${noticeNumber}`;
 export const PATCH_NOTICE_BOARD_URL = (noticeNumber: number | string) => `${SERVER_NOTICE_BOARD_MODULE_URL}/update/${noticeNumber}`;
+/* 3차 프로젝트 분석완료 */
 
 export const COUNT_PER_PAGE = 10;
 export const COUNT_PER_SECTION = 10;
@@ -214,6 +217,10 @@ export const ITEM_PER_PAGE2 = 5;
 export const emailIdPatternType = /^[a-zA-Z0-9]*@([-.]?[a-zA-Z0-9])*\.[a-zA-Z]{2,4}$/;
 {/* 3차 프로젝트 분석완료 */}
 //export const passwordPatternType = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$/;
-export const passwordPatternType = /^.{4,}$/;
+
+export const passwordPatternType = 
+/^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
+{/* 3차 프로젝트 분석시작 */}
 export const userTelNumberPatternType = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
-{/* 분석 완료 */}
+{/* 3차 프로젝트 분석완료 */}

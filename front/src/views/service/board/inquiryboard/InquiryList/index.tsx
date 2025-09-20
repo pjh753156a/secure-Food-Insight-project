@@ -33,6 +33,7 @@ function ListItem ({
   // function //
   const navigation = useNavigate();
   
+  {/* 3차 프로젝트 분석시작 */}
   // event handler //
   const onClickHandler = () => 
   {
@@ -47,6 +48,7 @@ function ListItem ({
   // render //
   return(
     <div className='inquiry-list-table-tr' onClick={onClickHandler}>
+      {/* 3차 프로젝트 분석완료 */}
       <div className='inquiry-list-table-reception-number'>{index + 1}</div>
       <div className='inquiry-list-table-status'>
           {status ? 
@@ -139,12 +141,14 @@ export default function InquiryList()
     setCurrentSection(!inquiryBoardList.length ? 0 : 1);
   };
   
+  {/* 3차 프로젝트 분석시작 */}
   // event handler //
   const onWriteButtonClickHandler = () => 
   {
     if ((loginUserRole !== 'ROLE_USER') && (loginUserRole !== 'ROLE_CEO')) return;
     navigation(INQUIRY_BOARD_WRITE_ABSOLUTE_PATH);
   };
+  {/* 3차 프로젝트 분석완료 */}
 
   const onToggleClickHandler = () => 
   {

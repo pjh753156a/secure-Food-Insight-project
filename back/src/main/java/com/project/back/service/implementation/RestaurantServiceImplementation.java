@@ -54,7 +54,12 @@ public class RestaurantServiceImplementation implements RestaurantService
     {
         try 
         {
-            List<RestaurantEntity> restaurantEntities = restaurantRepository.findByRestaurantNameContainingOrderByRestaurantIdDesc(searchWord);
+            String safeSearchWord = searchWord == null ? null
+            : searchWord
+                .replaceAll("(?is)<\\s*script.*?>.*?<\\s*/\\s*script\\s*>", "") // <script>…</script> 제거
+                .replaceAll("[<>]", ""); // <, > 제거
+
+            List<RestaurantEntity> restaurantEntities = restaurantRepository.findByRestaurantNameContainingOrderByRestaurantIdDesc(safeSearchWord);
 
             return GetRestaurantListResponseDto.success(restaurantEntities);
         } 
@@ -64,6 +69,7 @@ public class RestaurantServiceImplementation implements RestaurantService
             return ResponseDto.databaseError();
         }
     }
+    /* 3차프로젝트 분석완료 */
 
     @Override
     public ResponseEntity<? super GetRestaurantInfoResponseDto> getRestaurantInfo(int restaurantId) 
@@ -294,6 +300,7 @@ public class RestaurantServiceImplementation implements RestaurantService
         }
     }
     
+    /* 3차 프로젝트 분석 시작 */
     @Override
     public ResponseEntity<ResponseDto> postReview(PostReviewRequestDto dto, int restaurantId, String userEmailId) 
     {
@@ -302,8 +309,8 @@ public class RestaurantServiceImplementation implements RestaurantService
             boolean isExistUser = userRepository.existsByUserEmailId(userEmailId);
             if (!isExistUser) return ResponseDto.authorizationFailed();
 
-            //isExistUser = reviewRepository.existsByReviewWriterIdAndReviewRestaurantId(userEmailId,restaurantId);
-            //if(isExistUser) return ResponseDto.duplicatedEmailId();
+            isExistUser = reviewRepository.existsByReviewWriterIdAndReviewRestaurantId(userEmailId,restaurantId);
+            if(isExistUser) return ResponseDto.duplicatedEmailId();
 
             UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
 
@@ -322,6 +329,7 @@ public class RestaurantServiceImplementation implements RestaurantService
         }
         return ResponseDto.success();
     }
+    /* 3차 프로젝트 분석 완료 */
 
     @Override
     public ResponseEntity<ResponseDto> patchReview(PatchReviewRequestDto dto, int reviewNumber, String userEmailId) 

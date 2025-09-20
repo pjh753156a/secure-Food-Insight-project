@@ -16,26 +16,27 @@ import com.project.back.dto.request.auth.CheckBusinessRegistrationRequestDto;
 
 import com.project.back.dto.response.ResponseDto;
 import com.project.back.dto.response.auth.SignInResponseDto;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import com.project.back.dto.response.auth.AdminSignInResponseDto;
 import com.project.back.dto.response.auth.FindEmailResponseDto;
+import com.project.back.dto.response.auth.PasswordResetResponseDto;
 
 public interface AuthService 
 {
-  ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto);
+  ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto, HttpServletResponse res);
   ResponseEntity<? super AdminSignInResponseDto> AdminSignIn(AdminSignInRequestDto dto);
-  /* 3차 프로젝트 분석완료 */
   ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto);
-  /* 3차 프로젝트 분석시작 */
   ResponseEntity<ResponseDto> emailIdCheck(CheckEmailIdRequestDto dto);
   ResponseEntity<ResponseDto> nicknameCheck(CheckNicknameRequestDto dto);
-  /* 3차 프로젝트 분석완료 */
   ResponseEntity<ResponseDto> telNumberAuth(TelNumberAuthRequestDto dto);
   ResponseEntity<ResponseDto> telNumberAuthCheck(CheckTelNumberAuthRequestDto dto);
+  /* 3차 프로젝트 분석완료 */
   ResponseEntity<ResponseDto> businessRegistrationCheck(CheckBusinessRegistrationRequestDto dto);
   /* 3차 프로젝트 분석시작 */
   ResponseEntity<? super FindEmailResponseDto> findEmail(FindEmailRequestDto dto);
-  /* 3차 프로젝트 분석완료 */
-  ResponseEntity<ResponseDto> passwordReset(PasswordResetRequestDto dto);
+  ResponseEntity<? super PasswordResetResponseDto> passwordReset(PasswordResetRequestDto dto);
   ResponseEntity<ResponseDto> newPassword(NewPasswordRequestDto dto, String userEmailId);
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */

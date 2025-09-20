@@ -105,6 +105,7 @@ public class NoticeBoardServiceImplementation implements NoticeBoardService
         }
         return ResponseDto.success();
     }
+    /* 3차 프로젝트 분석완료 */
 
     @Override
     public ResponseEntity<? super GetNoticeBoardListResponseDto> getNoticeBoardList() 
@@ -160,6 +161,7 @@ public class NoticeBoardServiceImplementation implements NoticeBoardService
         }     
     }
 
+    /* 3차 프로젝트 분석시작 */
     @Override
     public ResponseEntity<ResponseDto> patchNoticeBoard(PatchNoticeBoardRequestDto dto, int noticeNumber, String userEmailId) 
     {
@@ -252,7 +254,7 @@ public class NoticeBoardServiceImplementation implements NoticeBoardService
         }
         return ResponseDto.success();
     }
-
+    
     @Override
     public ResponseEntity<ResponseDto> deleteNoticeBoard(int noticeNumber, String userEmailId) 
     {
@@ -289,6 +291,7 @@ public class NoticeBoardServiceImplementation implements NoticeBoardService
         }
         return ResponseDto.success();
     }
+    /* 3차 프로젝트 분석완료 */
     
     @Override
     public ResponseEntity<ResponseDto> increaseViewCount(int noticeNumber) 

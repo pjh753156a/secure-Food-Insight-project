@@ -16,6 +16,7 @@ import com.project.back.repository.ReservationRepository;
 import com.project.back.repository.FavoriteRestaurantRepository;
 
 import com.project.back.dto.request.user.DeleteUserRequestDto;
+import com.project.back.dto.request.user.MFARequestDto;
 import com.project.back.dto.request.user.PatchUserInfoRequestDto;
 
 import com.project.back.dto.response.ResponseDto;
@@ -79,6 +80,7 @@ public class UserServiceImplementation implements UserService
         return ResponseDto.success();
     }
 
+    /* 3차 프로젝트 분석시작 */
     @Override
     @Transactional
     public ResponseEntity<ResponseDto> deleteUser(DeleteUserRequestDto dto, String userEmailId) 
@@ -121,13 +123,39 @@ public class UserServiceImplementation implements UserService
         }
         return ResponseDto.success();
     }
+    /* 3차 프로젝트 분석완료 */
+
+
+    @Override
+    @Transactional
+    public ResponseEntity<ResponseDto> mfa(MFARequestDto dto, String userEmailId) 
+    {
+        try 
+        {
+            UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
+            if (userEntity == null) return ResponseDto.authenticationFailed();
+
+            String password = dto.getPassword();
+            String encodedPassword = userEntity.getPassword();
+
+            boolean isMatched = passwordEncoder.matches(password, encodedPassword);
+            if (!isMatched) return ResponseDto.noExistUser();
+        } 
+        catch(Exception exception) 
+        {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return ResponseDto.success();
+    }
     
+    // 3차 프로젝트 분석 시작
     @Override
     public ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userEmailId) 
     {
         UserEntity userEntity = null;
-
-        try {
+        try 
+        {
             userEntity = userRepository.findByUserEmailId(userEmailId);
             if(userEntity == null) return ResponseDto.authenticationFailed();
         } 
@@ -139,4 +167,6 @@ public class UserServiceImplementation implements UserService
         return GetMyInfoResponseDto.success(userEntity);
     }
 }
-/* /분석 완료/ */
+// 3차 프로젝트 분석 완료
+//boolean isMatched = userEntity.getUserRole().equals("ROLE_ADMIN");
+//if(!isMatched) return ResponseDto.authenticationFailed();

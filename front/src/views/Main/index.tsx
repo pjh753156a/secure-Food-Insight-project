@@ -41,6 +41,7 @@ function TopBar()
   const onLogoutClickHandler = () => 
   {
     removeCookie('accessToken', { path: '/' });
+    removeCookie('csrfToken', { path: '/' });
     setLoginUserEmailId('');
     setLoginUserRole('');
   };

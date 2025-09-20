@@ -13,7 +13,6 @@ public class ResponseDto
     public static Object favoriteRestaurantEntity;
     private String code;
     private String message;
-    /* 3차 프로젝트 분석완료 */
 
     public static ResponseEntity<ResponseDto> success() 
     {
@@ -25,6 +24,13 @@ public class ResponseDto
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_FOUND_USER,ResponseMessage.NOT_FOUND_USER);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
+    /* 3차 프로젝트 분석완료 */
+
+    public static ResponseEntity<ResponseDto> passwordDiscord() 
+    {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.PASSWORD_DISCORD,ResponseMessage.PASSWORD_DISCORD);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
     /* 3차 프로젝트 분석시작 */
@@ -47,11 +53,13 @@ public class ResponseDto
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
+    /* 3차 프로젝트 분석시작 */
     public static ResponseEntity<ResponseDto> writtenComment() 
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.WRITTEN_COMMENT ,ResponseMessage.WRITTEN_COMMENT);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
+    /* 3차 프로젝트 분석완료 */
 
     public static ResponseEntity<ResponseDto> validationFailed() 
     {
@@ -71,19 +79,19 @@ public class ResponseDto
         ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATED_NICKNAME,ResponseMessage.DUPLICATED_NICKNAME);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
-    /* 3차 프로젝트 분석완료 */
     
     public static ResponseEntity<ResponseDto> noExistRestaurant() 
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_RESTAURANT,ResponseMessage.NO_EXIST_RESTAURANT);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
-
+    
     public static ResponseEntity<ResponseDto> authorizationFailed() 
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.AUTHORIZATION_FAILED,ResponseMessage.AUTHORIZATION_FAILED);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
     }
+    /* 3차 프로젝트 분석완료 */
     
     public static ResponseEntity<ResponseDto> noExistReservation() 
     {
@@ -91,6 +99,7 @@ public class ResponseDto
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
     
+    /* 3차 프로젝트 분석시작 */
     public static ResponseEntity<ResponseDto> authenticationFailed() 
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.AUTHENTICATION_FAILED,ResponseMessage.AUTHENTICATION_FAILED);
@@ -102,6 +111,7 @@ public class ResponseDto
         ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_NOTICE_BOARD,ResponseMessage.NO_EXIST_NOTICE_BOARD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
+    /* 3차 프로젝트 분석완료 */
     
     public static ResponseEntity<ResponseDto> tokenCreationFailed() 
     {
@@ -109,11 +119,13 @@ public class ResponseDto
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 
+    /* 3차 프로젝트 분석시작 */
     public static ResponseEntity<ResponseDto> noExistInquiryBoard() 
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_INQUIRY_BOARD,ResponseMessage.NO_EXIST_INQUIRY_BOARD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
+    /* 3차 프로젝트 분석완료 */
 
     public static ResponseEntity<ResponseDto> authNumberSendFailed() 
     {
@@ -121,10 +133,11 @@ public class ResponseDto
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
         
+    /* 3차 프로젝트 분석시작 */
     public static ResponseEntity<ResponseDto> duplicatedBusinessRegistrationNumber() 
     {
         ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATED_BUSINESS_REGISTRATION_NUMBER,ResponseMessage.DUPLICATED_BUSINESS_REGISTRATION_NUMBER);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */

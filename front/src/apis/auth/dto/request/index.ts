@@ -11,7 +11,6 @@ export interface AdminSignInRequestDto
     userEmailId: string;
     password: string;
 }
-{/* 3차 프로젝트 분석완료 */}
 
 // description: 전화번호 인증 번호 전송 Request Body DTO
 export interface TelNumberAuthRequestDto 
@@ -26,7 +25,13 @@ export interface CheckTelNumberAuthRequestDto
     authNumber: string;
 }
 
-{/* 3차 프로젝트 분석시작 */}
+// description: 인증 번호 확인 Request Body DTO
+export interface CheckAuthNumberRequestDto 
+{
+    userTelNumber: string;
+    authNumber: string;
+}
+
 // description: 이메일 찾기 Request Body DTO
 export interface FindEmailRequestDto 
 {
@@ -45,7 +50,6 @@ export interface CheckNicknameDto
 {
     nickname: string;
 }
-{/* 3차 프로젝트 분석완료 */}
 
 // description: 비밀번호 재설정 링크 전송 Request Body DTO
 export interface PasswordResetRequestDto 
@@ -60,6 +64,7 @@ export interface NewPasswordRequestDto
     password: string;
     // linkCode: string;
 }
+{/* 3차 프로젝트 분석완료 */}
 
 // description: 사업자등록 번호 Request Body DTO
 export interface businessRegistrationNumberRequestDto 
@@ -67,6 +72,7 @@ export interface businessRegistrationNumberRequestDto
     businessRegistrationNumber: string;
 }
 
+/* 3차 프로젝트 분석시작 */
 // description: 회원가입 Request Body DTO
 export interface SignUpRequestDto 
 {
@@ -81,4 +87,4 @@ export interface SignUpRequestDto
     snsId: string | null;
     businessRegistrationNumber: string;
 }
-{/* 분석 완료 */}
+/* 3차 프로젝트 분석완료 */

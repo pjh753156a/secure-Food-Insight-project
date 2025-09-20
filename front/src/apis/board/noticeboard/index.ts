@@ -15,6 +15,7 @@ export const postNoticeBoardRequest = async (requestBody: PostNoticeBoardRequest
         .catch(requestErrorHandler);
     return result;
 };
+{/* 3차 프로젝트 분석완료 */}
 
 // function: 공지 게시물 목록 확인 API 함수 
 export const getNoticeBoardListRequest = async (accessToken: string) => 
@@ -44,6 +45,7 @@ export const getNoticeBoardRequest = async (noticeNumber: number | string, acces
     return result;
 };
 
+/* 3차 프로젝트 분석시작 */
 // function: 공지 게시물 수정 API 함수 
 export const patchNoticeBoardRequest = async (noticeNumber: number | string, requestBody: PatchNoticeBoardRequestDto, accessToken: string) => 
 {
@@ -52,6 +54,7 @@ export const patchNoticeBoardRequest = async (noticeNumber: number | string, req
         .catch(requestErrorHandler)
     return result;
 };
+/* 3차 프로젝트 분석완료 */
 
 // function: 공지 게시물 조회수 증가 API 함수 
 export const increaseViewCountRequest = async (noticeNumber: number | string, accessToken: string) => 
@@ -62,6 +65,7 @@ export const increaseViewCountRequest = async (noticeNumber: number | string, ac
     return result;
 };
 
+{/* 3차 프로젝트 분석시작 */}
 // function: 공지 게시물 삭제 API 함수 
 export const deleteNoticeBoardRequest = async (noticeNumber: number | string, accessToken: string) => 
 {
@@ -70,4 +74,5 @@ export const deleteNoticeBoardRequest = async (noticeNumber: number | string, ac
         .catch(requestErrorHandler);
     return result;
 };
+{/* 3차 프로젝트 분석완료 */}
 /*분석 완료*/

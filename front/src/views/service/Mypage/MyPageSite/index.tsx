@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import ResponseDto from 'src/apis/response.dto';
 import { GetMyInfoResponseDto } from 'src/apis/user/dto/response';
 
-import { getMyInfoRequest } from 'src/apis/user';
+import { deleteUserRequest, getMyInfoRequest, MFARequest } from 'src/apis/user';
 
 import { INQUIRY_MY_BOARD_LIST_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MY_PAGE_SITE_ABSOLUTE_PATH, RESTAURANT_FAVORITE_ABSOLUTE_LIST_PATH, RESTAURANT_RESERVATION_ABSOLUTE_LIST_PATH, RESTAURANT_REVIEW_ABSOLUTE_DETAILS_LIST_PATH, USER_DELETE_ABSOLUTE_PATH, USER_INFO_UPDATE_ABSOLUTE_PATH } from 'src/constant';
 
 import "./style.css";
+import { MFARequestDto } from 'src/apis/user/dto/request';
 
 // component: 마이페이지 //
 export default function MyPageSite() 
@@ -41,18 +42,44 @@ export default function MyPageSite()
 
     if (!cookies.accessToken) return;
 
-    const {userEmailId, nickname, userName, userTelNumber, password} = result as GetMyInfoResponseDto;
+    const {userEmailId, nickname, userName, userTelNumber} = result as GetMyInfoResponseDto;
     setNickname(nickname);
     setEmailId(userEmailId);
     setUserName(userName);
     setUserTelNumber(userTelNumber);
     setUserRole(userRole);
-    setPassword(password);
+  };
+
+  const MFAResponse = (result : ResponseDto | null) => 
+  {
+    const message = 
+      !result ? '서버에 문제가 있습니다.' :
+      result.code === 'AF' ? '권한이 없습니다.' :
+      result.code === 'NU' ? '사용자 정보가 일치하지 않습니다.' :
+      result.code === 'VF' ? '사용자 정보가 일치하지 않습니다.' :
+      result.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+    if (!result || result.code !== 'SU')
+    {
+      alert(message);
+      return;
+    }
+
+    navigation(USER_INFO_UPDATE_ABSOLUTE_PATH(userEmailId));
   };
 
   // event handler //
   const onUserDeleteClickHandler = (userEmailId:string) => navigation(USER_DELETE_ABSOLUTE_PATH(userEmailId));
-  const onUserInfoUpdateClickHandler = (userEmailId:string) => navigation(USER_INFO_UPDATE_ABSOLUTE_PATH(userEmailId));
+
+  const onUserInfoUpdateClickHandler = () => 
+  {
+    const password = prompt("비밀번호를 입력해 주세요");
+    if (!userEmailId || !cookies.accessToken || !password) return;
+    
+    const requestBody: MFARequestDto = { password };
+    MFARequest(requestBody, cookies.accessToken).then(MFAResponse);
+  }
+
   const onMyPageSiteClickHandler = () => navigation(MY_PAGE_SITE_ABSOLUTE_PATH);
   const onInquiryMyBoardListClickHandler = () => navigation(INQUIRY_MY_BOARD_LIST_ABSOLUTE_PATH);
   const onRestaurantFavoriteClickHandler = () => navigation(RESTAURANT_FAVORITE_ABSOLUTE_LIST_PATH);
@@ -65,6 +92,17 @@ export default function MyPageSite()
     getMyInfoRequest(cookies.accessToken).then(GetMyInfoResponse);
   }, []);
 
+  const coveredUserName = userName !== 
+  '' && (userName[0] + '*'.repeat(userName.length - 1));
+  const coveredEmail = userEmailId !== 
+  '' && (
+    userEmailId.split('@')[0][0] + '*'.repeat(userEmailId.split('@')[0].length - 1) + '@' + userEmailId.split('@')[1]
+  );
+  const coveredTel = userTelNumber !== 
+  '' && (
+    userTelNumber.slice(0, 3) + '-****-' + userTelNumber.slice(-4)
+  );
+
   //   render   //
   return (
     <div id='my-page-wrapper'>
@@ -75,7 +113,7 @@ export default function MyPageSite()
         </div>
         <div className='my-page-navigation-box'>
           <div className='my-page-navigation' onClick={onMyPageSiteClickHandler}>마이페이지</div>
-          <div className='my-page-navigation' onClick={() => onUserInfoUpdateClickHandler(userEmailId)}>회원정보 수정</div>
+          <div className='my-page-navigation' onClick={onUserInfoUpdateClickHandler}>회원정보 수정</div>
           <div className='my-page-navigation' onClick={() => onUserDeleteClickHandler(userEmailId)}>회원탈퇴</div>
         </div>
         <div className='short-divider-line'></div>
@@ -91,7 +129,7 @@ export default function MyPageSite()
           <div className='my-page-contents-box'>
             <div className='my-page-info-first'>
               <div className='my-page-info'>아이디</div>
-              <div className='my-page-info'>{userEmailId}</div>
+              <div className='my-page-info'>{coveredEmail}</div>
             </div>
             <div className='my-page-info-first'>
               <div className='my-page-info'>닉네임</div>
@@ -99,13 +137,13 @@ export default function MyPageSite()
             </div>
             <div className='my-page-info-second'>
               <div className='my-page-info'>이름</div>
-              <div className='my-page-info'>{userName}</div>
+              <div className='my-page-info'>{coveredUserName}</div>
             </div>
             <div className='my-page-info-second'>
               <div className='my-page-info'>전화번호</div>
-              <div className='my-page-info'>{userTelNumber}</div>
+              <div className='my-page-info'>{coveredTel}</div>
             </div>
-            <div className='my-page-info-three'>
+            <div className='my-page-info-second'>
               <div className='my-page-info'>비밀번호</div>
               <div className='my-page-info'>{password}</div>
             </div>

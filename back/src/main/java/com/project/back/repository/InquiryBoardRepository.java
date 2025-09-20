@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface InquiryBoardRepository extends JpaRepository<InquiryBoardEntity,Integer> 
 {
     InquiryBoardEntity findByInquiryNumber(Integer inquiryNumber);
+    /* 3차 프로젝트 분석완료 */
 
     @Query(value=
     "SELECT ib.inquiry_number inquiryNumber, ib.status status, ib.inquiry_public inquiryPublic, ib.inquiry_title inquiryTitle, u.nickname inquiryWriterNickname, ib.inquiry_write_datetime inquiryWriteDatetime, ib.inquiry_writer_id inquiryWriterId " +

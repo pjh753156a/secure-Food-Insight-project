@@ -14,14 +14,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface ReviewRepository extends JpaRepository<ReviewEntity,Integer> 
 {
+    /* 3차 프로젝트 분석 완료 */
+    
     ReviewEntity findByReviewNumber(int reviewNumber);
+    /* 3차 프로젝트 분석 시작 */
     boolean existsByReviewWriterIdAndReviewRestaurantId(String userEmailId, int restaurantId);
-    /* /분석 완료/ */
+    /* 3차 프로젝트 분석 완료 */
 
     List<FavoriteRestaurantEntity> findByOrderByReviewRestaurantIdDesc();
 
-    /* /분석 시작/ */
+    /* 3차 프로젝트 분석시작 */
     void deleteByReviewWriterId(String userEmailId);
+    /* 3차 프로젝트 분석완료 */
     @Query(
         value=
         "SELECT " +

@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface NoticeBoardRepository extends JpaRepository<NoticeBoardEntity,Integer> 
 {
     NoticeBoardEntity findByNoticeNumber(Integer noticeNumber);
+    /* 3차 프로젝트 분석완료 */
     
     @Query(value=
     "SELECT nb.notice_number noticeNumber, nb.notice_title noticeTitle, u.nickname noticeWriterNickname, nb.notice_write_datetime noticeWriteDatetime, nb.view_count viewCount " +

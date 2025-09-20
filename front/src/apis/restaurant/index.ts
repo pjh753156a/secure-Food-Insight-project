@@ -16,6 +16,7 @@ export const GetRestaurantListRequest = async (word: string, accessToken: string
         .catch(requestErrorHandler);
     return result;
 } 
+{/* 3차 프로젝트 분석 완료 */}
 
 // function : 특정 식당 정보 검색 API 함수
 export const GetRestaurantInfoRequest = async (restaurantId: number|string, accessToken: string) => 

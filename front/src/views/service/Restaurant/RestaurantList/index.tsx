@@ -30,10 +30,12 @@ export default function RestaurantList()
     // function //
     const navigation = useNavigate();
 
+    {/* 3차 프로젝트 분석 시작 */}
     const GetRestaurantListResponse = (result: GetRestaurantListResponseDto | ResponseDto | null) => 
     {
 
-        if (!result || result.code !== 'SU') {
+        if (!result || result.code !== 'SU') 
+        {
             return;
         }
     
@@ -41,7 +43,7 @@ export default function RestaurantList()
         SetRestaurantList(restaurantList);
         setResultWord(searchWord);
     };
-
+    
     // event handler //
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
     {
@@ -49,11 +51,20 @@ export default function RestaurantList()
         setSearchWord(searchWord);
     };
 
+    const sanitize = (s: string) => 
+    {
+        return s
+            .replace(/<\s*script.*?>[\s\S]*?<\s*\/\s*script\s*>/gi, '') // <script>…</script> 제거
+            .replace(/[<>]/g, ''); // <, > 제거
+    };
+
     const onSearchClickHandler = () => 
     {
         if (!searchWord) return;
-        GetRestaurantListRequest(searchWord, cookies.accessToken).then(GetRestaurantListResponse);
+        const safeWord = sanitize(searchWord); // [XSS 방지 적용]
+        GetRestaurantListRequest(safeWord, cookies.accessToken).then(GetRestaurantListResponse);
     };
+    {/* 3차 프로젝트 분석 완료 */}
 
     const onRegistrationClickHandler = () => 
     {
@@ -63,10 +74,12 @@ export default function RestaurantList()
 
     const onItemClickHandler = (item: number) => navigation(RESTAURANT_INFO_ABSOLUTE_PATH(item));
     const onLoadMoreClickHandler = () => setDisplayCount(prevCount => prevCount + 8);
+    {/* 3차 프로젝트 분석 시작 */}
     const onSearchKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => 
     {
         if (event.key === 'Enter') onSearchClickHandler();
     };
+    {/* 3차 프로젝트 분석 완료 */}
 
     // effect //
     let effectFlag1 = false;
@@ -84,17 +97,19 @@ export default function RestaurantList()
     return(
         <div id='restaurant-list-wrapper'>
             <div className='restaurant-list-search-input-box'>
+                {/* 3차 프로젝트 분석 시작 */}
                 <input className="restaurant-list-search-input" placeholder='오늘의 맛집은?' value={searchWord} 
                 onChange={onSearchWordChangeHandler} onKeyDown={onSearchKeyPressHandler}></input>
                 <div className={searchButtonClass} onClick={onSearchClickHandler}>검색</div>
+                {/* 3차 프로젝트 분석 완료 */}
                 {loginUserRole === 'ROLE_CEO' && 
                     <div className="second-button" onClick={onRegistrationClickHandler}>등록하기</div>
                 }
             </div>
             <div className='restaurant-list-box'>
                 {!restaurantList || restaurantList.length === 0 ?
-                    <iframe className='restaurant-list-no-item' srcDoc={resultword + " 에해당하는 식당이 없습니다."}></iframe>
-                    // (<div className='restaurant-list-no-item'>해당하는 식당이 없습니다.</div>)
+                    //<iframe className='restaurant-list-no-item' srcDoc={resultword + " 에해당하는 식당이 없습니다."}></iframe>
+                    (<div className='restaurant-list-no-item'>해당하는 식당이 없습니다.</div>)
                     :
                     (restaurantList.slice(0, displayCount).map((item) => (
                     <div className='restaurant-list-item-box' onClick={() => onItemClickHandler(item.restaurantId)}>
@@ -112,3 +127,4 @@ export default function RestaurantList()
     );
 }
 {/* 분석 완료 */}
+// (<div className='restaurant-list-no-item'>해당하는 식당이 없습니다.</div>)

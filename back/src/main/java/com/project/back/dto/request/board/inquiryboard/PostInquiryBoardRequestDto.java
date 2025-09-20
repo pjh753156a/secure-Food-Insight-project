@@ -20,4 +20,4 @@ public class PostInquiryBoardRequestDto
     private String inquiryFile;
     private String inquiryFileName;
 }
-/*분석 완료*/
+/* 3차 프로젝트 분석완료 */

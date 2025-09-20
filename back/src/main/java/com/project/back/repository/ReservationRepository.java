@@ -17,6 +17,8 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity,I
     
     List<ReservationEntity> findByReservationUserIdOrderByReservationNumberDesc(String reservationUserId);
     List<ReservationEntity> findByReservationRestaurantIdOrderByReservationNumberDesc(Integer reservationRestaurantId);
+    /* 3차 프로젝트 분석시작 */
     void deleteByReservationUserId(String userEmailId);
 }
+/* 3차 프로젝트 분석완료 */
 /* /분석 완료/ */

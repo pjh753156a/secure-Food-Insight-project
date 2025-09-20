@@ -39,6 +39,7 @@ public class RestaurantEntity
     private String restaurantOperationHours;
     private String restaurantRepresentativeMenu;
     private String restaurantBusinessRegistrationNumber;
+    /* 3차 프로젝트 분석 완료 */
 
     public RestaurantEntity(PostRestaurantInfoRequestDto dto, String userEmailId, UserEntity userEntity) 
     {

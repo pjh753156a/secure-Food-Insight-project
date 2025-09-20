@@ -8,6 +8,7 @@ public interface ResponseCode
     String DATABASE_ERROR = "DBE";
     String NO_EXIST_REVIEW = "NR";
     String WRITTEN_COMMENT = "WC";
+    String PASSWORD_DISCORD = "PD";
     String VALIDATION_FAILED = "VF"; 
     String DUPLICATED_EMAIL_ID = "DE"; 
     String DUPLICATED_NICKNAME = "DN"; 

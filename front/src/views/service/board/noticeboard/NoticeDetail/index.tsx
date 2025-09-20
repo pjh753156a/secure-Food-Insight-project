@@ -89,6 +89,7 @@ export default function NoticeDetail()
         setNoticeFileName(noticeFileName);
     };
 
+    {/* 3차 프로젝트 분석시작 */}
     const deleteNoticeBoardResponse = (result: ResponseDto | null) => 
     {
         const message =
@@ -104,16 +105,18 @@ export default function NoticeDetail()
         }
         navigation(NOTICE_BOARD_LIST_ABSOLUTE_PATH);
     };
+    {/* 3차 프로젝트 분석완료 */}
     
     // event handler //
     const onListClickHandler = () => navigation(NOTICE_BOARD_LIST_ABSOLUTE_PATH);
     
+    {/* 3차 프로젝트 분석시작 */}
     const onUpdateClickHandler = () => 
     {
         if (!noticeNumber || loginUserEmailId !== noticeWriterId) return;
         navigation(NOTICE_BOARD_UPDATE_ABSOLUTE_PATH(noticeNumber));
     };
-
+    
     const onDeleteClickHandler = () => 
     {
         if (!noticeNumber || loginUserEmailId !== noticeWriterId || !cookies.accessToken) return;
@@ -123,6 +126,7 @@ export default function NoticeDetail()
 
         deleteNoticeBoardRequest(noticeNumber, cookies.accessToken).then(deleteNoticeBoardResponse);
     };
+    {/* 3차 프로젝트 분석완료 */}
     
     // effect //
     useEffect(() => 
@@ -154,6 +158,7 @@ export default function NoticeDetail()
             </div>
             <div className='notice-detail-bottom-box'>
                 <div className='primary-button' onClick={onListClickHandler}>목록보기</div>
+                {/* 3차 프로젝트 분석시작 */}
                 { loginUserEmailId === noticeWriterId && loginUserRole === 'ROLE_ADMIN' &&
                     (<div className="notice-detail-button-box">
                         <div className="second-button" onClick={onUpdateClickHandler}>수정</div>
@@ -163,4 +168,5 @@ export default function NoticeDetail()
         </div>
     );
 }
+{/* 3차 프로젝트 분석완료 */}
 {/*분석 완료*/}

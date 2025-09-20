@@ -24,6 +24,7 @@ export default function ReviewWrite()
 
     const contentsRef = useRef<HTMLTextAreaElement | null>(null);
 
+    /* 3차 프로젝트 분석 시작 */
     // function //
     const PostReviewResponse = (result: ResponseDto | null) => 
     {
@@ -44,6 +45,7 @@ export default function ReviewWrite()
         if (!restaurantId) return;
         navigation(RESTAURANT_INFO_ABSOLUTE_PATH(restaurantId));
     }
+    /* 3차 프로젝트 분석 완료 */
     
     // event handler //
     const onImageChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -84,6 +86,7 @@ export default function ReviewWrite()
         contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
     }
     
+    {/* 3차 프로젝트 분석 시작 */}
     const UploadClickHandler = () =>
     {
         if (!rating) { return; }
@@ -94,6 +97,7 @@ export default function ReviewWrite()
         if(!restaurantId) return;
         PostReviewRequest(restaurantId, requestBody, cookies.accessToken).then(PostReviewResponse);
     }
+    {/* 3차 프로젝트 분석 완료 */}
 
     const onKeyPressHandler = (event: KeyboardEvent<HTMLTextAreaElement>) => 
     {
@@ -138,6 +142,7 @@ export default function ReviewWrite()
                                 placeholder='내용을 입력해주세요. / 300자' maxLength={300} value={reviewContents} onChange={onContentsChangeHandler} onKeyDown={onKeyPressHandler} style={{ resize: 'none', width: '100%', height: '100px'}} />
                         </div>
                     </div>
+                    {/* 3차 프로젝트 분석 시작 */}
                     <div className="review-registered-button-box">
                         <button onClick={UploadClickHandler} className={ButtonClass}>작성하기</button>
                     </div>
@@ -146,4 +151,4 @@ export default function ReviewWrite()
         </div>
     )
 }
-{/* /분석 완료/ */}
+{/* 3차 프로젝트 분석 완료 */}

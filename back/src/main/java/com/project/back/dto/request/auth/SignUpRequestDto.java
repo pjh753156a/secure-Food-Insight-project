@@ -35,4 +35,4 @@ public class SignUpRequestDto
     private String joinPath;
     private String businessRegistrationNumber;
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */

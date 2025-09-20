@@ -33,7 +33,7 @@ public class NoticeBoardEntity
     private String noticeFile;
     private String noticeFileName;
 
-    public NoticeBoardEntity(PostNoticeBoardRequestDto dto, String userEmailId ) 
+    public NoticeBoardEntity(PostNoticeBoardRequestDto dto, String userEmailId) 
     {
         String dateNow = ChangeDateFormatUtil.nowYYYYMMDD();
         this.noticeWriteDatetime = dateNow;
@@ -46,6 +46,7 @@ public class NoticeBoardEntity
         this.noticeFile = dto.getNoticeFile();
         this.noticeFileName = dto.getNoticeFileName();
     }
+    /* 3차 프로젝트 분석완료 */
 
     public void increaseViewCount() 
     {

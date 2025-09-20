@@ -13,6 +13,7 @@ export interface GetSearchInquiryBoardListResponseDto extends ResponseDto
   inquiryBoardList: InquiryBoardListItem[];
 }
 
+/* 3차 프로젝트 분석시작 */
 // description: 문의 게시물 확인 Response Body DTO
 export interface GetInquiryBoardResponseDto extends ResponseDto 
 {
@@ -28,7 +29,7 @@ export interface GetInquiryBoardResponseDto extends ResponseDto
   inquiryFile: string;
   inquiryFileName: string;
 }
-/* /분석 완료/ */
+/* 3차 프로젝트 분석완료 */
 
 // description: 문의 게시물 목록 확인 Response Body DTO
 export interface GetInquiryBoardListItem 

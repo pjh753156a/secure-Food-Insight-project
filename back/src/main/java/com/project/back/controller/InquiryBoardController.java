@@ -1,8 +1,12 @@
 package com.project.back.controller;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +25,8 @@ import com.project.back.dto.response.board.inquiryboard.GetInquiryBoardResponseD
 import com.project.back.dto.response.board.inquiryboard.GetInquiryBoardListResponseDto;
 import com.project.back.dto.response.board.inquiryboard.GetSearchInquiryBoardListResponseDto;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -34,12 +40,26 @@ public class InquiryBoardController
     @PostMapping("/")
     public ResponseEntity<ResponseDto> postInquiryBoard(
         @RequestBody @Valid PostInquiryBoardRequestDto requestBody,
-        @AuthenticationPrincipal String userEmailId
+        @AuthenticationPrincipal String userEmailId,
+        HttpServletRequest request
     ) 
     {
+        String csrfHeader = request.getHeader("X-CSRF-TOKEN");
+        String csrfCookie = Arrays.stream(Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]))
+            .filter(c -> "csrfToken".equals(c.getName()))
+            .map(Cookie::getValue)
+            .findFirst()
+            .orElse(null);
+
+        if (csrfHeader == null || csrfCookie == null || !csrfCookie.equals(csrfHeader)) 
+        {
+            return ResponseDto.authenticationFailed();
+        }
+        
         ResponseEntity<ResponseDto> response = inquiryBoardService.postBoard(requestBody, userEmailId);
         return response;
     }
+    /* 3차 프로젝트 분석완료 */
 
     @PostMapping("/{inquiryNumber}/comment")
     public ResponseEntity<ResponseDto> postComment(
@@ -66,15 +86,17 @@ public class InquiryBoardController
         return response;
     }
     
+    /* 3차 프로젝트 분석시작 */
     @GetMapping("/{inquiryNumber}")
     public ResponseEntity<? super GetInquiryBoardResponseDto> getInquiryBoard(
-        @PathVariable("inquiryNumber") int inquiryNumber
+        @PathVariable("inquiryNumber") int inquiryNumber,
+        @AuthenticationPrincipal String userEmailId
     ) 
     {
-        ResponseEntity<? super GetInquiryBoardResponseDto> response = inquiryBoardService.getInquiryBoard(inquiryNumber);
+        ResponseEntity<? super GetInquiryBoardResponseDto> response = inquiryBoardService.getInquiryBoard(inquiryNumber, userEmailId);
         return response;
     }
-
+    
     @PatchMapping("/update/{inquiryNumber}")
     public ResponseEntity<ResponseDto> patchInquiryBoard(
         @RequestBody @Valid PatchInquiryBoardRequestDto requestBody,
@@ -95,4 +117,4 @@ public class InquiryBoardController
         return response;
     }
 }
-/* /분석 완료/ */
+/* 3차 프로젝트 분석완료 */

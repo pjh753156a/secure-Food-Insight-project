@@ -64,6 +64,7 @@ export default function InquiryUpdate()
     setInquiryContents(inquiryContents);
   };
 
+  {/* 3차 프로젝트 분석시작 */}
   const patchInquiryBoardResponse = (result: ResponseDto | null) => 
   {
     const message =
@@ -83,6 +84,7 @@ export default function InquiryUpdate()
     if (!inquiryNumber) return;
     navigation(INQUIRY_DETAILS_ABSOLUTE_PATH(inquiryNumber));
   };
+  {/* 3차 프로젝트 분석완료 */}
   
   // event handler //
   const onInquiryTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -122,6 +124,7 @@ export default function InquiryUpdate()
       }
   }
 
+  {/* 3차 프로젝트 분석시작 */}
   const onInquiryUpdateButtonClickHandler = () => 
   {
     if (!cookies.accessToken || !inquiryNumber) return;
@@ -131,6 +134,7 @@ export default function InquiryUpdate()
     const requestBody: PatchInquiryBoardRequestDto = { inquiryTitle, inquiryContents, inquiryFile, inquiryFileName };
     patchInquiryBoardRequest(inquiryNumber, requestBody, cookies.accessToken).then(patchInquiryBoardResponse);
   };
+  {/* 3차 프로젝트 분석완료 */}
   
   // effect //
   let effectFlag = false;
@@ -159,10 +163,11 @@ export default function InquiryUpdate()
         <input type="file" onChange={onFileChangeHandler} className="inquiry-file-input"/>
         <div className='inquiry-update-contents-box'>
           <textarea ref={contentsRef} className='inquiry-update-contents-textarea' placeholder='내용을 입력해주세요. / 500자' maxLength={500} value={inquiryContents} onChange={onInquiryContentsChangeHandler} />
+          {/* 3차 프로젝트 분석시작 */}
           <div className='primary-button inquiry-update' onClick={onInquiryUpdateButtonClickHandler}>수정</div>
         </div>
       </div>
     </div>
   );
 }
-{/*분석 완료*/}
+{/* 3차 프로젝트 분석완료 */}

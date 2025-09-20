@@ -24,6 +24,7 @@ export default function UserDelete()
   const {setLoginUserEmailId, setLoginUserRole} = useUserStore();
   const [passwordMessage, setPasswordMessage] = useState<string>('');
   
+  /* 3차 프로젝트 분석시작 */
   // function //
   const navigation = useNavigate();
   
@@ -48,6 +49,7 @@ export default function UserDelete()
     setLoginUserEmailId("");
     setLoginUserRole("");
   };
+  /* 3차 프로젝트 분석완료 */
   
   // event handler //
   const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -60,10 +62,11 @@ export default function UserDelete()
 
     const passwordMessage = 
       isPasswordPattern ? '' :
-      password ? '4글자 이상 입력해주세요.' : '';
+      password ? '8글자 이상 영문+숫자+특수문자로 입력해 주세요.' : '';
     setPasswordMessage(passwordMessage);
   };
 
+  {/*3차 프로젝트 분석 시작*/}
   const onUserDeleteButtonClickHandler = () => 
   {
     if (!userEmailId || !cookies.accessToken) return;
@@ -74,6 +77,7 @@ export default function UserDelete()
     const requestData: DeleteUserRequestDto = { password };
     deleteUserRequest(userEmailId, requestData, cookies.accessToken).then(deleteUserResponse);
   };
+  {/*3차 프로젝트 분석 완료*/}
   
   // effect // 
   useEffect(() => 
@@ -99,9 +103,11 @@ export default function UserDelete()
         <div className='resign-password'>
           <InputBox label="비밀번호 재입력" type="password" value={password} placeholder="비밀번호를 입력해주세요." onChangeHandler={onPasswordChangeHandler} message={passwordMessage} error />
         </div>
+        {/*3차 프로젝트 분석 시작*/}
         <div className='delete-button' onClick={onUserDeleteButtonClickHandler}>회원 탈퇴하기</div>
       </div>
     </div>
   )
 }
+{/*3차 프로젝트 분석 완료*/}
 {/*분석 완료*/}

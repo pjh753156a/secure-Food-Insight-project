@@ -15,6 +15,7 @@ public class ChangeDateFormatUtil
         return writeDatetime;
     }
 
+    /* 3차 프로젝트 분석시작 */
     public static String changeYYYYMMDD(String original) throws Exception 
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -23,6 +24,7 @@ public class ChangeDateFormatUtil
         String writeDatetime = simpleDateFormat.format(datetime);
         return writeDatetime;
     }
+    /* 3차 프로젝트 분석완료 */
 
     public static String changeHHmm(String original) throws Exception 
     {
@@ -33,6 +35,7 @@ public class ChangeDateFormatUtil
         return writeDatetime;
     }
 
+    /* 3차 프로젝트 분석시작 */
     public static String nowYYYYMMDD() 
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -40,4 +43,4 @@ public class ChangeDateFormatUtil
         return simpleDateFormat.format(now);
     }
 }
-/* /분석 완료/ */
+/* 3차 프로젝트 분석완료 */

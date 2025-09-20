@@ -36,7 +36,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler
         {
             String userId = oAuth2User.getName();
 
-            String token = jwtProvider.create(userId);
+            String token = jwtProvider.accessTokenCreate(userId);
             response.sendRedirect(frontUrl + "sns/" + token + "/36000");
         }
         

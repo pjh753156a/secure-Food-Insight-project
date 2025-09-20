@@ -2,7 +2,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router';
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
-import { useUserStore } from 'src/stores';
+import { useAuthStore, useUserStore } from 'src/stores';
 
 import ResponseDto from 'src/apis/response.dto';
 import { PostInquiryBoardRequestDto } from 'src/apis/board/inquiryboard/dto/request';
@@ -18,7 +18,7 @@ export default function InquiryWrite()
 {
   // state //
   const [cookies] = useCookies();
-  const { loginUserRole } = useUserStore();
+  const { loginUserRole} = useUserStore();
   const [inquiryTitle, setInquiryTitle] = useState<string>('');
   const contentsRef = useRef<HTMLTextAreaElement | null>(null);
   const [inquiryContents, setInquiryContents] = useState<string>('');
@@ -29,6 +29,7 @@ export default function InquiryWrite()
   // function //
   const navigation = useNavigate();
 
+  {/* 3차 프로젝트 분석시작 */}
   const postBoardResponse = (result: ResponseDto | null) => 
   {
     const message =
@@ -44,6 +45,7 @@ export default function InquiryWrite()
     }
     navigation(INQUIRY_BOARD_LIST_ABSOLUTE_PATH);
   };
+  {/* 3차 프로젝트 분석완료 */}
   
   // event handler //
   const onInquiryTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
@@ -64,11 +66,23 @@ export default function InquiryWrite()
     contentsRef.current.style.height = `${contentsRef.current.scrollHeight}px`;
   };
 
+  {/* 3차 프로젝트 분석시작 */}
   const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
   {
       const file = event.target.files?.[0];
       if (file) 
       {
+          const allowed = ['.jpg', '.jpeg', '.png', '.pdf', '.hwp'];
+          const maxSize = 5 * 1024 * 1024; // 5MB
+
+          const lower = file.name.toLowerCase();
+          const ext = lower.slice(lower.lastIndexOf('.'));
+          if (!allowed.includes(ext) || file.size > maxSize) 
+          {
+              alert('허용되지 않은 파일 형식 또는 크기 초과입니다.');
+              return;
+          }
+
           const reader = new FileReader();
           reader.readAsDataURL(file);
           reader.onloadend = () => 
@@ -83,14 +97,30 @@ export default function InquiryWrite()
       }
   }
 
+  const sanitize = (s: string) => 
+  {
+      return s
+          .replace(/<\s*script.*?>[\s\S]*?<\s*\/\s*script\s*>/gi, '') // [SECURE] 1 <script>…</script> 제거
+          .replace(/[<>]/g, ''); // [SECURE] 2 <, > 제거
+  };
+  
   const onPostButtonClickHandler = () => 
   {
     if (!inquiryContents.trim() || !inquiryTitle.trim()) return;
     if (!cookies.accessToken) return;
 
-    const requestBody: PostInquiryBoardRequestDto = {inquiryTitle, inquiryContents, inquiryPublic, inquiryFile, inquiryFileName };
-    postInquiryBoardRequest(requestBody, cookies.accessToken).then(postBoardResponse);
+    const safeTitle = sanitize(inquiryTitle); // SECURE 추가
+    const safeContents = sanitize(inquiryContents);// SECURE 추가
+
+    setInquiryTitle(safeTitle);
+    setInquiryContents(safeContents);
+
+    const requestBody: PostInquiryBoardRequestDto = {inquiryTitle:safeTitle, inquiryContents:safeContents, 
+      inquiryPublic, inquiryFile, inquiryFileName };
+
+    postInquiryBoardRequest(requestBody, cookies.accessToken, cookies.csrfToken).then(postBoardResponse);
   };
+  {/* 3차 프로젝트 분석완료 */}
   
   const onPublicButtonClickHandler = () => setInquiryPublic(!inquiryPublic);
   
@@ -118,11 +148,19 @@ export default function InquiryWrite()
         <div className='inquiry-write-title-box'>
           <input className='inquiry-write-title-input' placeholder='제목을 입력해주세요.' value={inquiryTitle} onChange={onInquiryTitleChangeHandler} />
         </div>
-        <input type="file" onChange={onFileChangeHandler} className="inquiry-file-input"/>
+        {/* 3차 프로젝트 분석시작 */}
+        <input
+          type="file"
+          accept=".jpg,.jpeg,.png,.pdf,.hwp"
+          onChange={onFileChangeHandler}
+          className="inquiry-file-input"
+        />
+        {/* 3차 프로젝트 분석완료 */}
         <div className='inquiry-write-contents-box'>
           <textarea ref={contentsRef} className='inquiry-write-contents-textarea' placeholder='내용을 입력해주세요. / 500자' maxLength={500} value={inquiryContents} onChange={onInquiryContentsChangeHandler} />
           <div className='inquiry-bottom-button-box'>
             <div className={publicButtonClass} onClick={onPublicButtonClickHandler}>{ inquiryPublic ? '공개' : '비공개' }</div>
+            {/* 3차 프로젝트 분석시작 */}
             <div className='primary-button' onClick={onPostButtonClickHandler}>작성</div>
           </div>
         </div>
@@ -130,4 +168,4 @@ export default function InquiryWrite()
     </div>
   );
 }
-{/*분석 완료*/}
+{/* 3차 프로젝트 분석완료 */}

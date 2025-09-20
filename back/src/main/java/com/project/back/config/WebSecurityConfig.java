@@ -73,9 +73,11 @@ public class WebSecurityConfig
     protected CorsConfigurationSource corsConfigurationSource() 
     {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
+        configuration.setAllowCredentials(true); // ★ 쿠키 전송 허용
+        configuration.addAllowedOrigin("http://localhost:3000"); // ★ 정확한 오리진 명시
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
+
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

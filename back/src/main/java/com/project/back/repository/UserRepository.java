@@ -13,18 +13,22 @@ public interface UserRepository extends JpaRepository<UserEntity, String>
     boolean existsByPassword(String password);
     /* 3차 프로젝트 분석시작 */
     boolean existsByUserEmailId(String userId);
-    /* 3차 프로젝트 분석완료 */
     boolean existsByBusinessRegistrationNumber(String businessRegistrationNumber);
-    /* 분석 완료 */
+    /* 3차 프로젝트 분석완료 */
+    
     boolean existsByUserNameAndUserTelNumber(String userName,String userTelNumber);
+    
+    /* 3차 프로젝트 분석시작 */
     boolean existsByUserEmailIdAndUserTelNumber(String userEmailId, String userTelNumber);
+    /* 3차 프로젝트 분석완료 */
 
     /* 분석 시작 */
     UserEntity findBySnsId(String snsId);
     /* 분석 완료 */
     UserEntity findByPassword(String Password);
-    /* /분석 시작/ */
+    /* 3차 프로젝트 분석시작 */
     UserEntity findByUserEmailId(String userEmailId);
+    /* 3차 프로젝트 분석완료 */
     UserEntity findByUserNameAndUserTelNumber(String userName, String userTelNumber);
     /* /분석 완료/ */
     UserEntity findByUserEmailIdAndUserTelNumber(String userEmailId, String userTelNumber);

@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.project.back.service.UserService;
 import com.project.back.dto.request.user.DeleteUserRequestDto;
+import com.project.back.dto.request.user.MFARequestDto;
 import com.project.back.dto.request.user.PatchUserInfoRequestDto;
 import com.project.back.dto.response.ResponseDto;
 import com.project.back.dto.response.user.GetMyInfoResponseDto;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController 
 {
     private final UserService userService;
+    /* 3차 프로젝트 분석완료 */
 
     @GetMapping("/")
     public ResponseEntity<? super GetUserInfoResponseDto> GetSignInUser(
@@ -44,6 +46,7 @@ public class UserController
         return response;
     }
 
+    /* 3차 프로젝트 분석시작 */
     @PostMapping("/info-delete/{userEmailId}")
     public ResponseEntity<ResponseDto> deleteUser(
             @RequestBody @Valid DeleteUserRequestDto requestBody,
@@ -52,13 +55,24 @@ public class UserController
         ResponseEntity<ResponseDto> response = userService.deleteUser(requestBody, userEmailId);
         return response;
     }
+    /* 3차 프로젝트 분석완료 */
+
+    @PostMapping("/mfa")
+    public ResponseEntity<ResponseDto> mfa(
+        @RequestBody @Valid MFARequestDto requestBody,
+        @AuthenticationPrincipal String userId)
+    {
+        ResponseEntity<ResponseDto> response = userService.mfa(requestBody,userId);
+        return response;
+    }
     
+    // 3차 프로젝트 분석 시작
     @GetMapping("/information")
     public ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(
-            @AuthenticationPrincipal String userId) 
+            @AuthenticationPrincipal String userEmailId) 
     {
-        ResponseEntity<? super GetMyInfoResponseDto> response = userService.getMyInfo(userId);
+        ResponseEntity<? super GetMyInfoResponseDto> response = userService.getMyInfo(userEmailId);
         return response;
     }
 }
-/* /분석 완료/ */
+// 3차 프로젝트 분석 완료

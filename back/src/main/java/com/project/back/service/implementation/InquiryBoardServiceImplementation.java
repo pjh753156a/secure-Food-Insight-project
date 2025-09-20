@@ -42,6 +42,100 @@ public class InquiryBoardServiceImplementation implements InquiryBoardService
             boolean isExistUser = userRepository.existsByUserEmailId(userEmailId);
             if (!isExistUser) return ResponseDto.authenticationFailed();
 
+            // ========================== [SECURE] 파일 검증 시작 ==========================
+            String base64File = dto.getInquiryFile();
+            String originalFileName = dto.getInquiryFileName();
+
+            if (base64File != null && !base64File.isBlank() && originalFileName != null) 
+            {
+                // [SECURE] 1) 허용 확장자만 통과
+                String lower = originalFileName.toLowerCase();
+                if (!(lower.endsWith(".jpg") || lower.endsWith(".jpeg") || 
+                lower.endsWith(".png") || lower.endsWith(".pdf") || 
+                lower.endsWith(".hwp")) ) 
+                {
+                    return ResponseDto.databaseError(); // 실행형/스크립트 파일 차단
+                }
+
+                // [SECURE] 2) Base64 디코딩 + 크기 제한
+                // data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA... 
+                // Base64 문자열 형태로 파일이 들어옴
+
+                String[] parts = base64File.split(",", 2);
+                /*
+                    base64File을 , 기준으로 둘로 나눔    
+                    "data:image/png;base64," (파일 정보 헤더 부분) parts[0]
+                    "iVBORw0KGgoAAAANSUhEUgAAA..." (진짜 데이터 부분) parts[1]
+                */
+
+                String base64Data = (parts.length > 1) ? parts[1] : parts[0];
+                //  헤더 뒤의 진짜 데이터 부분만 꺼냄 parts[1] → "iVBORw0KGgoAAAANSUhEUgAAA..."
+                
+                byte[] fileBytes = java.util.Base64.getDecoder().decode(base64Data);
+                //  Base64로 인코딩된 문자열을 진짜 파일의 바이트 배열로 변환   
+
+                
+                if (fileBytes.length < 4 || fileBytes.length > 5 * 1024 * 1024) 
+                {
+                    return ResponseDto.databaseError();
+                }
+                // 5MB 제한
+
+                
+                // [SECURE] 3) 매직넘버(시그니처) 검사
+                if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) 
+                {
+                    if (!(fileBytes[0] == (byte)0xFF && fileBytes[1] == (byte)0xD8)) 
+                    {
+                        return ResponseDto.databaseError();
+                    }
+                } 
+                else if (lower.endsWith(".png")) 
+                {
+                    if (!(fileBytes[0] == (byte)0x89 && fileBytes[1] == 0x50 && fileBytes[2] == 0x4E && fileBytes[3] == 0x47)) 
+                    {
+                        return ResponseDto.databaseError();
+                    }
+                } 
+                else if (lower.endsWith(".pdf")) 
+                {
+                    if (!(fileBytes[0] == 0x25 && fileBytes[1] == 0x50 && fileBytes[2] == 0x44 && fileBytes[3] == 0x46)) 
+                    {
+                        return ResponseDto.databaseError();
+                    }
+                }
+                else if (lower.endsWith(".hwp")) 
+                {
+                    boolean isOldHwp = (fileBytes[0] == (byte)0xD0 && fileBytes[1] == (byte)0xCF &&
+                                        fileBytes[2] == (byte)0x11 && fileBytes[3] == (byte)0xE0);
+
+                    boolean isNewHwp = (fileBytes[0] == (byte)0x50 && fileBytes[1] == (byte)0x4B &&
+                                        fileBytes[2] == (byte)0x03 && fileBytes[3] == (byte)0x04);
+
+                    if (!(isOldHwp || isNewHwp)) 
+                    {
+                        return ResponseDto.databaseError();
+                    }
+                }
+            }
+            // ========================== [SECURE] 파일 검증 끝 ==========================
+            
+            String inquiryTitle = dto.getInquiryTitle() == null ? null
+            : dto.getInquiryTitle()
+                .replaceAll("(?is)<\\s*script.*?>.*?<\\s*/\\s*script\\s*>", "") 
+                // <script>…</script> 제거
+                .replaceAll("[<>]", ""); // <, > 제거
+
+            dto.setInquiryTitle(inquiryTitle);
+
+            String inquiryContents = dto.getInquiryContents() == null ? null
+            : dto.getInquiryContents()
+                .replaceAll("(?is)<\\s*script.*?>.*?<\\s*/\\s*script\\s*>", "") 
+                // <script>…</script> 제거
+                .replaceAll("[<>]", ""); // <, > 제거
+
+            dto.setInquiryContents(inquiryContents);
+
             InquiryBoardEntity inquiryBoardEntity = new InquiryBoardEntity(dto, userEmailId);
             inquiryBoardRepository.save(inquiryBoardEntity);
 
@@ -52,7 +146,7 @@ public class InquiryBoardServiceImplementation implements InquiryBoardService
                 uploadFolder.mkdirs();
             }
 
-            String base64File = dto.getInquiryFile();
+            base64File = dto.getInquiryFile();
             if (base64File != null && !base64File.isEmpty())
             {
                 String[] parts = base64File.split(",");
@@ -60,7 +154,7 @@ public class InquiryBoardServiceImplementation implements InquiryBoardService
 
                 byte[] fileBytes = java.util.Base64.getDecoder().decode(base64Data);
 
-                String originalFileName = dto.getInquiryFileName(); // 예: 블랙라벨.pdf
+                originalFileName = dto.getInquiryFileName(); // 예: 블랙라벨.pdf
                 String fileExtension = ""; // 확장자
                 String fileBaseName = originalFileName; // 기본 파일명
 
@@ -111,6 +205,7 @@ public class InquiryBoardServiceImplementation implements InquiryBoardService
         }
         return ResponseDto.success();
     }
+    /* 3차 프로젝트 분석완료 */
 
     @Override
     public ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, int inquiryNumber) 
@@ -166,29 +261,37 @@ public class InquiryBoardServiceImplementation implements InquiryBoardService
         }
     }
     
+    /* 3차 프로젝트 분석시작 */
     @Override
-    public ResponseEntity<? super GetInquiryBoardResponseDto> getInquiryBoard(int inquiryNumber) 
+    public ResponseEntity<? super GetInquiryBoardResponseDto> getInquiryBoard(int inquiryNumber, String userId) 
     {
         try 
         {
+            boolean isMatched;
             InquiryBoardEntity inquiryBoardEntity = inquiryBoardRepository.findByInquiryNumber(inquiryNumber);
             if (inquiryBoardEntity == null) return ResponseDto.noExistInquiryBoard();
 
             String userEmailId = inquiryBoardEntity.getInquiryWriterId();
+            if(inquiryBoardEntity.getInquiryPublic())
+            {
+                isMatched = userId.equals(userEmailId);
+                if(!isMatched) return ResponseDto.authenticationFailed();
+            }
+            
             UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
             if (userEntity == null) return ResponseDto.authorizationFailed();
 
             String nickname = userEntity.getNickname();
 
             return GetInquiryBoardResponseDto.success(inquiryBoardEntity, nickname);
-        } 
+        }
         catch(Exception exception)
         {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
     }
-
+    
     @Override
     public ResponseEntity<ResponseDto> patchInquiryBoard(PatchInquiryBoardRequestDto dto, int inquiryNumber, String userEmailId) 
     {
@@ -258,7 +361,7 @@ public class InquiryBoardServiceImplementation implements InquiryBoardService
             inquiryBoardEntity.update(dto);
             inquiryBoardRepository.save(inquiryBoardEntity);
 
-            // =========================== 🔽 inquiry 정보 전체 JSON 파일로 저장 🔽 ===========================
+            // =========================== inquiry 정보 전체 JSON 파일로 저장 ===========================
             // inquiryFile / inquiryFileName 은 제외하고 나머지 주요 필드만 저장
             com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
 
@@ -329,4 +432,4 @@ public class InquiryBoardServiceImplementation implements InquiryBoardService
         return ResponseDto.success();
     }
 }
-/* /분석 완료/ */
+/* 3차 프로젝트 분석완료 */

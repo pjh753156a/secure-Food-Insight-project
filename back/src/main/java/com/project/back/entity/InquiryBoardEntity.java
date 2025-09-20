@@ -50,6 +50,7 @@ public class InquiryBoardEntity
         this.inquiryFile = dto.getInquiryFile();
         this.inquiryFileName = dto.getInquiryFileName();
     }
+    /* 3차 프로젝트 분석완료 */
 
     public void update(PatchInquiryBoardRequestDto dto) 
     {

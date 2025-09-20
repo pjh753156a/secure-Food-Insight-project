@@ -22,4 +22,4 @@ public class AuthNumberEntity
   private String telNumber;
   private String authNumber;
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */

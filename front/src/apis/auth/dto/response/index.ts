@@ -4,6 +4,7 @@ import ResponseDto from "src/apis/response.dto";
 export interface SignInResponseDto extends ResponseDto 
 {
   accessToken: string;
+  csrfToken: string;
   expires: number;
 }
 
@@ -24,6 +25,6 @@ export interface FindEmailResponseDto extends ResponseDto
 // description: 비밀번호 재설정 요청 링크 전송 Response Body DTO
 export interface PasswordResetResponseDto extends ResponseDto 
 {
-  passwordResetLink: string;
+  tempAccessToken: string;
 }
 /* 분석 완료 */

@@ -10,4 +10,4 @@ public interface AuthNumberRepository extends JpaRepository<AuthNumberEntity, St
 {
     boolean existsByTelNumberAndAuthNumber(String telNumber, String authNumber);
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */

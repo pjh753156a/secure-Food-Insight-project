@@ -13,15 +13,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface RestaurantRepository extends JpaRepository<RestaurantEntity,Integer> 
 {
+    /* 3차 프로젝트 분석 완료 */
     // Object restaurantEntity = null;
     boolean existsByRestaurantId(Integer restaurantId);
+    /* 3차 프로젝트 분석 시작 */
     RestaurantEntity findByRestaurantId(Integer restaurantId);
+    /* 3차 프로젝트 분석 완료 */
     boolean existsByRestaurantWriterId(String restaurantWriterId);
     RestaurantEntity findByRestaurantWriterId(String restaurantWriterId);
     RestaurantEntity getRestaurantIdByRestaurantWriterId(String restaurantWriterId);
     RestaurantEntity findByRestaurantWriterIdAndRestaurantId(String userEmailId, Integer restaurantId);
+    /* 3차 프로젝트 분석 시작 */
     List<RestaurantEntity> findByRestaurantNameContainingOrderByRestaurantIdDesc(String searchWord);
-
+    /* 3차 프로젝트 분석 완료 */
     
     @Query(value=
         "SELECT "

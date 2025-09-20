@@ -25,7 +25,7 @@ public class GetInquiryBoardResponseDto extends ResponseDto
     private Boolean inquiryPublic;
     private String inquiryFile;
     private String inquiryFileName;
-
+    
     private GetInquiryBoardResponseDto(InquiryBoardEntity inquiryBoardEntity, String inquiryWriterNickname) throws Exception 
     {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
@@ -38,6 +38,7 @@ public class GetInquiryBoardResponseDto extends ResponseDto
         this.inquiryWriterId = inquiryBoardEntity.getInquiryWriterId();
 
         String writeDate = ChangeDateFormatUtil.changeYYYYMMDD(inquiryBoardEntity.getInquiryWriteDatetime());
+
         this.inquiryWriteDatetime = writeDate;
 
         this.inquiryContents = inquiryBoardEntity.getInquiryContents();
@@ -52,4 +53,4 @@ public class GetInquiryBoardResponseDto extends ResponseDto
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }
-/* /분석 완료/ */
+/* 3차 프로젝트 분석완료 */

@@ -1,9 +1,9 @@
 import ResponseDto from "src/apis/response.dto";
 import { AdminSignInResponseDto, FindEmailResponseDto, PasswordResetResponseDto, SignInResponseDto } from "src/apis/auth/dto/response";
-import { CheckEmailRequestDto, CheckNicknameDto, FindEmailRequestDto, NewPasswordRequestDto, PasswordResetRequestDto, SignInRequestDto, SignUpRequestDto, CheckTelNumberAuthRequestDto, TelNumberAuthRequestDto, businessRegistrationNumberRequestDto, AdminSignInRequestDto } from "src/apis/auth/dto/request";
+import { CheckEmailRequestDto, CheckNicknameDto, FindEmailRequestDto, NewPasswordRequestDto, PasswordResetRequestDto, SignInRequestDto, SignUpRequestDto, CheckTelNumberAuthRequestDto, TelNumberAuthRequestDto, businessRegistrationNumberRequestDto, AdminSignInRequestDto, CheckAuthNumberRequestDto } from "src/apis/auth/dto/request";
 
 import axios from "axios";
-import { requestErrorHandler, requestHandler } from "src/apis/index";
+import { bearerAuthorization, requestErrorHandler, requestHandler } from "src/apis/index";
 
 import { ADMIN_SIGN_IN_REQUEST_URL, BUSINESS_REGISTRATION_REQUEST_PATH, EMAIL_CHECK_REQUEST_URL, FIND_EMAIL_REQUEST_URL, NICKNAME_CHECK_REQUEST_URL, PASSWORD_RESET_REQUEST_URL, PASSWORD_UPDATE_REQUEST_URL, SIGN_IN_REQUEST_URL, SIGN_UP_REQUEST_URL, TEL_NUMBER_AUTH_CHECK_REQUEST_URL, TEL_NUMBER_AUTH_REQUEST_URL } from "src/constant";
 
@@ -26,7 +26,6 @@ export const AdminSignInRequest = async (requestBody: AdminSignInRequestDto) =>
         .catch(requestErrorHandler);
     return result;
 };
-{/* 3차 프로젝트 분석완료 */}
 
 // function : 전화번호 인증 번호 전송 API 함수
 export const telNumberAuthRequest = async (requestBody: TelNumberAuthRequestDto) => 
@@ -48,7 +47,6 @@ export const telNumberAuthCheckRequest = async (requestBody: CheckTelNumberAuthR
     return result;
 };
 
-{/* 3차 프로젝트 분석시작 */}
 // function : 이메일 찾기 API 함수
 export const findEmailRequest = async (requestBody: FindEmailRequestDto) => 
 {
@@ -78,7 +76,6 @@ export const checkNicknameRequest = async (requestBody: CheckNicknameDto) =>
         .catch(requestErrorHandler);
     return result;
 };
-{/* 3차 프로젝트 분석완료 */}
 
 // function : 비밀번호 재설정 링크 전송 API 함수
 export const passwordResetRequest = async (requestBody: PasswordResetRequestDto) => 
@@ -91,14 +88,15 @@ export const passwordResetRequest = async (requestBody: PasswordResetRequestDto)
 };
 
 // function : 새로운 비밀번호 설정 API 함수
-export const newPasswordRequest = async (userEmailId: string, requestBody: NewPasswordRequestDto) => 
+export const newPasswordRequest = async (requestBody: NewPasswordRequestDto, tempAccessToken: string) => 
 {
     const result = await axios
-        .put(PASSWORD_UPDATE_REQUEST_URL(userEmailId), requestBody)
+        .put(PASSWORD_UPDATE_REQUEST_URL, requestBody, bearerAuthorization(tempAccessToken))
         .then(requestHandler<ResponseDto>)
         .catch(requestErrorHandler);
     return result;
 };
+/* 3차 프로젝트 분석완료 */
 
 // function: 사업자등록 인증 API 함수 
 export const businessRegistrationNumberRequest = async(requestBody: businessRegistrationNumberRequestDto) => 
@@ -110,6 +108,7 @@ export const businessRegistrationNumberRequest = async(requestBody: businessRegi
     return result;
 }
 
+{/* 3차 프로젝트 분석시작 */}
 // function : 회원가입 API 함수
 export const signUpRequest = async (requestBody: SignUpRequestDto) => 
 {
@@ -119,4 +118,4 @@ export const signUpRequest = async (requestBody: SignUpRequestDto) =>
         .catch(requestErrorHandler);
     return result;
 };
-/* 분석 완료 */
+{/* 3차 프로젝트 분석완료 */}

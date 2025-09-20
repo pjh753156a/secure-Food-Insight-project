@@ -14,6 +14,8 @@ public interface FavoriteRestaurantRepository extends JpaRepository<FavoriteRest
     /* 분석 시작 */
     FavoriteRestaurantEntity findByFavoriteUserIdAndFavoriteRestaurantId(String favoriteUserId, Integer favoriteRestaurantId);
 
+    /* 3차 프로젝트 분석시작 */
     void deleteByFavoriteUserId(String userEmailId);
 }
+/* 3차 프로젝트 분석완료 */
 /* 분석 완료 */

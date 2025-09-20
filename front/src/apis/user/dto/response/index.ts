@@ -8,6 +8,7 @@ export interface GetUserInfoResponseDto extends ResponseDto
   businessRegistrationNumber: string;
 }
 
+// 3차 프로젝트 분석 시작
 // description: 내 정보 불러오기 Response Body DTO
 export interface GetMyInfoResponseDto extends ResponseDto
 {
@@ -21,6 +22,7 @@ export interface GetMyInfoResponseDto extends ResponseDto
   joinPath: String;
   password: string;
 }
+// 3차 프로젝트 분석 완료
 
 // description: 내 정보 수정하기 Response Body DTO
 export interface PatchUserInfoResponseDto extends ResponseDto

@@ -26,6 +26,7 @@ export default function AdminPageSite()
   // function //
   const navigation = useNavigate();
 
+  // 3차 프로젝트 분석 시작
   const GetMyInfoResponse = (result : GetMyInfoResponseDto | ResponseDto | null) => 
   {
     if (!result || result.code !== 'SU') 
@@ -35,31 +36,39 @@ export default function AdminPageSite()
         navigation(MAIN_ABSOLUTE_PATH);
         return;
       }
-      navigation(ADMIN_PAGE_SITE_ABSOLUTE_PATH);
-      return;
     }
 
     if (!cookies.accessToken) return;
 
-    const {userEmailId, nickname, userName, userTelNumber, password} = result as GetMyInfoResponseDto;
+    const {userEmailId, nickname, userName, userTelNumber, password, userRole} = result as GetMyInfoResponseDto;
     setNickname(nickname);
     setEmailId(userEmailId);
     setUserName(userName);
     setUserTelNumber(userTelNumber);
     setUserRole(userRole);
     setPassword(password);
+
+    if(userRole!="ROLE_ADMIN") //추가
+    { //추가
+      alert("권한이 없습니다.") //추가
+      navigation(MAIN_ABSOLUTE_PATH); //추가
+      return; //추가
+    } //추가
   };
+  // 3차 프로젝트 분석 완료
 
   // event handler //
   const onAdminDeleteClickHandler = (userEmailId:string) => navigation(ADMIN_DELETE_ABSOLUTE_PATH(userEmailId));
   const onAdminInfoUpdateClickHandler = (userEmailId:string) => navigation(ADMIN_INFO_UPDATE_ABSOLUTE_PATH(userEmailId));
   const onAdminPageSiteClickHandler = () => navigation(ADMIN_PAGE_SITE_ABSOLUTE_PATH);
   
+  // 3차 프로젝트 분석 시작
   //   effect   //
   useEffect(() => 
   {
     getMyInfoRequest(cookies.accessToken).then(GetMyInfoResponse);
   }, []);
+  // 3차 프로젝트 분석 완료
 
   //   render   //
   return (

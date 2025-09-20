@@ -89,7 +89,7 @@ export default function SignUp()
       !result ? '서버에 문제가 있습니다.' :
       result.code === 'VF' ? '닉네임은 빈 값 혹은 공백으로만 이루어질 수 없습니다.' :
       result.code === 'DN' ?  '이미 사용중인 닉네임입니다.' :
-      result.code === 'DBE' ? result.message :
+      result.code === 'DBE' ? '서버에 문제가 있습니다.' :
       result.code === 'SU' ? '사용 가능한 닉네임입니다.' : '';
 
     const nicknameError = !(result && result.code === 'SU');
@@ -98,7 +98,6 @@ export default function SignUp()
     setNicknameError(nicknameError);
     setNicknameCheck(nicknameCheck);
   };
-  /* 3차 프로젝트 분석완료 */
 
   const userTelNumberResponse = (result: ResponseDto | null) => 
   {
@@ -131,6 +130,7 @@ export default function SignUp()
     setAuthNumberCheck(authNumberCheck);
     setAuthNumberError(authNumberError);
   };
+  /* 3차 프로젝트 분석완료 */
 
   const businessRegistrationNumberResponse = (result: ResponseDto | null) => 
   {
@@ -177,7 +177,6 @@ export default function SignUp()
     setEmailIdCheck(false);
     setEmailIdMessage('');
   };
-  {/* 3차 프로젝트 분석완료 */}
   
   const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
   {
@@ -190,7 +189,7 @@ export default function SignUp()
 
     const passwordMessage = 
       isPasswordPattern ? '' : 
-      value ? '4글자 이상 입력해주세요.' : '';
+      value ? '8글자 이상 영문+숫자+특수문자로 입력해 주세요.' : '';
     setPasswordMessage(passwordMessage);
 
     const isEqualPassword = passwordCheck === value;
@@ -201,6 +200,7 @@ export default function SignUp()
       passwordCheck ? '비밀번호가 일치하지 않습니다.' : '';
     setPasswordCheckMessage(passwordCheckMessage);
   };
+  {/* 3차 프로젝트 분석완료 */}
 
   const onPasswordCheckChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
   {
@@ -297,7 +297,6 @@ export default function SignUp()
     const requestBody: CheckNicknameDto = { nickname: nickname };
     checkNicknameRequest(requestBody).then(nicknameCheckResponse);
   };
-  {/* 3차 프로젝트 분석완료 */}
 
   const onUserTelNumberButtonClickHandler = () => 
   {
@@ -318,7 +317,7 @@ export default function SignUp()
     const requestBody: TelNumberAuthRequestDto = { userTelNumber: userTelNumber };
     telNumberAuthRequest(requestBody).then(userTelNumberResponse);
   };
-
+  
   const onAuthNumberButtonClickHandler = () => 
   {
     if(!authNumber) return;
@@ -330,6 +329,7 @@ export default function SignUp()
     };
     telNumberAuthCheckRequest(requestBody).then(userTelNumberCheckResponse);
   };
+  {/* 3차 프로젝트 분석완료 */}
 
   const onBusinessRegistrationButtonClickHandler = () => 
   {
@@ -338,6 +338,7 @@ export default function SignUp()
     businessRegistrationNumberRequest(requestBody).then(businessRegistrationNumberResponse);
   };
 
+  /* 3차 프로젝트 분석 시작 */
   const onSignUpButtonClickHandler = () => 
   {
     if(!isSignUpActive) return;
@@ -367,6 +368,7 @@ export default function SignUp()
 
     signUpRequest(requestBody).then(signUpResponse);
   };
+  {/* 3차 프로젝트 분석완료 */}
   
   //   render   //
   return(
@@ -377,21 +379,27 @@ export default function SignUp()
           <div className="sign-up-input-container">
               {/* 3차 프로젝트 분석시작 */}
               <InputBox type="text" value={emailId} placeholder="이메일을 입력해주세요" onChangeHandler={onEmailIdChangeHandler} buttonTitle="중복 확인" buttonStatus={emailIdButtonStatus} onButtonClickHandler={onEmailIdButtonClickHandler} message={emailIdMessage} error={isEmailIdError} />
+              <InputBox type="password" value={password} placeholder="비밀번호를 입력해주세요" 
+              onChangeHandler={onPasswordChangeHandler} message={passwordMessage} error />
               {/* 3차 프로젝트 분석완료 */}
-              <InputBox type="password" value={password} placeholder="비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} message={passwordMessage} error />
-              <InputBox type="password" value={passwordCheck} placeholder="비밀번호를 입력해주세요" onChangeHandler={onPasswordCheckChangeHandler} message={passwordCheckMessage} error />
+              <InputBox type="password" value={passwordCheck} placeholder="비밀번호를 입력해주세요" 
+              onChangeHandler={onPasswordCheckChangeHandler} message={passwordCheckMessage} error />
               {/* 3차 프로젝트 분석시작 */}
               <InputBox type="text" value={nickname} placeholder="닉네임을 입력해주세요" onChangeHandler={onNicknameChangeHandler} buttonTitle="중복 확인" buttonStatus={nicknameButtonStatus} onButtonClickHandler={onNicknameButtonClickHandler} message={nicknameMessage} error={isNicknameError} />
               {/* 3차 프로젝트 분석완료 */}
               <InputBox type="text" value={userName} placeholder="이름을 입력해주세요" onChangeHandler={onUserNameChangeHandler} message={UserNameMessage} error />
+              {/* 3차 프로젝트 분석시작 */}
               <InputBox type="text" value={userTelNumber} placeholder="전화번호를 입력해주세요" onChangeHandler={onUserTelNumberChangeHandler} buttonTitle="인증번호 전송" buttonStatus={userTelNumberButtonStatus} onButtonClickHandler={onUserTelNumberButtonClickHandler} message={userTelNumberMessage} error={isUserTelNumberError} />
               {isUserTelNumberCheck && 
               <InputBox  type="text" value={authNumber} placeholder="인증번호 6자리를 입력해주세요" onChangeHandler={onAuthNumberChangeHandler} buttonTitle="인증 확인" buttonStatus={authNumberButtonStatus} onButtonClickHandler={onAuthNumberButtonClickHandler} message={authNumberMessage} error={isAuthNumberError} />}
+              {/* 3차 프로젝트 분석완료 */}
               <InputBox type="text" value={userAddress} placeholder="주소를 입력해주세요" onChangeHandler={onUserAddressChangeHandler} message={userAddressMessage} />
               <InputBox type="text" value={businessRegistrationNumber} placeholder="사업자등록번호를 입력해주세요" buttonTitle="중복 확인" buttonStatus={businessRegistrationNumberButtonStatus} onChangeHandler={onBusinessRegistrationNumberChangeHandler} onButtonClickHandler={onBusinessRegistrationButtonClickHandler} message={businessRegistrationNumberMessage} error={isBusinessRegistrationNumberError}/>
           </div>
+          {/* 3차 프로젝트 분석시작 */}
           <div className="sign-up-button-container">
               <div className={signUpButtonClass} onClick={onSignUpButtonClickHandler}>회원가입</div>
+              {/* 3차 프로젝트 분석완료 */}
               <div className="text-link" onClick={() => {navigation(SIGN_IN_ABSOLUTE_PATH)}}>로그인</div>
           </div>
         </div>

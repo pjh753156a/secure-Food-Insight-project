@@ -2,6 +2,9 @@ package com.project.back.service.implementation;
 
 import com.project.back.entity.UserEntity;
 import com.project.back.service.AuthService;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import com.project.back.provider.JwtProvider;
 import com.project.back.provider.SmsProvider;
 import com.project.back.entity.AuthNumberEntity;
@@ -15,7 +18,7 @@ import com.project.back.dto.response.ResponseMessage;
 import com.project.back.dto.response.auth.SignInResponseDto;
 import com.project.back.dto.response.auth.AdminSignInResponseDto;
 import com.project.back.dto.response.auth.FindEmailResponseDto;
-
+import com.project.back.dto.response.auth.PasswordResetResponseDto;
 import com.project.back.dto.request.auth.SignInRequestDto;
 import com.project.back.dto.request.auth.SignUpRequestDto;
 import com.project.back.dto.request.auth.FindEmailRequestDto;
@@ -33,9 +36,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpHeaders;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +48,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -61,41 +67,61 @@ public class AuthServiceImplementation implements AuthService
     private final SmsProvider smsProvider;
     private final JwtProvider jwtProvider;
 
-    //private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) 
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto, HttpServletResponse res) 
     {
-        String userEmailId = dto.getUserEmailId();
-        String password = dto.getPassword();
         String accessToken = null;
-
+        String csrfToken = null;
         try 
         {
-            String query = "SELECT * FROM user WHERE user_email_id = '" + userEmailId + "' AND password = '" + password + "'";
-            List<Map<String, Object>> result = jdbcTemplate.queryForList(query);
+            String userEmailId = dto.getUserEmailId();
+            String password = dto.getPassword();
 
-            if (result.isEmpty()) 
-            {
-                return ResponseDto.signInFailed();
-            }
+            UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
+            if(userEntity == null) return ResponseDto.signInFailed();
 
-            String userRole = (String)result.get(0).get("user_role");
-            
-            if(!userRole.equals("ROLE_USER") && !userRole.equals("ROLE_CEO"))
-            {
-                return ResponseDto.signInFailed();
-            }
+            String encodedPassword = userEntity.getPassword();
+            boolean isMatched = passwordEncoder.matches(password, encodedPassword);
+            if(!isMatched) return ResponseDto.signInFailed();
 
-            accessToken = jwtProvider.create(userEmailId);
-            return SignInResponseDto.success(accessToken);           
-        } 
-        catch (Exception exception) 
+            // [SECURE] 1차 accessToken 생성 (AES 암호화 + JWT)
+            accessToken = jwtProvider.accessTokenCreate(userEmailId); // 내부에서 AES 암호화 적용
+
+            // [SECURE] 1차 csrfToken 생성 (AES 암호화)
+            csrfToken = jwtProvider.csrfTokenCreate(); // 내부에서 AES 암호화 적용
+ 
+            if(accessToken == null) return ResponseDto.tokenCreationFailed();
+
+            // [SECURE] 2차 accessToken 쿠키 생성 + 보안 속성 지정
+            ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
+            .httpOnly(true)       // JS에서 접근 차단
+            .secure(true)         // HTTPS에서만 전송
+            .sameSite("Strict")   // 필요에 맞게 Lax/Strict/None
+            .path("/")
+            .maxAge(Duration.ofHours(1))
+            .build();
+
+            res.addHeader("Set-Cookie", accessCookie.toString());
+
+            // [SECURE] 2차 쿠키 내려줄 때 보안 속성 지정
+            ResponseCookie csrf = ResponseCookie.from("csrfToken", csrfToken) 
+            .httpOnly(false) 
+            .secure(true) 
+            .sameSite("Strict") 
+            .path("/")       
+            .maxAge(Duration.ofHours(1))  
+            .build();
+
+            res.addHeader("Set-Cookie", csrf.toString());
+        }
+        catch(Exception exception)
         {
             exception.printStackTrace();
-            ResponseDto responseBody = new ResponseDto(ResponseCode.DATABASE_ERROR, exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+            return ResponseDto.databaseError();
         }
+        return SignInResponseDto.success(accessToken, csrfToken);
     }
 
     @Override
@@ -122,7 +148,7 @@ public class AuthServiceImplementation implements AuthService
                 return ResponseDto.signInFailed();
             }
 
-            accessToken = jwtProvider.create(userEmailId);
+            accessToken = jwtProvider.accessTokenCreate(userEmailId);
             return AdminSignInResponseDto.success(accessToken);
         } 
         catch (Exception exception)
@@ -154,28 +180,20 @@ public class AuthServiceImplementation implements AuthService
     @Override
     public ResponseEntity<ResponseDto> nicknameCheck(CheckNicknameRequestDto dto) 
     {
-        String nickname = dto.getNickname();
-
         try 
         {
-            String query = "SELECT * FROM user WHERE nickname = '" + nickname + "'";
-            List<Map<String, Object>> result = jdbcTemplate.queryForList(query);
+            String nickname = dto.getNickname();
 
-            if (!result.isEmpty())
-            {
-                return ResponseDto.duplicatedNickname();
-            }
-
-            return ResponseDto.success();
-        }
-        catch(Exception exception)
+            boolean existedNickname = userRepository.existsByNickname(nickname);
+            if (existedNickname) return ResponseDto.duplicatedNickname();
+        } 
+        catch(Exception exception) 
         {
             exception.printStackTrace();
-            ResponseDto responseBody = new ResponseDto(ResponseCode.DATABASE_ERROR, exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+            return ResponseDto.databaseError();
         }
+        return ResponseDto.success();
     }
-    /* 3차 프로젝트 분석완료 */
 
     @Override
     public ResponseEntity<ResponseDto> telNumberAuth(TelNumberAuthRequestDto dto) 
@@ -217,6 +235,7 @@ public class AuthServiceImplementation implements AuthService
         }
         return ResponseDto.success();
     }
+    /* 3차 프로젝트 분석완료 */
     
     @Override
     public ResponseEntity<ResponseDto> businessRegistrationCheck(CheckBusinessRegistrationRequestDto dto) 
@@ -236,6 +255,7 @@ public class AuthServiceImplementation implements AuthService
         return ResponseDto.success();
     }
 
+    /* 3차 프로젝트 분석시작 */
     @Override
     public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto) 
     {
@@ -274,8 +294,8 @@ public class AuthServiceImplementation implements AuthService
             boolean isMatched = authNumberRepository.existsByTelNumberAndAuthNumber(userTelNumber, authNumber);
             if (!isMatched) return ResponseDto.authenticationFailed();
 
-            /* String encodedPassword = passwordEncoder.encode(password);
-            dto.setPassword(encodedPassword); */
+            String encodedPassword = passwordEncoder.encode(password);
+            dto.setPassword(encodedPassword);
 
             UserEntity userEntity = new UserEntity(dto,userRole);
             userRepository.save(userEntity);
@@ -287,8 +307,7 @@ public class AuthServiceImplementation implements AuthService
         }
         return ResponseDto.success();
     }
-
-    /* 3차 프로젝트 분석시작 */
+    
     @Override
     public ResponseEntity<? super FindEmailResponseDto> findEmail(FindEmailRequestDto dto) 
     {
@@ -296,46 +315,57 @@ public class AuthServiceImplementation implements AuthService
         {
             String userName = dto.getUserName();
             String userTelNumber = dto.getUserTelNumber();
+        
+            String sql = "SELECT user_email_id FROM user WHERE user_name = ? AND user_tel_number = ?";
 
-            String query = "SELECT user_email_id FROM user WHERE user_name = '" + userName + "' AND user_tel_number = '" + userTelNumber + "'";
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, userName, userTelNumber);
 
-            List<Map<String, Object>> result = jdbcTemplate.queryForList(query);
-
-            if (result.isEmpty())
+            if (result.isEmpty()) 
             {
                 return ResponseDto.noExistUser();
             }
 
-            String userEmailId = result.toString();
+            String userEmailId = result.toString().replace("user_email_id=","");
 
             return FindEmailResponseDto.success(userEmailId);
-
-        } 
-        catch (Exception exception) 
+        }
+        catch (Exception exception)
         {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
     }
-    /* 3차 프로젝트 분석완료 */
-
+    
     @Override
-    public ResponseEntity<ResponseDto> passwordReset(PasswordResetRequestDto dto) 
+    public ResponseEntity<? super PasswordResetResponseDto> passwordReset(PasswordResetRequestDto dto) 
     {
-        try 
+        String accessToken = null;
+
+        try
         {
             String userEmailId = dto.getUserEmailId();
             String userTelNumber = dto.getUserTelNumber();
 
             boolean isMatched = userRepository.existsByUserEmailIdAndUserTelNumber(userEmailId, userTelNumber);
             if (!isMatched) return ResponseDto.authenticationFailed();
+
+            String authNumber = TelNumberAuthNumberUtil.createNumber();
+
+            AuthNumberEntity authNumberEntity = new AuthNumberEntity(userTelNumber, authNumber);
+            authNumberRepository.save(authNumberEntity);
+    
+            smsProvider.sendAuthNumber(userTelNumber, authNumber);
+
+            accessToken = jwtProvider.accessTokenCreate(userEmailId);
+            if(accessToken == null) return ResponseDto.tokenCreationFailed();
+
         } 
         catch(Exception exception) 
         {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return ResponseDto.success();
+        return PasswordResetResponseDto.success(accessToken);
     }
 
     @Override
@@ -348,13 +378,10 @@ public class AuthServiceImplementation implements AuthService
             UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
             if (userEntity == null) return ResponseDto.noExistUser();
 
-            boolean isMatched = userRepository.existsById(userEmailId);
-            if (!isMatched) return ResponseDto.authenticationFailed();
+            String encodedPassword = passwordEncoder.encode(password);
 
-            //String encodedPassword = passwordEncoder.encode(password);
-
-            //dto.setPassword(encodedPassword);
-            userEntity.setPassword(password);
+            dto.setPassword(encodedPassword);
+            userEntity.setPassword(encodedPassword);
             userRepository.save(userEntity);
         } 
         catch(Exception exception) 
@@ -365,29 +392,39 @@ public class AuthServiceImplementation implements AuthService
         return ResponseDto.success();
     }
 }
-/* 분석 완료 */
+/* 3차 프로젝트 분석완료 */
 
-// try 
-        // {
-        //     String nickname = dto.getNickname();
+/* 
+String nickname = dto.getNickname();
 
-        //     boolean existedNickname = userRepository.existsByNickname(nickname);
-        //     if (existedNickname) return ResponseDto.duplicatedNickname();
-        // } 
-        // catch(Exception exception) 
-        // {
-        //     exception.printStackTrace();
-        //     return ResponseDto.databaseError();
-        // }
-        // return ResponseDto.success();
+try 
+{
+    String query = "SELECT * FROM user WHERE nickname = '" + nickname + "'";
+    List<Map<String, Object>> result = jdbcTemplate.queryForList(query);
 
+    if (!result.isEmpty())
+    {
+        return ResponseDto.duplicatedNickname();
+    }
 
-        // String sql = "SELECT COUNT(*) FROM user WHERE nickname = ?";
-        //     int count = jdbcTemplate.queryForObject(sql, Integer.class, nickname);
+        return ResponseDto.success();
+    }
+    
+catch(Exception exception)
+{
+    exception.printStackTrace();
+    ResponseDto responseBody = new ResponseDto(ResponseCode.DATABASE_ERROR, exception.getMessage());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+}
+*/
 
-        //     if (count > 0) 
-        //     {
-        //         return ResponseDto.duplicatedNickname();
-        //     }
+ 
 
-        //     return ResponseDto.success();
+ /*
+                UserEntity userEntity = userRepository.findByUserNameAndUserTelNumber(userName, userTelNumber);
+                if(userEntity == null) return ResponseDto.noExistUser();
+
+                String userEmailId = userEntity.getUserEmailId();
+
+                return FindEmailResponseDto.success(userEmailId);
+*/

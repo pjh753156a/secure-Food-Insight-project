@@ -13,18 +13,20 @@ import lombok.Getter;
 public class SignInResponseDto extends ResponseDto
 {
     private String accessToken;
+    private String csrfToken;
     private int expires;
 
-    private SignInResponseDto(String accessToken) 
+    private SignInResponseDto(String accessToken, String csrfToken) 
     {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.accessToken = accessToken;
+        this.csrfToken = csrfToken;
         this.expires = 60 * 60;
     }
     
-    public static ResponseEntity<SignInResponseDto> success(String accessToken) 
+    public static ResponseEntity<SignInResponseDto> success(String accessToken, String csrfToken) 
     {
-        SignInResponseDto responseBody = new SignInResponseDto(accessToken);
+        SignInResponseDto responseBody = new SignInResponseDto(accessToken, csrfToken);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }

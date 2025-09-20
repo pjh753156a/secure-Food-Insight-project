@@ -7,6 +7,7 @@ import { bearerAuthorization, requestErrorHandler, requestHandler } from 'src/ap
 
 import { DELETE_REVIEW_REQUEST_URL, GET_REVIEW_DETAILS_LIST_URL, GET_REVIEW_DETAIL_URL, PATCH_REVIEW_REQUEST_URL, POST_REVIEW_REQUEST_URL } from 'src/constant';
 
+{/* 3차 프로젝트 분석 시작 */}
 // function : 식당 리뷰 작성 API 함수 
 export const PostReviewRequest = async (restaurantId: number|string, requestBody: PostReviewRequestDto, accessToken: string) => 
 {
@@ -15,6 +16,7 @@ export const PostReviewRequest = async (restaurantId: number|string, requestBody
         .catch(requestErrorHandler)
     return result;
 }
+{/* 3차 프로젝트 분석 완료 */}
 
 // function : 식당 리뷰 수정 API 함수 
 export const PatchReviewRequest = async (reviewNumber: number|string, requestBody: PatchReviewRequestDto, accessToken: string) => {

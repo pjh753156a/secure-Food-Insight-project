@@ -22,7 +22,7 @@ public class GetMyInfoResponseDto extends ResponseDto
     private String userRole;
     private String joinPath;
     private String password;
-
+    
     private GetMyInfoResponseDto(UserEntity userEntity) 
     {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
@@ -43,4 +43,4 @@ public class GetMyInfoResponseDto extends ResponseDto
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }
-/* 분석 완료 */
+// 3차 프로젝트 분석 완료

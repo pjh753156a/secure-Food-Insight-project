@@ -29,8 +29,10 @@ function ListItem ({
   // function //
   const navigation = useNavigate();
 
+  {/* 3차 프로젝트 분석시작 */}
   // event handler //
   const onClickHandler = () => navigation(NOTICE_DETAILS_ABSOLUTE_PATH(noticeNumber));
+  {/* 3차 프로젝트 분석완료 */}
 
   // render //
   return(
@@ -115,12 +117,14 @@ export default function NoticeList()
     setCurrentSection(!noticeBoardList.length ? 0 : 1);
   };
   
+  /* 3차 프로젝트 분석시작 */
   // event handler //
   const onWriteButtonClickHandler = () => 
   {
     if (loginUserRole !== 'ROLE_ADMIN') return;
     navigation(NOTICE_BOARD_WRITE_ABSOLUTE_PATH);
   }
+  /* 3차 프로젝트 분석완료 */
 
   const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => 
   {
@@ -174,11 +178,13 @@ export default function NoticeList()
             <span className='emphasis'> {totalLength}건</span> | 페이지 <span className='emphasis'>{currentPage}/{totalPage}</span>
           </div>
         </div>
+        {/* 3차 프로젝트 분석시작 */}
         <div className='notice-list-top-right'>
           {loginUserRole === 'ROLE_ADMIN' && (
             <div className='primary-button' onClick={onWriteButtonClickHandler}>공지 작성</div>
           )} 
         </div>
+        {/* 3차 프로젝트 분석완료 */}
       </div>
       <div className='notice-list-table'>
         <div className='notice-list-table-top'>

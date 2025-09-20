@@ -19,11 +19,11 @@ import { fileURLToPath } from 'url';
 export default function InquiryDetail() 
 {
     // state //
-    const [cookies] = useCookies();
+    const [cookies,,removeCookie] = useCookies();
     const { inquiryNumber } = useParams();
     const [status, setStatus] = useState<boolean>(false);
     const [commentRows, setCommentRows] = useState<number>(1);
-    const { loginUserEmailId, loginUserRole }  = useUserStore();
+    const { loginUserEmailId, loginUserRole, setLoginUserEmailId, setLoginUserRole}  = useUserStore();
     const [inquiryTitle, setInquiryTitle] = useState<string>('');
     const [inquiryFile, setInquiryFile] = useState<string>('');
     const [inquiryFileName, setInquiryFileName] = useState<string>('');
@@ -36,6 +36,7 @@ export default function InquiryDetail()
     // function //
     const navigation = useNavigate();
 
+    /* 3차 프로젝트 분석시작 */
     const getInquiryBoardResponse = (result: GetInquiryBoardResponseDto | ResponseDto | null) => 
     {
         const message =
@@ -50,10 +51,14 @@ export default function InquiryDetail()
             alert(message);
             if (result?.code === 'AF') 
             {
+                removeCookie('accessToken', { path: '/' });
+                removeCookie('csrfToken', { path: '/' });
+                setLoginUserEmailId('');
+                setLoginUserRole('');
                 navigation(SIGN_IN_ABSOLUTE_PATH);
                 return;
             }
-            navigation(INQUIRY_BOARD_LIST_PATH);
+            navigation(INQUIRY_BOARD_LIST_ABSOLUTE_PATH);
             return;
         }
 
@@ -68,6 +73,7 @@ export default function InquiryDetail()
         setInquiryFile(inquiryFile);
         setInquiryFileName(inquiryFileName);
     };
+    /* 3차 프로젝트 분석완료 */
 
     const postInquiryCommentResponse = (result: ResponseDto | null) => 
     {
@@ -89,6 +95,7 @@ export default function InquiryDetail()
         getInquiryBoardRequest(inquiryNumber, cookies.accessToken).then(getInquiryBoardResponse);
     };
 
+    /* 3차 프로젝트 분석시작 */
     const deleteInquiryBoardResponse = (result: ResponseDto | null) => 
     {
         const message = 
@@ -105,6 +112,7 @@ export default function InquiryDetail()
         }
         navigation(INQUIRY_BOARD_LIST_ABSOLUTE_PATH);
     };
+    /* 3차 프로젝트 분석완료 */
     
     // event handler //
     const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => 
@@ -133,6 +141,7 @@ export default function InquiryDetail()
         navigation(INQUIRY_BOARD_LIST_ABSOLUTE_PATH);
     };
 
+    {/* 3차 프로젝트 분석시작 */}
     const onUpdateClickHandler = () => 
     {
         if (!inquiryNumber || loginUserEmailId !== inquiryWriterId || status ) return;
@@ -155,6 +164,7 @@ export default function InquiryDetail()
         if (!inquiryNumber) return;
         getInquiryBoardRequest(inquiryNumber, cookies.accessToken).then(getInquiryBoardResponse);
     }, []);
+    /* 3차 프로젝트 분석완료 */
 
     //                    render                    //
     return (
@@ -173,8 +183,7 @@ export default function InquiryDetail()
                     {inquiryFileName}
                 </a>
                 )}
-                {/* <div className='inquiry-detail-contents-box'>{inquiryContents}</div> */}
-                <iframe className='inquiry-detail-contents-box' srcDoc={inquiryContents}></iframe>
+                <div className='inquiry-detail-contents-box'>{inquiryContents}</div>
             </div>
             { loginUserRole === 'ROLE_ADMIN' && !status &&
                 <div className='inquiry-detail-comment-write-box'>
@@ -192,9 +201,10 @@ export default function InquiryDetail()
             }
             <div className='inquiry-detail-button-box'>
                 <div className='primary-button' onClick={onListClickHandler}>목록보기</div>
+                {/* 3차 프로젝트 분석시작 */}
                 { (loginUserEmailId === inquiryWriterId || loginUserRole === 'ROLE_ADMIN') &&
                     <div className='inquiry-detail-owner-button-box'>
-                        { !status && loginUserRole !== 'ROLE_ADMIN' &&<div className='second-button' onClick={onUpdateClickHandler}>수정</div> }
+                        { !status && loginUserRole !== 'ROLE_ADMIN' && <div className='second-button' onClick={onUpdateClickHandler}>수정</div> }
                         <div className='error-button' onClick={onDeleteClickHandler}>삭제</div>
                     </div>
                 }
@@ -202,4 +212,6 @@ export default function InquiryDetail()
         </div>
     );
 }
-{/*분석 완료*/}
+{/* 3차 프로젝트 분석완료 */}
+
+//<iframe className='inquiry-detail-contents-box' srcDoc={inquiryContents}></iframe>

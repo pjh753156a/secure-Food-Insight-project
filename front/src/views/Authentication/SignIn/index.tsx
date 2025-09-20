@@ -13,6 +13,7 @@ import { signInRequest } from "src/apis/auth";
 import { FIND_EMAIL_INPUT_ABSOLUTE_PATH, MAIN_PATH, PASSWORD_RESET_INPUT_ABSOLUTE_PATH, SERVER_DOMAIN_URL, SIGN_IN_ABSOLUTE_PATH, SIGN_UP_ABSOLUTE_PATH} from "src/constant";
 
 import "./style.css";
+import { useAuthStore, useUserStore } from "src/stores";
 
 // component: Sns 로그인 //
 export function Sns() 
@@ -75,13 +76,14 @@ export default function SignIn()
 {
     // state //
     const [, setCookie] = useCookies();
+    const [lockRemain, setLockRemain] = useState(30);
     const [message, setMessage] = useState<string>('');
     const [emailId, setEmailId] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    let { SFcount, setSFcount} = useAuthStore();
     
     // function // 
     const navigation = useNavigate();
-
     const signInResponse = (result: SignInResponseDto | ResponseDto | null) => 
     {
 
@@ -94,12 +96,24 @@ export default function SignIn()
         setMessage(message);
 
         const isSuccess = result && result.code === 'SU';
-        if (!isSuccess) return;
 
-        const { accessToken, expires } = result as SignInResponseDto;
+        if (!isSuccess)
+        {
+            if(result == null) return;
+        
+            if(result.code === 'SF')
+            {
+                setSFcount(++SFcount)
+            }
+
+            return;
+        }
+        
+        const { accessToken, expires, csrfToken } = result as SignInResponseDto;
         const expiration = new Date(Date.now() + (expires * 1000));
         setCookie('accessToken', accessToken, { path: '/', expires: expiration })
-
+        setCookie('csrfToken', csrfToken, { path: '/', expires: expiration })
+        
         navigation(MAIN_PATH);
     };
     {/* 3차 프로젝트 분석완료 */}
@@ -143,17 +157,57 @@ export default function SignIn()
 
     const onFindEmailInputClickHandler = () => navigation(FIND_EMAIL_INPUT_ABSOLUTE_PATH)
     const onPasswordResetInputClickHandler = () => navigation(PASSWORD_RESET_INPUT_ABSOLUTE_PATH)
+    {/* 3차 프로젝트 분석시작 */}
     const onSignUpClickHandler = () => navigation(SIGN_UP_ABSOLUTE_PATH)
+    {/* 3차 프로젝트 분석완료 */}
+
+    //                      effect                         //
+    useEffect(() => 
+    {
+        if (SFcount >= 5) 
+        {
+            setLockRemain(30);
+            const timer = setInterval(() => 
+            {
+                setLockRemain(prev => 
+                {
+                    if (prev <= 1) 
+                    {
+                        clearInterval(timer);
+                        setSFcount(0);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [SFcount]);
+
+    useEffect(() => 
+    {
+        if (SFcount >= 5)
+        {
+            setSFcount(0);
+        }
+    }, [SFcount]);
+
     //   render   //
     return (
         <div id="authentication-wrapper">
             <div className="authentication-contents">
                 <div className="authentication-sign-title">로그인</div>
                 <div className="authentication-sign-container">
+                {SFcount >= 5 ? 
+                    <div className="authentication-failed">5회 이상 실패하여 {lockRemain}초 뒤에 다시 할 수 있습니다</div>
+                        :
                     <div className="authentication-contents-box">
                         <div className="authentication-input-container">
-                            <InputBox type="text" value={emailId} placeholder="이메일을 입력해주세요" onChangeHandler={onEmailIdChangeHandler} />
-                            <InputBox type="password" value={password} placeholder="비밀번호를 입력해주세요" onChangeHandler={onPasswordChangeHandler} onKeydownHandler={onPasswordKeydownHandler} message={message} error />
+                            <InputBox type="text" value={emailId} placeholder="이메일을 입력해주세요" 
+                            onChangeHandler={onEmailIdChangeHandler} />
+                            <InputBox type="password" value={password} placeholder="비밀번호를 입력해주세요" 
+                            onChangeHandler={onPasswordChangeHandler} onKeydownHandler={onPasswordKeydownHandler} 
+                            message={message} error />
                         </div>
                         {/* 3차 프로젝트 분석시작 */}
                         <div className="authentication-button-container">
@@ -161,6 +215,7 @@ export default function SignIn()
                         </div>
                         {/* 3차 프로젝트 분석완료 */}
                     </div>
+                    }
                     <div className="find-container">
                         <div className="find-email">
                             <div className="text-link" onClick={onFindEmailInputClickHandler}>이메일 찾기</div>
@@ -169,11 +224,13 @@ export default function SignIn()
                         <div className="reset-password">
                             <div className="text-link" onClick={onPasswordResetInputClickHandler}>비밀번호 재설정</div>
                         </div>
+                        {/* 3차 프로젝트 분석시작 */}
                         <div className="find-divider">{'\|'}</div>
                         <div className="user-sign-up">
                             <div className="text-link" onClick={onSignUpClickHandler}>회원가입</div>
                         </div>
                     </div>
+                    {/* 3차 프로젝트 분석완료 */}
                     <SnsContainer title="SNS 로그인" />
                 </div>
             </div>

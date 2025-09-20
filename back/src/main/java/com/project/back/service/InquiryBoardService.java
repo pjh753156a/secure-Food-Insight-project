@@ -15,11 +15,13 @@ import com.project.back.dto.response.board.inquiryboard.GetSearchInquiryBoardLis
 public interface InquiryBoardService 
 {
   ResponseEntity<ResponseDto> postBoard(PostInquiryBoardRequestDto dto, String userEmailId);
+  /* 3차 프로젝트 분석완료 */
   ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, int inquiryNumber);
   ResponseEntity<? super GetInquiryBoardListResponseDto> getInquiryBoardList();
   ResponseEntity<? super GetSearchInquiryBoardListResponseDto> getSearchInquiryBoardList(String searchWord);
-  ResponseEntity<? super GetInquiryBoardResponseDto> getInquiryBoard(int inquiryNumber);
+  /* 3차 프로젝트 분석시작 */
+  ResponseEntity<? super GetInquiryBoardResponseDto> getInquiryBoard(int inquiryNumber, String userEmailId);
   ResponseEntity<ResponseDto> patchInquiryBoard(PatchInquiryBoardRequestDto dto, int inquiryNumber, String userEmailId);
   ResponseEntity<ResponseDto> deleteInquiryBoard(int inquiryNumber, String userEmailId);
 }
-/* /분석 완료/ */
+/* 3차 프로젝트 분석완료 */
