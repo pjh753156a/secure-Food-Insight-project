@@ -142,7 +142,7 @@ export default function SignIn()
     {
         if (!emailId || !password) 
         {
-            setMessage('이에일과 비밀번호를 모두 입력하세요.');
+            setMessage('이메일과 비밀번호를 모두 입력하세요.');
             return;
         }
 
