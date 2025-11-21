@@ -267,18 +267,22 @@ public class InquiryBoardServiceImplementation implements InquiryBoardService
     {
         try 
         {
-            boolean isMatched;
             InquiryBoardEntity inquiryBoardEntity = inquiryBoardRepository.findByInquiryNumber(inquiryNumber);
-            UserEntity userEntity = userRepository.findByUserEmailId(userId);
             if (inquiryBoardEntity == null) return ResponseDto.noExistInquiryBoard();
 
             String userEmailId = inquiryBoardEntity.getInquiryWriterId();
-            if(inquiryBoardEntity.getInquiryPublic() && !userEntity.getUserRole().equals("ROLE_ADMIN"))
+            if(inquiryBoardEntity.getInquiryPublic())
             {
+                UserEntity userEntity = userRepository.findByUserEmailId(userId);
+                if(userEntity == null) return ResponseDto.authenticationFailed(); 
+
+                boolean isMatched;
                 isMatched = userId.equals(userEmailId);
-                if(!isMatched) return ResponseDto.authenticationFailed();
+
+                if(!isMatched && !userEntity.getUserRole().equals("ROLE_ADMIN")) return ResponseDto.authenticationFailed();
             }
             
+            UserEntity userEntity = userRepository.findByUserEmailId(userEmailId);
             if (userEntity == null) return ResponseDto.authorizationFailed();
 
             String nickname = userEntity.getNickname();
