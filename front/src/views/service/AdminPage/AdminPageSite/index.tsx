@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 
 import ResponseDto from 'src/apis/response.dto';
-import { GetMyInfoResponseDto } from 'src/apis/user/dto/response';
+import { GetAdminMyInfoResponseDto, GetMyInfoResponseDto } from 'src/apis/user/dto/response';
 
-import { getMyInfoRequest } from 'src/apis/user';
+import { getAdminMyInfoRequest, getMyInfoRequest } from 'src/apis/user';
 
 import { ADMIN_DELETE_ABSOLUTE_PATH, ADMIN_INFO_UPDATE_ABSOLUTE_PATH, ADMIN_PAGE_SITE_ABSOLUTE_PATH, INQUIRY_BOARD_LIST_ABSOLUTE_PATH, INQUIRY_MY_BOARD_LIST_ABSOLUTE_PATH, MAIN_ABSOLUTE_PATH, MY_PAGE_SITE_ABSOLUTE_PATH, RESTAURANT_FAVORITE_ABSOLUTE_LIST_PATH, RESTAURANT_RESERVATION_ABSOLUTE_LIST_PATH, RESTAURANT_REVIEW_ABSOLUTE_DETAILS_LIST_PATH, USER_DELETE_ABSOLUTE_PATH, USER_INFO_UPDATE_ABSOLUTE_PATH } from 'src/constant';
 
@@ -27,12 +27,13 @@ export default function AdminPageSite()
   const navigation = useNavigate();
 
   // 3차 프로젝트 분석 시작
-  const GetMyInfoResponse = (result : GetMyInfoResponseDto | ResponseDto | null) => 
+  const GetAdminMyInfoResponse = (result : GetAdminMyInfoResponseDto | ResponseDto | null) => 
   {
-    if (!result || result.code !== 'SU') 
+    if (!result || result.code !== 'SU')
     {
       if (result?.code === 'AF') 
       {
+        alert("권한이 없습니다.");
         navigation(MAIN_ABSOLUTE_PATH);
         return;
       }
@@ -47,13 +48,6 @@ export default function AdminPageSite()
     setUserTelNumber(userTelNumber);
     setUserRole(userRole);
     setPassword(password);
-
-    if(userRole!="ROLE_ADMIN") //추가
-    { //추가
-      alert("권한이 없습니다.") //추가
-      navigation(MAIN_ABSOLUTE_PATH); //추가
-      return; //추가
-    } //추가
   };
   // 3차 프로젝트 분석 완료
 
@@ -66,7 +60,7 @@ export default function AdminPageSite()
   //   effect   //
   useEffect(() => 
   {
-    getMyInfoRequest(cookies.accessToken).then(GetMyInfoResponse);
+    getAdminMyInfoRequest(cookies.accessToken).then(GetAdminMyInfoResponse);
   }, []);
   // 3차 프로젝트 분석 완료
 

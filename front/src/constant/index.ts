@@ -147,6 +147,7 @@ export const GET_SIGN_IN_USER_REQUEST_URL = `${SERVER_USER_MODULE_URL}/`;
 export const PATCH_INFO_UPDATE_REQUEST_URL = (userEmailId: string) => `${SERVER_USER_MODULE_URL}/info-update/${userEmailId}`;
 export const DELETE_INFO_DELETE_REQUEST_URL = (userEmailId: string) => `${SERVER_USER_MODULE_URL}/info-delete/${userEmailId}`;
 export const GET_MY_INFO_URL = `${SERVER_USER_MODULE_URL}/information`;
+export const GET_ADMIN_MY_INFO_URL = `${SERVER_USER_MODULE_URL}/admin-information`;
 export const GET_MFA_URL = `${SERVER_USER_MODULE_URL}/mfa`;
 
 // description: RESTAURANT 모듈 내의 기능 URL

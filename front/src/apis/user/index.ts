@@ -1,11 +1,11 @@
 import ResponseDto from 'src/apis/response.dto';
-import { GetMyInfoResponseDto, GetUserInfoResponseDto } from 'src/apis/user/dto/response';
+import { GetAdminMyInfoResponseDto, GetMyInfoResponseDto, GetUserInfoResponseDto } from 'src/apis/user/dto/response';
 import { DeleteUserRequestDto, MFARequestDto, PatchUserInfoRequestDto } from 'src/apis/user/dto/request';
 
 import axios from 'axios';
 import { bearerAuthorization, requestErrorHandler, requestHandler } from 'src/apis/index';
 
-import { DELETE_INFO_DELETE_REQUEST_URL, GET_MFA_URL, GET_MY_INFO_URL, GET_SIGN_IN_USER_REQUEST_URL, PATCH_INFO_UPDATE_REQUEST_URL } from 'src/constant';
+import { DELETE_INFO_DELETE_REQUEST_URL, GET_ADMIN_MY_INFO_URL, GET_MFA_URL, GET_MY_INFO_URL, GET_SIGN_IN_USER_REQUEST_URL, PATCH_INFO_UPDATE_REQUEST_URL } from 'src/constant';
 
 // function: 로그인 유저 정보 불러오기 API 함수 
 export const getSignInUserRequest = async (accessToken: string) => 
@@ -57,3 +57,12 @@ export const getMyInfoRequest = async (accessToken: string) =>
 };
 // 3차 프로젝트 분석 완료
 /* /분석 완료/ */
+
+export const getAdminMyInfoRequest = async (accessToken: string) => 
+{
+    const result = await axios
+        .get(GET_ADMIN_MY_INFO_URL, bearerAuthorization(accessToken))
+        .then(requestHandler<GetAdminMyInfoResponseDto>)
+        .catch(requestErrorHandler);
+    return result;
+};

@@ -20,6 +20,7 @@ import com.project.back.dto.request.user.MFARequestDto;
 import com.project.back.dto.request.user.PatchUserInfoRequestDto;
 
 import com.project.back.dto.response.ResponseDto;
+import com.project.back.dto.response.user.GetAdminMyInfoResponseDto;
 import com.project.back.dto.response.user.GetMyInfoResponseDto;
 import com.project.back.dto.response.user.GetUserInfoResponseDto;
 
@@ -165,6 +166,27 @@ public class UserServiceImplementation implements UserService
             return ResponseDto.databaseError();
         }
         return GetMyInfoResponseDto.success(userEntity);
+    }
+
+    @Override
+    public ResponseEntity<?super GetAdminMyInfoResponseDto> getAdminMyInfo(String userEmailId)
+    {
+        UserEntity userEntity =null;
+        try
+        {
+            userEntity =userRepository.findByUserEmailId(userEmailId);
+            if(userEntity ==null) return ResponseDto.authenticationFailed();
+            if(!userEntity.getUserRole().equals("ROLE_ADMIN"))
+            {
+                return ResponseDto.authenticationFailed();
+            }
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetAdminMyInfoResponseDto.success(userEntity);
     }
 }
 // 3차 프로젝트 분석 완료

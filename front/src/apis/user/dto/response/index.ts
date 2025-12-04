@@ -24,6 +24,19 @@ export interface GetMyInfoResponseDto extends ResponseDto
 }
 // 3차 프로젝트 분석 완료
 
+export interface GetAdminMyInfoResponseDto extends ResponseDto
+{
+  userEmailId: string;
+  nickname: string;
+  userName: string;
+  userTelNumber: string;
+  userAddress: string;
+  businessRegistrationNumber: string;
+  userRole: string;
+  joinPath: String;
+  password: string;
+}
+
 // description: 내 정보 수정하기 Response Body DTO
 export interface PatchUserInfoResponseDto extends ResponseDto
 {

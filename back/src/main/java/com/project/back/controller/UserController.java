@@ -16,6 +16,7 @@ import com.project.back.dto.request.user.MFARequestDto;
 import com.project.back.dto.request.user.PatchUserInfoRequestDto;
 import com.project.back.dto.response.ResponseDto;
 import com.project.back.dto.response.user.GetMyInfoResponseDto;
+import com.project.back.dto.response.user.GetAdminMyInfoResponseDto;
 import com.project.back.dto.response.user.GetUserInfoResponseDto;
 
 import jakarta.validation.Valid;
@@ -72,6 +73,14 @@ public class UserController
             @AuthenticationPrincipal String userEmailId) 
     {
         ResponseEntity<? super GetMyInfoResponseDto> response = userService.getMyInfo(userEmailId);
+        return response;
+    }
+
+    @GetMapping("/admin-information")
+    public ResponseEntity<? super GetAdminMyInfoResponseDto> getAdminMyInfo(
+            @AuthenticationPrincipal String userEmailId) 
+    {
+        ResponseEntity<? super GetAdminMyInfoResponseDto> response = userService.getAdminMyInfo(userEmailId);
         return response;
     }
 }
